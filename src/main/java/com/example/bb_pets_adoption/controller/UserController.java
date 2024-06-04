@@ -80,7 +80,7 @@ public class UserController {
 	
 	// Endpoint for user login
 	@PostMapping("/login")
-	public String loginUser(@RequestBody User user) {
+	public ResponseEntity<String> loginUser(@RequestBody User user) {
 		//log
 		logger.info("Attempting to log in user with email: {}", user.getEmail());
 		
@@ -88,11 +88,11 @@ public class UserController {
 		if(foundUser != null && passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
 			//log
 			logger.info("Login successful for user with email: {}", user.getEmail());
-			return "Login successful";
+			return ResponseEntity.status(HttpStatus.CREATED).body("Login successful");
 		} else {
 			//log
             logger.error("Login failed for user with email: {}", user.getEmail());
-			return "Invalid email or password";
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid email or password");
 		}
 	}
 }
