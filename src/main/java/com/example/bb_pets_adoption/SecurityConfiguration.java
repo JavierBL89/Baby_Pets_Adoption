@@ -46,7 +46,11 @@ public class SecurityConfiguration  {
 			                .requestMatchers(new AntPathRequestMatcher("/auth/login/**")).permitAll()		                			                
 			                .anyRequest().authenticated() 
 			        )
-			        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
+			        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).oauth2Login(oauth2 -> oauth2
+	                        .loginPage("/auth/login")
+	                        .defaultSuccessUrl("/home", true)
+	                        .failureUrl("/auth/login?error=true")
+	                )
 			        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())) 
 			        .build();
 	}
