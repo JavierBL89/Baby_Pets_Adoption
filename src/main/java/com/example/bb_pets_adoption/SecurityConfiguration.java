@@ -32,7 +32,7 @@ public class SecurityConfiguration  {
 	*    - Permit everyone to access the permitAll() endpoints
 	*    - Requires authentication for any other request; anyRequest().authenticated() 
 	*    - Configures session management to be stateless; sessionManagement()
-	*    -  Configures OAuth2 resource server with default JWT handling; oauth2ResourceServer()
+	*    - Configures OAuth2 resource server with default JWT handling; oauth2ResourceServer()
 	**/
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -42,7 +42,7 @@ public class SecurityConfiguration  {
 			        .csrf(csrf -> csrf.disable())
 			        .authorizeHttpRequests(auth -> auth 
 			        		// Permit everyone to access the bellow endpoints
-			                .requestMatchers(new AntPathRequestMatcher("/auth/register/**")).permitAll()		                
+			                .requestMatchers(new AntPathRequestMatcher("/auth/register/**", "/oauth2/**")).permitAll()		                
 			                .requestMatchers(new AntPathRequestMatcher("/auth/login/**")).permitAll()		                			                
 			                .anyRequest().authenticated() 
 			        )
@@ -69,10 +69,19 @@ public class SecurityConfiguration  {
 	
 	
 	/**
-     * Bean necessary for decoding JWT tokens incomming from provider AuthO
+     * Bean necessary for decoding incomming JWT tokens from provider AuthO
      */
 	@Bean
-    public JwtDecoder jwtDecoder() {
+    public JwtDecoder auth0JwtDecoder() {
         return NimbusJwtDecoder.withJwkSetUri("https://dev-x8jau2ioykz07t1t.us.auth0.com/.well-known/jwks.json").build();
+    }
+	
+	
+	/**
+     * Bean for decoding incomming Google OAuth2 tokens with JwtDecoder 
+     */
+	@Bean
+    public JwtDecoder googleJwtDecoder() {
+        return NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build();
     }
 }
