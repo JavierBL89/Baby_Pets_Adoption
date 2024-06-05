@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.service;
+package com.example.bb_pets_adoption.auth.service;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,8 +16,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.example.bb_pets_adoption.model.User;
-import com.example.bb_pets_adoption.repository.UserRepository;
+import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.auth.repository.UserRepository;
 
 /**
  * CustomOAuth2UserService extends DefaultOAuth2UserService to load the user

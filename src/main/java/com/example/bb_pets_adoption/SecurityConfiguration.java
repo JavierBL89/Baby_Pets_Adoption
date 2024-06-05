@@ -5,6 +5,7 @@ package com.example.bb_pets_adoption;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * SecurityConfiguration class holds the security configuration settings for the application.
+ * 
  * It defines how HTTP requests should be secured, including which endpoints are accessible for public
  * and which require authentication. It also sets up password encoding to strengthen password security.
  */
@@ -42,13 +44,12 @@ public class SecurityConfiguration  {
 			        .csrf(csrf -> csrf.disable())
 			        .authorizeHttpRequests(auth -> auth 
 			        		// Permit everyone to access the bellow endpoints
-			                .requestMatchers(new AntPathRequestMatcher("/auth/register/**", "/oauth2/**")).permitAll()		                
-			                .requestMatchers(new AntPathRequestMatcher("/auth/login/**")).permitAll()		                			                
+	                        .requestMatchers("/auth/register/**", "/auth/login/**", "/oauth2/**").permitAll()       			                
 			                .anyRequest().authenticated() 
 			        )
 			        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).oauth2Login(oauth2 -> oauth2
 	                        .loginPage("/auth/login")
-	                        .defaultSuccessUrl("/home", true)
+	                        .defaultSuccessUrl("/", true)
 	                        .failureUrl("/auth/login?error=true")
 	                )
 			        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())) 
@@ -72,6 +73,7 @@ public class SecurityConfiguration  {
      * Bean necessary for decoding incomming JWT tokens from provider AuthO
      */
 	@Bean
+	@Primary
     public JwtDecoder auth0JwtDecoder() {
         return NimbusJwtDecoder.withJwkSetUri("https://dev-x8jau2ioykz07t1t.us.auth0.com/.well-known/jwks.json").build();
     }

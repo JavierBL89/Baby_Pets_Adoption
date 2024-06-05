@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.model;
+package com.example.bb_pets_adoption.auth.model;
 
 import java.util.List;
 
