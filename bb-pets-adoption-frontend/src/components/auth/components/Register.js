@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../../../scripts/axiosConfig';
-
+import { useNavigate } from 'react-router-dom'
 
 /**
  * Rect Component
@@ -15,6 +15,7 @@ const Register = () => {
     const [emailMessage, setEmailMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
     const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
     /***
      * Password matching check
@@ -53,9 +54,11 @@ const Register = () => {
             const response = await axios.post('/auth/register', { name, lastName, email, password });
 
             // check if response exists
-            if (response && response.data) {
+            if (response.status === 201 && response.data) {
                 // Set the message state with the response data.
                 setMessage(response.data);
+                // Redirect to home page after successful registration
+                navigate('/home')
             } else {
                 setMessage("Unexpected error occurred. Please try again.");
             }
@@ -67,9 +70,9 @@ const Register = () => {
                 // Set the message state with the error response data.
                 setMessage(error.response.data);
             } else {
-                setMessage("An error occurred. Please try again.");
+                // Set error message
+                setMessage("Something went wrong. Please try again.");
             }
-            // Set the message state with the error response data.
         }
 
 

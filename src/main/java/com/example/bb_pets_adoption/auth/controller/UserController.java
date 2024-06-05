@@ -67,12 +67,12 @@ public class UserController {
 			
 			//log
 			logger.info("Register successful for user with email: {}", user.getEmail());
-			return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+			return ResponseEntity.status(201).body("User registered successfully");
 		} else {                                                         
 			// If email is found, log the error and return a message
 			//log
             logger.error("Registration failed for user with email: {}", user.getEmail());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("The email provided is already registered");
+            return ResponseEntity.status(409).body("The email entered is already registered");
 
 		}
 		
@@ -86,14 +86,14 @@ public class UserController {
 		logger.info("Attempting to log in user with email: {}", user.getEmail());
 		
 		Optional<User> foundUser = userRepository.findByEmail(user.getEmail());
-		if(foundUser != null && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
+		if(foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
 			//log
 			logger.info("Login successful for user with email: {}", user.getEmail());
-			return ResponseEntity.status(HttpStatus.CREATED).body("Login successful");
+			return ResponseEntity.status(201).body("Login successful");
 		} else {
 			//log
             logger.error("Login failed for user with email: {}", user.getEmail());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            return ResponseEntity.status(401).body("Invalid email or password");
 		}
 	}
 }
