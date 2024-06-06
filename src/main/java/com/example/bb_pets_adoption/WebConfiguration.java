@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * It allows the frontend application running on a different URL to access the backend API 
  * for HTTP requests
  */
-@Configuration
+@Configuration  // Indicates that this class is a cofiguration class and might contain one or more bean methods annotated with @Bean which creates beans managed by Spring's container.
 public class WebConfiguration implements WebMvcConfigurer{
 	
 	/**

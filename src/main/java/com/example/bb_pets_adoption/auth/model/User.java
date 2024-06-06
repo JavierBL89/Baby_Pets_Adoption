@@ -34,6 +34,7 @@ public class User {
 	private String lastName;
 	private String email;
 	private String password;
+	private String token;
 	private List<String> roles;  // list of roles ["Adopter", "Pet Provider"]
 
 

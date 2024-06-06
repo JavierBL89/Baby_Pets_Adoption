@@ -25,7 +25,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * and which require authentication. It also sets up password encoding to strengthen password security.
  */
 
-@Configuration
+@Configuration   // Indicates that this class is a cofiguration class and might contain one or more bean methods annotated with @Bean which creates beans managed by Spring's container.
 @EnableWebSecurity
 public class SecurityConfiguration  {
 
@@ -44,7 +44,8 @@ public class SecurityConfiguration  {
 			        .csrf(csrf -> csrf.disable())
 			        .authorizeHttpRequests(auth -> auth 
 			        		// Permit everyone to access the bellow endpoints
-	                        .requestMatchers("/auth/register/**", "/auth/login/**", "/oauth2/**").permitAll()       			                
+	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**", 
+	                        		"/auth/login/**", "/auth/reset_password/**", "/oauth2/**").permitAll()       			                
 			                .anyRequest().authenticated() 
 			        )
 			        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).oauth2Login(oauth2 -> oauth2

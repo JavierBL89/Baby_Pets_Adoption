@@ -26,4 +26,14 @@ public interface UserRepository extends MongoRepository<User, ObjectId>{
      */
 	Optional<User> findByEmail(String email);
 
+	 /**
+     * Custom query method to find a user by their token
+     * This token can be used for multiple purposes to find a user without knwoing or having to update their email
+     * their email (e.g. a password reset)
+     * 
+     * @param token the users' token  to search for
+     * @return an Optional that will contain the found User or empty if no User is found
+     */
+	Optional<User> findByToken(String token);
+
 }
