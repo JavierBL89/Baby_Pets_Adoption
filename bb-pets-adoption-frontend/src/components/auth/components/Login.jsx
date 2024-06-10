@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from '../../../scripts/axiosConfig';
 import { useNavigate } from 'react-router-dom'
+import SocialLogin from "./SocialLogin";
 /**
  * Login component handles the login functionality
  * 
@@ -105,8 +106,11 @@ const Login = () => {
                 <button type="submit">Login</button>
             </form>
             <button type="button" onClick={resetPassword}>Forgot password</button>
-
             {message && <p>{message}</p>}
+
+            <div>
+                <SocialLogin></SocialLogin>
+            </div>
         </div>
     )
 };

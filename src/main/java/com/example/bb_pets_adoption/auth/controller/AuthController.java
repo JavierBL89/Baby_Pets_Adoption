@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,9 @@ import com.example.bb_pets_adoption.auth.model.User;
 /**
  * Controller class for authentication funtionalities, and password reset
  * 
- * The class,,
+ * Class handles registration, login, password reset requests, and reset password emails.
+ * 
+ * The class:
  * - Uses Logger to log messages with information for debugging
  * - Uses ResponseEntity to customize the HTTP response with STATUS, HEADERS, AND BODY
  */
@@ -87,7 +90,13 @@ public class AuthController {
 		
 	}
 	
-	// Endpoint for user login
+	
+	/**
+     * Endpoint for user login.
+     *
+     * @param user - the user object with login details
+     * @return a message indicating whether if login was successful or not
+     */
 	@PostMapping("/login")
 	public ResponseEntity<String> loginUser(@RequestBody User user) {
 		//log
@@ -116,6 +125,8 @@ public class AuthController {
 	 *   This token is also saved into User document which will be used to identify 
 	 *   the user in order to update the password on the next step of the process
 	 * 
+	 * @param request - the request with the user's email
+     * @return a response indicating success or failure
 	 * **/
 	@PostMapping("/forgot_password")
 	public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody Map<String, String> request){
@@ -205,4 +216,6 @@ public class AuthController {
 	            return ResponseEntity.status(401).body(response);
 			}
 		}
+		
+
 }

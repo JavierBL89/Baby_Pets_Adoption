@@ -65,10 +65,7 @@ public class CustomOAuth2UserService  extends DefaultOAuth2UserService{
 	     String name = null;
 
 	     // Extract user information based on provider
-	     if ("facebook".equals(registrationId)) {
-	          email = oAuth2User.getAttribute("email");
-	          name = oAuth2User.getAttribute("name");
-	     } else if ("google".equals(registrationId)) {
+	     if ("google".equals(registrationId)) {
 	          email = oAuth2User.getAttribute("email");
 	          name = oAuth2User.getAttribute("name");
 	      } else if ("auth0".equals(registrationId)) {

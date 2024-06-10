@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -45,13 +46,18 @@ public class SecurityConfiguration  {
 			        .authorizeHttpRequests(auth -> auth 
 			        		// Permit everyone to access the bellow endpoints
 	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**", 
-	                        		"/auth/login/**", "/auth/reset_password/**", "/oauth2/**").permitAll()       			                
+	                        		"/auth/login/**", "/auth/reset_password/**", "/oauth2/**", "/login").permitAll()       			                
 			                .anyRequest().authenticated() 
 			        )
-			        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).oauth2Login(oauth2 -> oauth2
-	                        .loginPage("/auth/login")
-	                        .defaultSuccessUrl("/", true)
-	                        .failureUrl("/auth/login?error=true")
+			        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			        .oauth2Login(oauth2 -> oauth2
+	                        .loginPage("http://localhost:3000/home") // Point to your React login page
+	                        .defaultSuccessUrl("http://localhost:3000/home", true) // Ensure this is the correct redirect URL
+	                        .failureUrl("http://localhost:3000/login?error=true") // Handle login failure
+	                        .authorizationEndpoint(authorization -> authorization
+	                                .baseUri("/oauth2/authorization")
+	                        )
+	                    
 	                )
 			        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())) 
 			        .build();
