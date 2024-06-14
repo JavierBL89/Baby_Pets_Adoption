@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { Container, Navbar, Nav, Stack, Row } from "react-bootstrap";
-import LogoutButton from "./auth/components/LogoutButton";
+import LogoutButton from "../auth/components/LogoutButton";
+import NavLinkComponent from "./NavLinkComponent";
 
 
 
@@ -24,27 +25,27 @@ const Footer = () => {
 
 
     return (
-        <Navbar id="footer_navbar" expand="lg" bg="dark" variant="dark" fixed="bottom" className="mt-auto">
+        <Navbar id="footer_navbar" expand="lg" bg="dark" variant="dark" className="mt-auto">
             <Stack className="mt-5 text-center" >
                 {/**  Nav Links **/}
                 <Nav className="m-auto" >
                     <Row className="ms-lg-5">
-                        <Nav.Link id="footer_about_link" href="#about">About Us</Nav.Link>
-                        <Nav.Link id="footer_contact_link" href="#services">Contact</Nav.Link>
+                        <NavLinkComponent id="footer_about_link" href="#about" text="About Us" />
+                        <NavLinkComponent id="footer_contact_link" href="#contact" text="Contact" />
                     </Row>
                     <Row className="ms-lg-5">
-                        <Nav.Link id="footer_services_link" href="#contact"> Services</Nav.Link>
+                        <NavLinkComponent id="footer_services_link" href="#Services" text="Services" />
                         {
                             !isAuthenticated ? (
-                                <Nav.Link id="footer_signin_link" href="#privacy">SignIn</Nav.Link>
+                                <NavLinkComponent id="footer_signin_link" href="#privacy" text="SignIn" />
                             ) : (
-                                <Nav.Link > <LogoutButton /> </Nav.Link>
+                                <NavLinkComponent > <LogoutButton /> </NavLinkComponent>
                             )
                         }
                     </Row>
                     <Row className="ms-lg-5">
-                        <Nav.Link id="footer_privacy_link" href="/privacy_policy">Privacy Policy</Nav.Link>
-                        <Nav.Link id="footer_data_deletion_link" href="/data_deletion" >Data Deletion</Nav.Link>
+                        <NavLinkComponent id="footer_privacy_link" href="/privacy_policy" text="Privacy Policy" />
+                        <NavLinkComponent id="footer_data_deletion_link" href="/data_deletion" text="Data Deletion" />
 
                     </Row>
 
@@ -53,7 +54,7 @@ const Footer = () => {
                     {new Date().getFullYear()} BbPets Adoption. All Rights Reserved.
                 </Navbar.Text>
 
-                <Navbar.Brand id="logo_nav" href="#home">BbPets</Navbar.Brand>
+                <Navbar.Brand id="logo_footer" href="/home">BbPets</Navbar.Brand>
             </Stack >
 
         </Navbar>

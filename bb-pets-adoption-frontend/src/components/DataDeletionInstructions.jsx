@@ -1,5 +1,5 @@
 import React from "react";
-
+import Heading from "./common/Heading";
 
 /**
 *
@@ -9,7 +9,8 @@ const DataDeletionInstructions = () => {
 
     return (
         <div>
-            <h4>Data Deletion Instructions</h4>
+            <Heading tagName="h4" id="data_deletion__heading" className="" text="Data Deletion Instructions" />
+
             <div>
                 <p>If you want to delete your data from our app, please follow these steps:</p>
                 <ol>

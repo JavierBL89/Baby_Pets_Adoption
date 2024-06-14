@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { Container, Navbar, Nav } from "react-bootstrap";
+import NavLinkComponent from "./NavLinkComponent";
 
 
 
@@ -32,11 +33,11 @@ const Header = () => {
                         { // condition to display different links
                             !isAuthenticated ? (
 
-                                <Nav.Link id="signin_link_nav" href="/login">SignIn</Nav.Link>
+                                <NavLinkComponent id="signin_link_nav" href="/login" text="SignIn" />
                             ) : (
                                 <>
-                                    <Nav.Link id="signout_link_nav" href="#signOut">SignOut</Nav.Link>
-                                    <Nav.Link id="profile_link_nav" href="#profile">Profile</Nav.Link>
+                                    <NavLinkComponent id="signout_link_nav" href="#signOut" text="SignOut" />
+                                    <NavLinkComponent id="profile_link_nav" href="#profile" text="Profile" />
                                 </>
                             )
                         }

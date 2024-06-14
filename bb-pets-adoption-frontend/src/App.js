@@ -8,8 +8,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from './context/AuthContext'
 import VerifyAccount from "./components/auth/components/VerifyAccount";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/common/Header";
+import Footer from "./components/common/Footer";
 import DataDeletionInstructions from "./components/DataDeletionInstructions";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 
@@ -33,7 +33,7 @@ function App() {
         <div className="App">
           <Header />
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/auth/reset_password" element={<PasswordReset />} />
