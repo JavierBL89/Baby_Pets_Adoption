@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.example.bb_pets_adoption")
 @PropertySource("classpath:application-secret.properties")
 public class BbPetsAdoptionApplication{
 

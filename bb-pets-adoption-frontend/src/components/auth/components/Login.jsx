@@ -1,7 +1,9 @@
-import { useState } from "react";
-import axios from '../../../scripts/axiosConfig';
+import { useState, useContext } from "react";
+import instance from '../../../scripts/axiosConfig';
 import { useNavigate } from 'react-router-dom'
 import SocialLogin from "./SocialLogin";
+import { AuthContext } from '../../../context/AuthContext';
+
 /**
  * Login component handles the login functionality
  * 
@@ -15,10 +17,21 @@ import SocialLogin from "./SocialLogin";
  */
 const Login = () => {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+
+    const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const { login, setRegisteredBy } = useContext(AuthContext);
+
+    /**
+     * Handles form input changes and updates the credentials state
+     *
+     * @param e The form input change event.
+     */
+    const handleCredentials = (e) => {
+        const { name, value } = e.target;
+        setCredentials({ ...credentials, [name]: value });
+    }
 
 
     /**
@@ -30,10 +43,10 @@ const Login = () => {
      */
     const resetPassword = async () => {
 
-        if (email !== "") {
+        if (credentials.email !== "") {
             try {
                 // POST request to the /auth/forgot_password endpoint with the user's credentials
-                const response = await axios.post('/auth/forgot_password', { email });
+                const response = await instance.post('/auth/forgot_password', credentials.email);
 
                 // check if response exists
                 if (response.status === 201 && response.data) {
@@ -62,7 +75,9 @@ const Login = () => {
 
     /**
      *  Handles the form submission for user login
-     *  Uses axios for making HTTP request to backend
+     * 
+     * - Uses axios for making HTTP request to backend
+     * - Handles the response from the server
      * 
      * @param e the form submit event
      */
@@ -70,15 +85,16 @@ const Login = () => {
         e.preventDefault(); // prevents the default form submission
 
         try {
-            // POST request to the /login endpoint with the user's credentials
-            const response = await axios.post('/auth/login', { email, password });
+            // POST request to the /login url enpoint
+
+            const response = await instance.post('/login', credentials);
 
             // check if response exists
             if (response.status === 201 && response.data) {
                 // set the message state with the response data
-                setMessage("Login successful");
-                // redirect to home page after successful login
-                navigate('/home')
+                setMessage(response.data.message);
+
+                login(response.data.token, response.data.registeredBy);
             } else {
                 setMessage("Unexpected error occurred. Please try again.");
             }
@@ -87,29 +103,36 @@ const Login = () => {
 
             // check if error response exists
             if (error.response && error.response.data) {
-                // set the message state with the error response data
-                setMessage(error.response.data);
+                // check if error response exists
+                if (error.response) {
+                    console.error("Error response data:", error.response.data);
+                    console.error("Error response status:", error.response.status);
+                    // set the message state with the error response data
+                    setMessage(error.response.data);
+                }
             } else {
-                // set error message
+                // set error message and log error
+                console.error(error);
                 setMessage("Something went wrong. Please try again.");
             }
         }
     }
+
     return (
         <div>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <label>Email Address</label>
-                <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }} required />
+                <input type="email" value={credentials.email} name="email" onChange={(e) => { handleCredentials(e) }} required />
                 <label>Password</label>
-                <input type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} required />
+                <input type="password" value={credentials.password} name="password" onChange={(e) => { handleCredentials(e) }} required />
                 <button type="submit">Login</button>
             </form>
             <button type="button" onClick={resetPassword}>Forgot password</button>
             {message && <p>{message}</p>}
 
             <div>
-                <SocialLogin></SocialLogin>
+                {/*<SocialLogin></SocialLogin>*/}
             </div>
         </div>
     )

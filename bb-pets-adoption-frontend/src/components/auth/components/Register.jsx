@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from '../../../scripts/axiosConfig';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { AuthContext } from '../../../context/AuthContext';
+
 
 /**
  * Register component handles the userregistration functionality
@@ -40,10 +42,16 @@ const Register = () => {
     }
 
     /**
-    * Handles the form submission for user registration
-    * 
-    * @param  e the form submit event
-    */
+     * Handles the form submission for user registration.
+     *
+     * - Prevents the default form submission 
+     * - Checks if the password and the confirmation password match. If they don't, it sets an error message
+     * - If the passwords match, the submit button is enabled
+     * - Sends a POST request to the registration endpoint with the user's details
+     * - Handles the response from the server
+     * 
+     * @param {Event} e - the form submit event.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault(); // prevents the default form submition
 
@@ -58,7 +66,8 @@ const Register = () => {
 
 
         try {
-            // POST request to the registration endpoint with the user's details
+
+            //  POST request to the registration endpoint with the user's details
             const response = await axios.post('/auth/register', { name, lastName, email, password });
 
             // check if response exists
@@ -66,7 +75,7 @@ const Register = () => {
                 // set the message state with the response data
                 setMessage(response.data);
                 // sedirect to home page after successful registration
-                navigate('/home')
+                navigate('/verify_account')
             } else {
                 setMessage("Unexpected error occurred. Please try again.");
             }

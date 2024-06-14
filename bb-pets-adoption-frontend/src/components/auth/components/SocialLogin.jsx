@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GoogleLoginButton } from "react-social-login-buttons";
+import { AuthContext } from '../../../context/AuthContext';
 
 
 /**
+ * SocialLogin component handles login with social providers like Google
  * 
+ * - Uses AuthContext for managing authentication state
+ * - Redirects the user to Google's OAuth2 authorization endpoint
+ * - After successful login, the backend should handle redirecting back to the application
  */
 const SocialLogin = () => {
 

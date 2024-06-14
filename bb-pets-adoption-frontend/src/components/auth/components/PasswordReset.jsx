@@ -43,8 +43,11 @@ const PasswordReset = () => {
     }
 
     /**
-     * Checks if the new password and re-entered password match
-     * Updates the password message state
+     * Handle form submission
+     * 
+     * - Checks if the new password and re-entered password match
+     * - Updates the password message state
+     * - Handles the response from the server
      * 
      * @param {string} input  the re-entered password
      */
