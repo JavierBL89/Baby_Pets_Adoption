@@ -16,6 +16,7 @@ const Home = () => {
     return (
 
         <div>
+
             <h1>BaBy Pets Adoption</h1>
             {isAuthenticated ? (
                 <div>

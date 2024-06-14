@@ -36,7 +36,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
     	
         this.jwtTokenUtil = jwtTokenUtil;
         System.out.println("OAuth2SuccessHandler initialized");
-        System.out.println(jwtTokenUtil.toString());
     }
 
     

@@ -5,6 +5,7 @@ package com.example.bb_pets_adoption;
 import com.example.bb_pets_adoption.auth.controller.JwtUtil;
 import com.example.bb_pets_adoption.auth.controller.OAuth2FailureHandler;
 import com.example.bb_pets_adoption.auth.controller.OAuth2SuccessHandler;
+import com.example.bb_pets_adoption.auth.service.CustomOAuth2UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -41,21 +43,26 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Configuration   // Indicates that this class is a cofiguration class and might contain one or more bean methods annotated with @Bean which creates beans managed by Spring's container
 @EnableWebSecurity
-public class SecurityConfiguration  extends SimpleUrlAuthenticationSuccessHandler{
+public class SecurityConfiguration {
 	
 	// vars
-	@Autowired
 	private final OAuth2SuccessHandler oAuth2SuccessHandler;
-	
-	@Autowired
 	private final OAuth2FailureHandler oAuth2FailureHandler;
+	private final CustomOAuth2UserService customOAuth2UserService;
+	
 	
 	/**
-	 * Constructor injection for oAuth2SuccessHandler, oAuth2SuccessHandler
-	 * */
-	public SecurityConfiguration(@Lazy OAuth2SuccessHandler oAuth2SuccessHandler, @Lazy OAuth2FailureHandler oAuth2FailureHandler) {
+     * Constructor injection for dependencies
+     * 
+     * @param oAuth2SuccessHandler the handler for OAuth2 authentication success
+     * @param oAuth2FailureHandler the handler for OAuth2 authentication failure
+     * @param customOAuth2UserService the service to load user information during OAuth2 authentication
+     */
+	@Autowired
+	public SecurityConfiguration(@Lazy OAuth2SuccessHandler oAuth2SuccessHandler, @Lazy OAuth2FailureHandler oAuth2FailureHandler,  @Lazy CustomOAuth2UserService customOAuth2UserService) {
         this.oAuth2SuccessHandler = oAuth2SuccessHandler;
         this.oAuth2FailureHandler = oAuth2FailureHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
  
 	 
@@ -66,8 +73,11 @@ public class SecurityConfiguration  extends SimpleUrlAuthenticationSuccessHandle
 	*    - Requires authentication for any other request; anyRequest().authenticated() 
 	*    - Configures session management to be stateless; sessionManagement()
 	*    - Configures OAuth2 resource server with default JWT handling; oauth2ResourceServer()
-	**/
-    
+	*    
+	* @param http the HttpSecurity object to configure
+    * @return the configured SecurityFilterChain
+    * @throws Exception if an error occurs
+	**/ 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		System.out.println("Configuring SecurityFilterChain"); // Log statement
@@ -84,16 +94,20 @@ public class SecurityConfiguration  extends SimpleUrlAuthenticationSuccessHandle
 	                        .anyRequest().authenticated()
 	                )
 	                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	                .oauth2Login(oauth2 -> oauth2
-	                         
+	                .formLogin(form -> form
 	                        .loginPage("http://localhost:3000/login")
+	                        .defaultSuccessUrl("http://localhost:3000/home", true)
+	                        .failureUrl("http://localhost:3000/login?error=true")
+	                )
+	                .oauth2Login(oauth2 -> oauth2
+	                        .loginPage("http://localhost:3000/login")
+	                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
 	                        .successHandler(oAuth2SuccessHandler)
 	                        .failureHandler(oAuth2FailureHandler)
-	                        .failureUrl("http://localhost:3000/login?error=true")
-	                        .authorizationEndpoint(authorization -> authorization
-	                                .baseUri("/oauth2/authorization")
+	                        .authorizationEndpoint(authorization -> authorization.baseUri("/oauth2/authorization"))
+
 	                        )
-	                )
+	                
 			        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 			        .logout(logout -> logout
 			        		.logoutUrl("http://localhost:3000/home")
@@ -121,6 +135,8 @@ public class SecurityConfiguration  extends SimpleUrlAuthenticationSuccessHandle
 	
 	/**
      * Bean necessary for decoding incomming JWT tokens from provider AuthO
+     * 
+     * @return the JwtDecoder for Auth0
      */
 	@Bean
 	@Primary
@@ -132,6 +148,8 @@ public class SecurityConfiguration  extends SimpleUrlAuthenticationSuccessHandle
 	
 	/**
      * Bean for decoding incomming Google OAuth2 tokens with JwtDecoder 
+     * 
+     *  @return the JwtDecoder for Google
      */
 	@Bean
     public JwtDecoder googleJwtDecoder() {
@@ -141,6 +159,8 @@ public class SecurityConfiguration  extends SimpleUrlAuthenticationSuccessHandle
 	
 	/**
      * Bean for generating jwt
+     * 
+     * @return the JwtUtil instance
      */
 	 @Bean
 	    public JwtUtil jwtTokenUtil() {

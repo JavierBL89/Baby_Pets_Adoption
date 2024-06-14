@@ -11,6 +11,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -19,11 +21,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
 	
-	
+	// create an instance of Logger
+		private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+		
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         // logg authentication failure
-    	System.out.println("Authentication failed: " + exception.getMessage());
+    	logger.error("Authentication failed: " + exception.getMessage());
         exception.printStackTrace();  // Print the stack trace for detailed debugging
         
         //r edirect to the login page with error=true

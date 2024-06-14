@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,18 +54,25 @@ public class AuthController {
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 	
 	@Autowired
-	private UserRepository userRepository;
+	 UserRepository userRepository;
 	
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	
-	@Autowired
 	private EmailService emailService;
 	
-	 @Autowired
 	 private JwtUtil jwtUtil; // Utility class to generate and validate JWT tokens
 	
+	
+	 /**
+	  * Constructor injection for PasswordEncoder to solve circular references issue
+	  * */
+	 @Autowired
+	 public AuthController(@Lazy PasswordEncoder passwordEncoder, @Lazy EmailService  emailService, @Lazy JwtUtil jwtUtil ) {
+	        this.passwordEncoder = passwordEncoder;
+	        this.emailService = emailService;
+	        this.jwtUtil  = jwtUtil;
+	        
+	    }
 	 
 	// endpoints
 	
@@ -128,7 +136,7 @@ public class AuthController {
      * @param user - the user object with login details
      * @return a message indicating whether if login was successful or not
      */
-	@PostMapping("/login")
+	@PostMapping("/auth/login")
 	public ResponseEntity<?> loginUser(@RequestBody User user) {
 		//log
 		logger.info("Attempting to log in user with email: {}", user.getEmail());

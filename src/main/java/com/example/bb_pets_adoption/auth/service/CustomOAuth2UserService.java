@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -24,26 +25,27 @@ import com.example.bb_pets_adoption.auth.repository.UserRepository;
  * during OAuth2 authentication. 
  * 
  * It handles multiple providers like Google, Facebook, and Auth0 making use of the registrationId 
- * to distinguish between different providers and process the user information accordingly.
+ * to distinguish between different providers and process the user information accordingly
  * 
  * It checks if the user exists in the database and creates a new user
- * entry if the user does not exist.
+ * entry if the user does not exist
  * 
  * - DefaultOAuth2User object, we are effectively converting the OAuth2 user information 
- *   into a format that Spring Security can understand and use for authentication purposes.
+ *   into a format that Spring Security can understand and use for authentication purposes
  */
 @Service
 public class CustomOAuth2UserService  extends DefaultOAuth2UserService{
 
 	// vars
+	 
 	 private final UserRepository userRepository;
-	 private final PasswordEncoder passwordEncoder;
 	 
 	 
 	 // Constructor
-	 public CustomOAuth2UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	 @Autowired
+	    public CustomOAuth2UserService(UserRepository userRepository) {
 	        this.userRepository = userRepository;
-	        this.passwordEncoder = passwordEncoder;
+	        System.out.println("Custom User Service Initiated");
 	    }
 	 
 	 /**
@@ -57,38 +59,36 @@ public class CustomOAuth2UserService  extends DefaultOAuth2UserService{
 	 @Override
 	 public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		 
+		 
+		 System.out.println("Custom User service initiating");
+		 
 		 OAuth2User oAuth2User = super.loadUser(userRequest);
 		 
 		 // Get the registration ID to determine the provider to determine which OAuth2 provider (Google, Facebook, Auth0) is being used for the current authentication request
 		 String registrationId = userRequest.getClientRegistration().getRegistrationId();
-	     String email = null;
-	     String name = null;
+	     String email = oAuth2User.getAttribute("email");   // extract email
 
-	     // Extract user information based on provider
-	     if ("google".equals(registrationId)) {
-	          email = oAuth2User.getAttribute("email");
-	          name = oAuth2User.getAttribute("name");
-	      } else if ("auth0".equals(registrationId)) {
-	          email = oAuth2User.getAttribute("email");
-	          name = oAuth2User.getAttribute("name");
-	      } else {
-	          throw new OAuth2AuthenticationException("Unsupported registration provider: " + registrationId);
-	      }
+	 
+	     System.out.println("User registering with Goole");
 		 
 	     // Check if user exists in the repository
-	     Optional<User> optionalUser = userRepository.findByEmail(email);
+	     Optional<User> foundUser = userRepository.findByEmail(email);
+	     
 	     User user;
-	     if (optionalUser.isPresent()) {
-	         user = optionalUser.get();
+	     if (foundUser.isPresent()) {
+	         user = foundUser.get();
+	          System.out.println("User found in database regitered with " + registrationId);
+
 	     } else {
 	         // Create a new user if not found
 	         user = new User();
 	         user.setEmail(email);
-	         user.setName(name);
-	         user.setLastName(oAuth2User.getAttribute("last_name"));
-	         user.setPassword(passwordEncoder.encode("default_password")); // Set a default password
+	         user.setName(oAuth2User.getAttribute("name"));
+	         user.setLastName(oAuth2User.getAttribute("family_name"));   // family_name is typically used for last name in OAuth2 responses
 	         user.setRoles(List.of("ROLE_ADOPTER"));
 	         userRepository.save(user); // Save the user
+	          System.out.println("User regitered with " + registrationId);
+
 	        }
 	     
 	     //return an OAuth2User object that Spring Security can use for authentication and authorization within the application
