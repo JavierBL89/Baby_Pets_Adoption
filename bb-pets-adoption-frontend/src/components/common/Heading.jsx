@@ -11,7 +11,7 @@ import React from "react";
  * @param {*} className - the class name
  * @returns the Heading component element
  **/
-const Heading = ({ key, tagName, text, id, className }) => {
+const Heading = ({ tagName, text, id, className }) => {
 
     let HeadingTag;
 
@@ -40,7 +40,7 @@ const Heading = ({ key, tagName, text, id, className }) => {
             return null;
     }
 
-    return (<HeadingTag key={key} id={id} className={className}>{text}</HeadingTag>);
+    return (<HeadingTag id={id} className={className}>{text}</HeadingTag>);
 
 };
 

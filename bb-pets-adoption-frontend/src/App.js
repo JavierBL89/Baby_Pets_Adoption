@@ -14,6 +14,8 @@ import DataDeletionInstructions from "./components/DataDeletionInstructions";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import PaymentPolicy from "./components/PaymentPolicy";
 
+
+import "./css/petListing.css";
 /***
  * PrivateRoute component to protect routes that require authentication
  */

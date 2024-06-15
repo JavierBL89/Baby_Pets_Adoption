@@ -1,0 +1,18 @@
+#pet_listing_wrapper {
+    width: 1000px;
+}
+
+
+.pet_card_wrapper {
+    height: 400px;
+    background-color: aquamarine;
+}
+
+.pet_card_wrapper .img_holder {
+    min-height: 250px;
+    max-height: 250px;
+}
+
+.pet_card_wrapper .img_holder img {
+    width: 100%;
+}
