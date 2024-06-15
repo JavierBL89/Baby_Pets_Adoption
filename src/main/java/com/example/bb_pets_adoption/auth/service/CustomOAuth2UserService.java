@@ -22,10 +22,7 @@ import com.example.bb_pets_adoption.auth.repository.UserRepository;
 
 /**
  * CustomOAuth2UserService extends DefaultOAuth2UserService to load the user
- * during OAuth2 authentication. 
- * 
- * It handles multiple providers like Google, Facebook, and Auth0 making use of the registrationId 
- * to distinguish between different providers and process the user information accordingly
+ * during OAuth2 authentication
  * 
  * It checks if the user exists in the database and creates a new user
  * entry if the user does not exist

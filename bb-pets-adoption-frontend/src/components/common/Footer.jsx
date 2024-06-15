@@ -35,12 +35,13 @@ const Footer = () => {
                     </Row>
                     <Row className="ms-lg-5">
                         <NavLinkComponent id="footer_services_link" href="#Services" text="Services" />
+                        <NavLinkComponent id="footer_payment_policy_link" href="/payment_policy" text="Payment Policy" />
                         {
-                            !isAuthenticated ? (
-                                <NavLinkComponent id="footer_signin_link" href="#privacy" text="SignIn" />
-                            ) : (
-                                <NavLinkComponent > <LogoutButton /> </NavLinkComponent>
-                            )
+                            /*    !isAuthenticated ? (
+                                    <NavLinkComponent id="footer_signin_link" href="#privacy" text="SignIn" />
+                                ) : (
+                                    <NavLinkComponent > <LogoutButton /> </NavLinkComponent>
+                                )*/
                         }
                     </Row>
                     <Row className="ms-lg-5">

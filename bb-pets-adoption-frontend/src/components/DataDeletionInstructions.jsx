@@ -2,7 +2,7 @@ import React from "react";
 import Heading from "./common/Heading";
 
 /**
-*
+ *Component host the content for page /Data Deletion
  */
 const DataDeletionInstructions = () => {
 
@@ -14,7 +14,10 @@ const DataDeletionInstructions = () => {
             <div>
                 <p>If you want to delete your data from our app, please follow these steps:</p>
                 <ol>
-                    <li>Send an email to <a href="mailto:your-email@example.com">your-email@example.com</a> with the subject line "Data Deletion Request".</li>
+                    <li>
+                        Send an email to <a href="mailto:your-email@example.com">your-email@example.com</a>
+                        with the subject line "Data Deletion Request".
+                    </li>
                     <li>Include your name and the email address associated with your account in the body of the email.</li>
                     <li>Specify that you want to delete all your data from our app.</li>
                 </ol>

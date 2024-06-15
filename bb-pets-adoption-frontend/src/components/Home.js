@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Stack } from "react-bootstrap";
 import PetCategoriesHolder from "./pet/components/PetCategoriesHolder";
+import AdoptionInfoComponent from "./AdoptionInfoComponent";
 
 const Home = () => {
 
@@ -15,6 +16,7 @@ const Home = () => {
 
         <Stack>
             <PetCategoriesHolder />
+            <AdoptionInfoComponent />
         </Stack>
 
 

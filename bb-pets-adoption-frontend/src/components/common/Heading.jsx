@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 
 /**
  * Component to dinamically render heaidng HTML elements
@@ -11,7 +11,7 @@ import React, { useState, useEffect, useCallback } from "react";
  * @param {*} className - the class name
  * @returns the Heading component element
  **/
-const Heading = ({ tagName, text, id, className }) => {
+const Heading = ({ key, tagName, text, id, className }) => {
 
     let HeadingTag;
 
@@ -37,10 +37,10 @@ const Heading = ({ tagName, text, id, className }) => {
             break;
 
         default:
-            break;
+            return null;
     }
 
-    return (<HeadingTag id={id} className={className}>{text}</HeadingTag>);
+    return (<HeadingTag key={key} id={id} className={className}>{text}</HeadingTag>);
 
 };
 

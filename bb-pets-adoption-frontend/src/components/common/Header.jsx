@@ -24,12 +24,12 @@ const Header = () => {
     return (
         <Navbar id="header_navbar" collapseOnSelect sticky="top" expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand id="logo_nav" href="#home">BbPets</Navbar.Brand>
+                <Navbar.Brand id="logo_nav" href="/">BbPets</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ms-auto">
                         {/**  Nav Links **/}
-                        <Nav.Link id="home_link_nav" href="#home">Main</Nav.Link>
+                        <Nav.Link id="home_link_nav" href="/">Main</Nav.Link>
                         { // condition to display different links
                             !isAuthenticated ? (
 

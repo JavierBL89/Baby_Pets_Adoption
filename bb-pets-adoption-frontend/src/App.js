@@ -12,6 +12,7 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import DataDeletionInstructions from "./components/DataDeletionInstructions";
 import PrivacyPolicy from "./components/PrivacyPolicy";
+import PaymentPolicy from "./components/PaymentPolicy";
 
 /***
  * PrivateRoute component to protect routes that require authentication
@@ -40,6 +41,7 @@ function App() {
             <Route path="/verify_account" element={<VerifyAccount />} />
             <Route path="/data_deletion" element={<DataDeletionInstructions />} />
             <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+            <Route path="/payment_policy" element={<PaymentPolicy />} />
           </Routes>
           <Footer />
         </div>
