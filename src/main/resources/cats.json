@@ -1,0 +1,272 @@
+[
+  {
+      "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+    "petId": "44978768678edabfc13ae1fd8000000",
+    "type": "Cat",
+    "breed": "Siamese",
+    "description": "A friendly Siamese cat.",
+    "birthDate": "2022-01-20",
+               "location" : "England",
+    
+    "parents": [
+      {
+          "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+      
+        "petId": "6498edfgbgbabfc13ae1fd8000050",
+        "type": "Cat",
+        "breed": "Siamese",
+        "description": "Mother cat",
+        "birthDate": "2018-01-20",
+        "location": "",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709790/pacto-visual-cWOzOnSoh6Q-unsplash_vlapdq.jpg"
+        ]
+      },
+      {
+          "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+      
+        "petId": "334978778edagbfgbfc13ae1fd8000051",
+        "type": "Cat",
+        "breed": "Siamese",
+        "description": "Father cat",
+        "birthDate": "2017-05-10",
+        "location" : "",
+               "stringBirthDate": "",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709790/pacto-visual-cWOzOnSoh6Q-unsplash_vlapdq.jpg"
+        ]
+      }
+    ],
+    "images": [
+    "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709790/pacto-visual-cWOzOnSoh6Q-unsplash_vlapdq.jpg"
+    ]
+  },
+  {
+      "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+  
+    "petId": "6439546423328edbfgfgabfc13ae1fd8000001",
+    "type": "Cat",
+    "breed": "Persian",
+    "description": "A calm Persian cat.",
+    "birthDate": "2019-03-15",
+               "location" : "England",
+    
+    "parents": [
+      {
+          "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+      
+        "petId": "64948edabkuifc13ae1fd8000052",
+        "type": "Cat",
+        "breed": "Persian",
+        "description": "Mother cat",
+        "birthDate": "2017-03-15",
+        "location" : "",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709790/pacto-visual-cWOzOnSoh6Q-unsplash_vlapdq.jpg"
+        ]
+      },
+      {
+          "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+      
+        "petId": "64985edabfc13uikuuikae1fd8000053",
+        "type": "Cat",
+        "breed": "Persian",
+        "description": "Father cat",
+        "birthDate": "2016-08-20",
+        "location" : "",
+        "parents": [],
+        "images": [
+        ]
+      }
+    ],
+    "images": [
+ "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709790/pacto-visual-cWOzOnSoh6Q-unsplash_vlapdq.jpg"
+    ]
+  },
+  {
+    "petId": "649886765765dabrgergfc13ae1fd8000002",
+        "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+    
+    "type": "Cat",
+    "breed": "Maine Coon",
+    "description": "A large Maine Coon cat.",
+    "birthDate": "2020-06-10",
+               "location" : "England",
+    
+    "parents": [
+      {
+        "petId": "649889edabfc1vddbf3ae1fd8000054",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Maine Coon",
+        "description": "Mother cat",
+        "birthDate": "2018-06-10",
+        "location" : "",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+        ]
+      },
+      {
+        "petId": "64999787898edasdcsdbfc13ae1fd8000055",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Maine Coon",
+        "description": "Father cat",
+        "birthDate": "2017-09-10",
+        "location" : "",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"        ]
+      }
+    ],
+    "images": [
+"https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+    ]
+  },
+  {
+    "petId": "4498edabfc13auykuike1fd8000000",
+        "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+    
+    "type": "Cat",
+    "breed": "Siamese",
+    "description": "A friendly Siamese cat.",
+    "birthDate": "2022-01-20",
+               "location" : "Ireland",
+    
+    "parents": [
+      {
+        "petId": "64912128edabsefefc13ae1fd8000050",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Siamese",
+        "description": "Mother cat",
+        "birthDate": "2018-01-20",
+                       "location" : "",
+               
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+
+        ]
+      },
+      {
+        "petId": "3349123128edrgetyrabfc13ae1fd8000051",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Siamese",
+        "description": "Father cat",
+        "birthDate": "2017-05-10",
+                       "location" : "",
+               
+        "parents": [],
+        "images": [
+          
+        ]
+      }
+    ],
+    "images": [
+  "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+    ]
+  },
+  {
+    "petId": "643912328edabfc13eryrrthtyae1fd8000001",
+        "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+    
+    "type": "Cat",
+    "breed": "Persian",
+    "description": "A calm Persian cat.",
+    "birthDate": "2019-03-15",
+                   "location" : "Ireland",
+    
+    "parents": [
+      {
+        "petId": "64948edabyukyukuifc13ae1fd8000052",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Persian",
+        "description": "Mother cat",
+        "birthDate": "2017-03-15",
+        
+                       "location" : "",
+               
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+        ]
+      },
+      {
+        "petId": "64985edabfc1uikuilui3ae1fd8000053",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Persian",
+        "description": "Father cat",
+        "birthDate": "2016-08-20",
+                       "location" : "",
+               
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498128edabfc1uilui3ae1fd8000002",
+        "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+    
+    "type": "Cat",
+    "breed": "Maine Coon",
+    "description": "A large Maine Coon cat.",
+    "birthDate": "2020-06-10",
+                   "location" : "Ireland",
+    
+    "parents": [
+      {
+        "petId": "64988349ededwedabfc13ae1fd8000054",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Maine Coon",
+        "description": "Mother cat",
+        "birthDate": "2018-06-10",
+        "location" : "",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+        ]
+      },
+      {
+        "petId": "649944998edabjuykuikiufc13ae1fd8000055",
+            "_class": "com.example.bb_pets_adoption.pet_listing.model.Cat",
+        
+        "type": "Cat",
+        "breed": "Maine Coon",
+        "description": "Father cat",
+        "birthDate": "2017-09-10",
+        "location" : "",
+        "parents": [],
+        "images": [
+
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709762/jacalyn-beales-CKsDMYPDgCs-unsplash_mjzk3h.jpg"
+
+    ]
+  }
+]

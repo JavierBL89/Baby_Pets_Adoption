@@ -1,0 +1,756 @@
+[
+  {
+    "petId": "649453458edabfc13ae1fd8000020",
+                "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Labrador Retriever",
+    "description": "A friendly Labrador Retriever.",
+    "birthDate": "2021-04-10",
+    "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "649567788edabfc13ae1fd8000056",
+        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Labrador Retriever",
+        "description": "Mother dog",
+        "birthDate": "2018-04-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg",
+          "https://example.com/images/labrador_mother2.jpg"
+        ]
+      },
+      {
+        "petId": "649345634464568edabfc13ae1fd8000057",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Labrador Retriever",
+        "description": "Father dog",
+        "birthDate": "2017-08-15",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "64475675698edabfc13ae1fd8000021",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "German Shepherd",
+    "description": "A loyal German Shepherd.",
+    "birthDate": "2020-02-05",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "64567567598edabfc13ae1fd8000058",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "German Shepherd",
+        "description": "Mother dog",
+        "birthDate": "2016-02-05",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfcgbgrb13ae1fd8000059",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "German Shepherd",
+        "description": "Father dog",
+        "birthDate": "2015-06-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498edabfc13afgbgfbfge1fd8000022",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Golden Retriever",
+    "description": "A gentle Golden Retriever.",
+    "birthDate": "2022-05-22",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfcdgdfgdf13ae1fd8000060",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Golden Retriever",
+        "description": "Mother dog",
+        "birthDate": "2019-05-22",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc1fgegh3ae1fd8000061",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Golden Retriever",
+        "description": "Father dog",
+        "birthDate": "2018-09-12",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+      "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    ]
+  },
+  {
+    "petId": "6498edabfc13aeyyjyu1fd8000023",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Bulldog",
+    "description": "A calm Bulldog.",
+    "birthDate": "2019-07-30",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfcuuyyu13ae1fd8000062",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Bulldog",
+        "description": "Mother dog",
+        "birthDate": "2016-07-30",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc13aghrtee1fd8000063",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Bulldog",
+        "description": "Father dog",
+        "birthDate": "2015-11-20",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498edabfc13afvdfvde1fd8000024",
+    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Poodle",
+    "description": "An intelligent Poodle.",
+    "birthDate": "2021-11-11",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfc1sdvssd3ae1fd8000064",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Poodle",
+        "description": "Mother dog",
+        "birthDate": "2018-11-11",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfcsdsd13ae1fd8000065",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Poodle",
+        "description": "Father dog",
+        "birthDate": "2017-03-18",
+        "parents": [],
+        "images": [
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498edabfc13adsgsde1fd8000025",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Beagle",
+    "description": "A playful Beagle.",
+    "birthDate": "2020-08-24",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfc1ggfddf3ae1fd8000066",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Beagle",
+        "description": "Mother dog",
+        "birthDate": "2017-08-24",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edahrghgrnbfc13ae1fd8000067",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Beagle",
+        "description": "Father dog",
+        "birthDate": "2016-12-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498edabfdbgbgc13ae1fd8000020",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Labrador Retriever",
+    "description": "A friendly Labrador Retriever.",
+    "birthDate": "2021-04-10",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabgnfgnfgfc13ae1fd8000056",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Labrador Retriever",
+        "description": "Mother dog",
+        "birthDate": "2018-04-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc13dgggdae1fd8000057",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Labrador Retriever",
+        "description": "Father dog",
+        "birthDate": "2017-08-15",
+        "parents": [],
+        "images": [
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498edabfc13avsdsdvsdfe1fd8000021",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "German Shepherd",
+    "description": "A loyal German Shepherd.",
+    "birthDate": "2020-02-05",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfc13ae1fd8000058",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "German Shepherd",
+        "description": "Mother dog",
+        "birthDate": "2016-02-05",
+        "parents": [],
+        "images": [
+        ]
+      },
+      {
+        "petId": "6498edabfc13avsdvsfbe1fd8000059",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "German Shepherd",
+        "description": "Father dog",
+        "birthDate": "2015-06-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498edabfcbfbdfbdf13ae1fd8000022",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Golden Retriever",
+    "description": "A gentle Golden Retriever.",
+    "birthDate": "2022-05-22",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfc13dfbdfbdae1fd8000060",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Golden Retriever",
+        "description": "Mother dog",
+        "birthDate": "2019-05-22",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc13aedbdfnn1fd8000061",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Golden Retriever",
+        "description": "Father dog",
+        "birthDate": "2018-09-12",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+
+    ]
+  },
+  {
+    "petId": "6498edabfc13aeluilui1fd8000023",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Bulldog",
+    "description": "A calm Bulldog.",
+    "birthDate": "2019-07-30",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfc13uiluiluae1fd8000062",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Bulldog",
+        "description": "Mother dog",
+        "birthDate": "2016-07-30",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc1luilui3ae1fd8000063",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Bulldog",
+        "description": "Father dog",
+        "birthDate": "2015-11-20",
+        "parents": [],
+        "images": [
+               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+     
+        ]
+      }
+    ],
+    "images": [
+    ]
+  },
+  {
+    "petId": "6498edabfc1uiluiu3ae1fd8000024",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Poodle",
+    "description": "An intelligent Poodle.",
+    "birthDate": "2021-11-11",
+       "location" : "Ireland",
+    "parents": [
+      {
+        "petId": "6498edabfuiluiukc13ae1fd8000064",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Poodle",
+        "description": "Mother dog",
+        "birthDate": "2018-11-11",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfcuiuik,u13ae1fd8000065",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Poodle",
+        "description": "Father dog",
+        "birthDate": "2017-03-18",
+        "parents": [],
+        "images": [
+                "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+      
+        ]
+      }
+    ],
+    "images": [
+    ]
+  },
+  {
+    "petId": "6498edabfc13aesdsdvsdv1fd8000025",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Beagle",
+    "description": "A playful Beagle.",
+    "birthDate": "2020-08-24",
+       "location" : "England",
+    "parents": [
+      {
+        "petId": "6498edabdsdsrfc13ae1fd8000066",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Beagle",
+        "description": "Mother dog",
+        "birthDate": "2017-08-24",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfcwefwefw13ae1fd8000067",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Beagle",
+        "description": "Father dog",
+        "birthDate": "2016-12-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+
+  {
+    "petId": "6498edabfc13aewefwefw1fd8000020",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Labrador Retriever",
+    "description": "A friendly Labrador Retriever.",
+    "birthDate": "2021-04-10",
+           "location" : "England",
+    
+    "parents": [
+      {
+        "petId": "6498edabfwwvvevec13ae1fd8000056",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Labrador Retriever",
+        "description": "Mother dog",
+        "birthDate": "2018-04-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc1zvxcbc3ae1fd8000057",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Labrador Retriever",
+        "description": "Father dog",
+        "birthDate": "2017-08-15",
+        "parents": [],
+        "images": [
+        ]
+      }
+    ],
+    "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+
+    ]
+  },
+  {
+    "petId": "6498edabfc13aebvcnvbn1fd8000021",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "German Shepherd",
+    "description": "A loyal German Shepherd.",
+    "birthDate": "2020-02-05",
+           "location" : "England",
+    
+    "parents": [
+      {
+        "petId": "6498edabfc13aenmghmjm1fd8000058",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "German Shepherd",
+        "description": "Mother dog",
+        "birthDate": "2016-02-05",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+
+        ]
+      },
+      {
+        "petId": "6498edabfc13ioolioñae1fd8000059",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "German Shepherd",
+        "description": "Father dog",
+        "birthDate": "2015-06-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    
+    ]
+  },
+  {
+    "petId": "6498edabfc13ae1iloiñiolufd8000022",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Golden Retriever",
+    "description": "A gentle Golden Retriever.",
+    "birthDate": "2022-05-22",
+           "location" : "England",
+    
+    "parents": [
+      {
+        "petId": "6498edabfc13awedwedase1fd8000060",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Golden Retriever",
+        "description": "Mother dog",
+        "birthDate": "2019-05-22",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc1adsdasca3ae1fd8000061",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Golden Retriever",
+        "description": "Father dog",
+        "birthDate": "2018-09-12",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+
+    ]
+  },
+  {
+    "petId": "6498edabfc13aecdffgr1fd8000023",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Bulldog",
+    "description": "A calm Bulldog.",
+    "birthDate": "2019-07-30",
+           "location" : "England",
+    
+    "parents": [
+      {
+        "petId": "6498edabfc1htyjyjyu3ae1fd8000062",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Bulldog",
+        "description": "Mother dog",
+        "birthDate": "2016-07-30",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc13yukuikfgbae1fd8000063",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Bulldog",
+        "description": "Father dog",
+        "birthDate": "2015-11-20",
+        "parents": [],
+        "images": [
+        ]
+      }
+    ],
+    "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+
+    ]
+  },
+  {
+    "petId": "6498edabfc13dfbfgjae1fd8000024",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Poodle",
+    "description": "An intelligent Poodle.",
+    "birthDate": "2021-11-11",
+           "location" : "England",
+    
+    "parents": [
+      {
+        "petId": "6498edabrytyjtyfc13ae1fd8000064",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Poodle",
+        "description": "Mother dog",
+        "birthDate": "2018-11-11",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabftyjuykuykc13ae1fd8000065",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Poodle",
+        "description": "Father dog",
+        "birthDate": "2017-03-18",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [  
+              "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+      ]
+  },
+  {
+    "petId": "6498edabfclioñiok13ae1fd8000025",
+                    "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+    
+    "type": "Dog",
+    "breed": "Beagle",
+    "description": "A playful Beagle.",
+    "birthDate": "2020-08-24",
+           "location" : "England",
+    
+    "parents": [
+      {
+        "petId": "6498edabfcmhjyumhgm13ae1fd8000066",
+                        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        
+        "type": "Dog",
+        "breed": "Beagle",
+        "description": "Mother dog",
+        "birthDate": "2017-08-24",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      },
+      {
+        "petId": "6498edabfc13acaewfere1fd8000067",
+        "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",      
+        "type": "Dog",
+        "breed": "Beagle",
+        "description": "Father dog",
+        "birthDate": "2016-12-10",
+        "parents": [],
+        "images": [
+          "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+        ]
+      }
+    ],
+    "images": [
+     "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    ]
+  }
+  ]

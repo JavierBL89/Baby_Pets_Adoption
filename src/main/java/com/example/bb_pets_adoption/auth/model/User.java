@@ -7,16 +7,21 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.example.bb_pets_adoption.pet_listing.model.Pet;
+import com.example.bb_pets_adoption.pet_listing.model.Post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
-* Class represents an a User. User can ben an "Adopter", "Pet Provider", or both.
+* Class represents a User. It defines the attributes of a User object.
+* A User can be an "Adopter", "Pet Provider", or both.
 * The fields are mapped and converted into a User document using MongoDb @Document 
-* and then stored into Mongo database.
+* to then be stored into Mongo database
 * 
 * Class usess Lombok @nnotations for reducing boiler plate and enhance readiness
 */
@@ -37,7 +42,10 @@ public class User {
 	private String token;
 	private String registeredBy;
 	private List<String> roles;  // list of roles ["Adopter", "Pet Provider"]
-
-
+	
+	@DBRef
+	private List<Pet> petList;        // list of pests that belongs to the user
+	@DBRef
+	private List<Post> petPostList;   // list of posts created by the user
 
 }

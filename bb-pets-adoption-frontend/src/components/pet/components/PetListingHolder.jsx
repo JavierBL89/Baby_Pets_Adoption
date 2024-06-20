@@ -3,41 +3,33 @@ import { Container, Row, Col } from "react-bootstrap";
 import PetCard from "./PetCard";
 
 
-
 /***
  * 
  */
-const PetListingHolder = () => {
+const PetListingHolder = ({ pets, loading, totalPages, goToNextPage, goToPreviousPage, petCategory }) => {
+
+    console.log(pets);
+
 
     return (
 
         <Container className="m-auto" id="pet_listing_wrapper">
             <Container className="m-auto" id="pet_listing_container">
+
                 <Row className="p-0">
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/esperanza-doronila-ayQs0DB0tEo-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/jairo-alzate-sssxyuZape8-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/jacalyn-beales-CKsDMYPDgCs-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/justin-veenema-NH1d0xX6Ldk-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/michael-sum-LEpfefQf4rU-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/pacto-visual-cWOzOnSoh6Q-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/pauline-loroy-U3aF7hgUSrk-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
-                    <Col xs={6} md={3} lg={4} className="p-0">
-                        <PetCard img="/assets/images/angel-luciano-LATYeZyw88c-unsplash.jpg" name="name" breed="breed" />
-                    </Col>
+                    {
+
+                        pets && pets.map((pet, index) => {
+                            return (<Col key={index} xs={6} md={3} lg={4} className="p-0">
+                                <PetCard
+                                    img={pet.images && pet.images[0] ? pet.images[0] : "https://res.cloudinary.com/dthlibbj7/image/upload/c_crop,h_364,w_436/v1718832895/depositphotos_318221368-stock-illustration-missing-picture-page-for-website_jur5he.webp"}
+                                    breed={pet.breed} />
+                            </Col>
+                            )
+                        })
+
+
+                    }
                 </Row>
 
             </Container>

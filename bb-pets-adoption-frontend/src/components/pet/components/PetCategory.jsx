@@ -6,15 +6,15 @@ import { AuthContext } from "../../../context/AuthContext";
  * 
  * 
  */
-const PetCategory = (props) => {
+const PetCategory = ({ onClick, url, title }) => {
 
     const { isAuthenticated } = useContext(AuthContext);
 
 
     return (
 
-        <Container className="pt-5 pb-5 mb-5">
-            <a href={props.url}> <h2>{props.title}</h2> </a>
+        <Container onClick={() => onClick(title)} title={title} className="pt-5 pb-5 mb-5">
+            <h2 style={{ cursor: 'pointer' }}>{title}</h2>
         </Container>
 
 

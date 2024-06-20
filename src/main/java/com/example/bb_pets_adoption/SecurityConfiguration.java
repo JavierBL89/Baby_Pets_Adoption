@@ -87,10 +87,14 @@ public class SecurityConfiguration {
 
 		    http
                     .cors(Customizer.withDefaults()) // Enable CORS
-	                .csrf(csrf -> csrf.disable())
+	                .csrf(csrf -> csrf.disable())	                
+	                // allow public access to certain endpoints
 	                .authorizeHttpRequests(auth -> auth
-	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**",
+	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**", "/pets/kitties","/pets/puppies",
 	                                "/auth/login/**", "/auth/logout/**", "/auth/reset_password/**", "/oauth2/**", "/login").permitAll()
+	                     
+	                        // Secure other endpoints
+	                        .requestMatchers("/adoption/**").authenticated()
 	                        .anyRequest().authenticated()
 	                )
 	                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
