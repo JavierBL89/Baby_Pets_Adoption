@@ -47,6 +47,26 @@ public interface PetService {
 	 * */
 	public Page<Dog> findAllDogs(Pageable pageable);
 	
+	/**
+	 * Query to search and retrieve all cats containing attributes that match with a selected pet tag attributes list
+	 * 
+	 * @param tags - the list of selected tags
+     * @param pageNo the number of the page to retrieve
+     * @param pageSize the number of records per page
+     * @return a `Page` object containing the cats matching the attributes selected
+	 * **/
+	public Page<Cat> findAllCatsByTags(List<String> tags, Pageable pageable);
+	
+	/**
+	 * Query to search and retrieve all dogs containing attributes that match with a selected pet tag attributes list
+	 * 
+	 * @param tags - the list of selected tags
+     * @param pageNo the number of the page to retrieve
+     * @param pageSize the number of records per page
+     * @return a `Page` object containing the cats matching the attributes selected
+	 * **/
+	public Page<Dog> findAllDogsByTags(List<String> tags, Pageable pageable);
+	
 	
 	/**
 	 * Query to search a cat by id 

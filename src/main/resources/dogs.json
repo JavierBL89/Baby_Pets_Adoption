@@ -2,12 +2,16 @@
   {
     "petId": "649453458edabfc13ae1fd8000020",
                 "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Labrador Retriever",
+    "color": ["white"],
+        "fur": "medium",
+    
     "description": "A friendly Labrador Retriever.",
     "birthDate": "2021-04-10",
-    "location" : "Ireland",
+    "location" : "Mayo",
     "parents": [
       {
         "petId": "649567788edabfc13ae1fd8000056",
@@ -40,17 +44,23 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ], 
+         "tags" : ["white", "mayo", "medium"]
+    
   },
   {
     "petId": "64475675698edabfc13ae1fd8000021",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "German Shepherd",
+    "color": ["grey"],
+            "fur": "short",
+    
     "description": "A loyal German Shepherd.",
     "birthDate": "2020-02-05",
-       "location" : "Ireland",
+       "location" : "Mayo",
     "parents": [
       {
         "petId": "64567567598edabfc13ae1fd8000058",
@@ -82,17 +92,22 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],
+         "tags" : ["grey", "mayo", "short"]
+    
   },
   {
     "petId": "6498edabfc13afgbgfbfge1fd8000022",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Golden Retriever",
+                "fur": "short",
+    
     "description": "A gentle Golden Retriever.",
     "birthDate": "2022-05-22",
-       "location" : "Ireland",
+       "location" : "Dublin",
     "parents": [
       {
         "petId": "6498edabfcdgdfgdf13ae1fd8000060",
@@ -123,17 +138,23 @@
     ],
     "images": [
       "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
-    ]
+    ],
+             "tags" : ["black", "dublin", "short"]
+    
   },
   {
     "petId": "6498edabfc13aeyyjyu1fd8000023",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Bulldog",
+    "color": ["black"],
+        "fur": "long",
+    
     "description": "A calm Bulldog.",
     "birthDate": "2019-07-30",
-       "location" : "Ireland",
+       "location" : "Cork",
     "parents": [
       {
         "petId": "6498edabfcuuyyu13ae1fd8000062",
@@ -165,17 +186,23 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],
+         "tags" : ["black", "cork", "long"]
+    
   },
   {
     "petId": "6498edabfc13afvdfvde1fd8000024",
     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Poodle",
+    "color": ["black"],
+        "fur": "long",
+    
     "description": "An intelligent Poodle.",
     "birthDate": "2021-11-11",
-       "location" : "Ireland",
+       "location" : "Cork",
     "parents": [
       {
         "petId": "6498edabfc1sdvssd3ae1fd8000064",
@@ -206,17 +233,23 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],
+         "tags" : ["black", "cork", "long"]
+    
   },
   {
     "petId": "6498edabfc13adsgsde1fd8000025",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Beagle",
+    "color": ["brown"],
+                "fur": "short",
+    
     "description": "A playful Beagle.",
     "birthDate": "2020-08-24",
-       "location" : "Ireland",
+       "location" : "Doneghal",
     "parents": [
       {
         "petId": "6498edabfc1ggfddf3ae1fd8000066",
@@ -248,17 +281,23 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],
+           "tags" : ["brown", "short", "doneghal"]
+    
   },
   {
     "petId": "6498edabfdbgbgc13ae1fd8000020",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Labrador Retriever",
+    "color": ["brown"],
+                "fur": "short",
+    
     "description": "A friendly Labrador Retriever.",
     "birthDate": "2021-04-10",
-       "location" : "Ireland",
+       "location" : "Mayo",
     "parents": [
       {
         "petId": "6498edabgnfgnfgfc13ae1fd8000056",
@@ -289,17 +328,23 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],
+            "tags" : ["brown", "short", "mayo"]
+    
   },
   {
     "petId": "6498edabfc13avsdsdvsdfe1fd8000021",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "German Shepherd",
+    "color": ["stained"],
+                "fur": "short",
+    
     "description": "A loyal German Shepherd.",
     "birthDate": "2020-02-05",
-       "location" : "Ireland",
+       "location" : "Galway",
     "parents": [
       {
         "petId": "6498edabfc13ae1fd8000058",
@@ -330,17 +375,22 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],    
+     "tags" : ["stained", "short", "galway"]
   },
   {
     "petId": "6498edabfcbfbdfbdf13ae1fd8000022",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Golden Retriever",
+    "color": ["stained"],
+                "fur": "short",
+    
     "description": "A gentle Golden Retriever.",
     "birthDate": "2022-05-22",
-       "location" : "Ireland",
+       "location" : "Dublin",
     "parents": [
       {
         "petId": "6498edabfc13dfbdfbdae1fd8000060",
@@ -372,17 +422,23 @@
     "images": [
           "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
 
-    ]
+    ],
+            "tags" : ["stained", "short", "dublin"]
+    
   },
   {
     "petId": "6498edabfc13aeluilui1fd8000023",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Bulldog",
+    "color": ["white"],
+    "fur": "medium",
+    
     "description": "A calm Bulldog.",
     "birthDate": "2019-07-30",
-       "location" : "Ireland",
+       "location" : "Cork",
     "parents": [
       {
         "petId": "6498edabfc13uiluiluae1fd8000062",
@@ -413,17 +469,24 @@
       }
     ],
     "images": [
-    ]
+    "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
+    ],
+     "tags" : ["white", "medium", "cork"]
+    
   },
   {
     "petId": "6498edabfc1uiluiu3ae1fd8000024",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Poodle",
+    "color": ["beige"],
+    "fur": "medium",
+    
     "description": "An intelligent Poodle.",
     "birthDate": "2021-11-11",
-       "location" : "Ireland",
+       "location" : "Dublin",
     "parents": [
       {
         "petId": "6498edabfuiluiukc13ae1fd8000064",
@@ -454,17 +517,23 @@
       }
     ],
     "images": [
-    ]
+    ],
+         "tags" : ["beige", "medium", "dublin"]
+    
   },
   {
     "petId": "6498edabfc13aesdsdvsdv1fd8000025",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Beagle",
+    "color": ["beige", "white"],
+     "fur": "medium",
+    
     "description": "A playful Beagle.",
     "birthDate": "2020-08-24",
-       "location" : "England",
+       "location" : "Galway",
     "parents": [
       {
         "petId": "6498edabdsdsrfc13ae1fd8000066",
@@ -496,18 +565,24 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],
+          "tags" : ["beige", "white", "medium", "galway"]
+    
   },
 
   {
     "petId": "6498edabfc13aewefwefw1fd8000020",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Labrador Retriever",
+    "color": ["beige"],
+            "fur": "medium",
+    
     "description": "A friendly Labrador Retriever.",
     "birthDate": "2021-04-10",
-           "location" : "England",
+           "location" : "Galway",
     
     "parents": [
       {
@@ -539,17 +614,23 @@
     "images": [
           "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
 
-    ]
+    ],
+        "tags" : ["beige", "medium", "galway"]
+    
   },
   {
     "petId": "6498edabfc13aebvcnvbn1fd8000021",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "German Shepherd",
+    "color": ["black","white"],
+            "fur": "medium",
+    
     "description": "A loyal German Shepherd.",
     "birthDate": "2020-02-05",
-           "location" : "England",
+           "location" : "Doneghal",
     
     "parents": [
       {
@@ -583,17 +664,23 @@
     "images": [
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
     
-    ]
+    ],
+          "tags" : ["black","white", "medium", "doneghal"]
+    
   },
   {
     "petId": "6498edabfc13ae1iloiñiolufd8000022",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
+    "color": ["black","brown"],
+        "fur": "long",
+    
     "breed": "Golden Retriever",
     "description": "A gentle Golden Retriever.",
     "birthDate": "2022-05-22",
-           "location" : "England",
+           "location" : "Mayo",
     
     "parents": [
       {
@@ -626,17 +713,23 @@
     "images": [
           "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
 
-    ]
+    ],
+     "tags" : ["black","brown", "long", "mayo"]
+
   },
   {
     "petId": "6498edabfc13aecdffgr1fd8000023",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Bulldog",
+    "color": ["white", "grey"],
+        "fur": "long",
+    
     "description": "A calm Bulldog.",
     "birthDate": "2019-07-30",
-           "location" : "England",
+           "location" : "Mayo",
     
     "parents": [
       {
@@ -668,17 +761,23 @@
     "images": [
           "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
 
-    ]
+    ],
+            "tags" : ["white","grey", "long", "mayo"]
+    
   },
   {
     "petId": "6498edabfc13dfbfgjae1fd8000024",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Poodle",
+    "color": ["brown","white"],
+        "fur": "long",
+    
     "description": "An intelligent Poodle.",
     "birthDate": "2021-11-11",
-           "location" : "England",
+           "location" : "Mayo",
     
     "parents": [
       {
@@ -710,17 +809,22 @@
     ],
     "images": [  
               "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
-      ]
+      ],
+              "tags" : ["brown","white", "long", "mayo"]
+      
   },
   {
     "petId": "6498edabfclioñiok13ae1fd8000025",
                     "_class": "com.example.bb_pets_adoption.pet_listing.model.Dog",
+        "providerId": "",
     
     "type": "Dog",
     "breed": "Beagle",
+    "color": ["black","brown"],
+    "fur": "long",
     "description": "A playful Beagle.",
     "birthDate": "2020-08-24",
-           "location" : "England",
+           "location" : "Dublin",
     
     "parents": [
       {
@@ -751,6 +855,8 @@
     ],
     "images": [
      "https://res.cloudinary.com/dthlibbj7/image/upload/v1718709796/pauline-loroy-U3aF7hgUSrk.jpg"
-    ]
+    ],
+          "tags" : ["black","brown", " white", "long", "dublin"]
+    
   }
   ]

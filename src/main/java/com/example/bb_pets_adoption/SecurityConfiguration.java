@@ -91,7 +91,8 @@ public class SecurityConfiguration {
 	                // allow public access to certain endpoints
 	                .authorizeHttpRequests(auth -> auth
 	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**", "/pets/kitties","/pets/puppies",
-	                                "/auth/login/**", "/auth/logout/**", "/auth/reset_password/**", "/oauth2/**", "/login").permitAll()
+	                        		"/pets/kitties/filter_by", "/pets/puppies/filter_by", "/auth/login/**", "/auth/logout/**", 
+	                        		"/auth/reset_password/**", "/oauth2/**", "/login").permitAll()
 	                     
 	                        // Secure other endpoints
 	                        .requestMatchers("/adoption/**").authenticated()
@@ -100,7 +101,7 @@ public class SecurityConfiguration {
 	                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	                .formLogin(form -> form
 	                        .loginPage("http://localhost:3000/login")
-	                        .defaultSuccessUrl("http://localhost:3000/home", true)
+	                        .defaultSuccessUrl("http://localhost:3000/", true)
 	                        .failureUrl("http://localhost:3000/login?error=true")
 	                )
 	                .oauth2Login(oauth2 -> oauth2
@@ -114,8 +115,8 @@ public class SecurityConfiguration {
 	                
 			        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 			        .logout(logout -> logout
-			        		.logoutUrl("http://localhost:3000/home")
-			        		.logoutSuccessUrl("http://localhost:3000/home")
+			        		.logoutUrl("http://localhost:3000/**")
+			        		.logoutSuccessUrl("http://localhost:3000/")
 			        		.invalidateHttpSession(true)
 			        		.deleteCookies("JSESSIONID")
 			        		);

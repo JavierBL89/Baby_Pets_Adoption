@@ -12,9 +12,9 @@ import useFetchPets from "./fetchPets.jsx"
  *  with the following properties:
  **  { pages, goToNextPage, goToPrevPage };
  */
-const usePagination = (categoryType, num_of_columns) => {
+const usePagination = (categoryType) => {
 
-
+    const num_of_columns = 6;                      // Number of items per page
     const [pages, setPages] = useState({ [categoryType]: { page: 0, columns_per_page: num_of_columns } });
 
 
@@ -44,12 +44,13 @@ const usePagination = (categoryType, num_of_columns) => {
         }));
     }
 
+
     const resetPagination = () => {
         setPages({ [categoryType]: { page: 0, columns_per_page: num_of_columns } });
     };
 
 
-    return { pages, goToNextPage, resetPagination }  // return consts to acces them from other parts in the app
+    return { pages, goToNextPage }  // return consts to acces them from other parts in the app
 };
 
 

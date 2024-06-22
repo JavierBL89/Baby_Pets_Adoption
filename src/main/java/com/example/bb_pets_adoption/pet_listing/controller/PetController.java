@@ -25,6 +25,7 @@ import com.example.bb_pets_adoption.auth.controller.JwtUtil;
 import com.example.bb_pets_adoption.email.EmailService;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
+import com.example.bb_pets_adoption.pet_listing.model.Pet;
 import com.example.bb_pets_adoption.pet_listing.service.PetServiceImpl;
 
 import org.slf4j.Logger;
@@ -103,37 +104,6 @@ public class PetController {
 		Pageable pageable = PageRequest.of(pageNo, pageSize);
 		
 		return petServiceImpl.findAllDogs(pageable);
-	}
-	
-	
-	/**
-	 * Endpoint to handle GET requests and retrieves a cat by its ID
-	 * The cat's ID is specified as a path variable in the URL
-	 * 
-	 * @param id the unique identifier of the cat to be retrieved
-	 * @return an Optional containing the cat if found, or an empty Optional if not found
-	 */
-	@SuppressWarnings("unchecked")
-	@GetMapping("/kitties/{id}")
-	public @ResponseBody Optional<Cat> findCatById(@PathVariable String id){
-		
-		return petServiceImpl.findCatById(id);
-	}
-	
-	
-	
-	/**
-	 * Endpoint to handle GET requests and retrieves a dog by its ID
-	 * The cat's ID is specified as a path variable in the URL
-	 * 
-	 * @param id the unique identifier of the dog to be retrieved
-	 * @return an Optional containing the dog if found, or an empty Optional if not found
-	 */
-	@SuppressWarnings("unchecked")
-	@GetMapping("/puppies/{id}")
-	public @ResponseBody Optional<Cat> findDogById(@PathVariable String id){
-		
-		return petServiceImpl.findDogById(id);
 	}
 	
 }

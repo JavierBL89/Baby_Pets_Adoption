@@ -79,5 +79,21 @@ public class PetServiceImpl implements PetService{
 		return dogRepository.findById(new ObjectId(id));
 	}
 	
+	/*
+	 * */
+	@Override
+	public Page<Cat> findAllCatsByTags(List<String> tags, Pageable pageable){
+		
+		return catRepository.findByTagsIn(tags, pageable);
+	}
+	
+	
+	/*
+	 * */
+	@Override
+	public Page<Dog> findAllDogsByTags(List<String> tags, Pageable pageable){
+		
+		return dogRepository.findByTagsIn(tags, pageable);
+	}
 
 }

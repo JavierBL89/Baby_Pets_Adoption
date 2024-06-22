@@ -22,13 +22,17 @@ public abstract class Pet {
 	
 	@Id
 	private ObjectId petId;
+	private ObjectId providerId;
 	private String type;     // Cat or Dog
 	private String breed;
+	private String fur;
+	private List<String> color;
 	private String description;
 	private LocalDate birthDate;
 	private String location;
 	private List<Pet> parents;
 	private List<String> images;
+	private List<String> tags;
 	
 	@DBRef
     private List<Post> posts; // list of posts related to the pet

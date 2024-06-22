@@ -65,7 +65,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         response.setHeader("Authorization", "Bearer " + token);
         
         // create URL with token as a query parameter
-        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/home?")
+        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000")
                 .queryParam("token", token)
                 .build()
                 .toUriString(); // convert the UriComponentsBuilder to a String

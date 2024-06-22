@@ -1,53 +1,61 @@
-import { useState, useEffect, useCallback } from "react";
-import axios from "../../../scripts/axiosConfig";
+import { useState, useEffect, useContext, useCallback } from "react";
+import instance from "../../../scripts/axiosConfig";
 import usePagination from './pagination';
+import { DataPetContext } from '../../../context/DataPetContext';
+
 
 
 /***
- * Custom Hook makes API GET request to retreive pets data using pagination params as url queries.
+ * Custom Hook makes API GET request to retreive pets data using pagination params in url queries.
  * 
- * This useFecthPets Hook depends on usePagination Hook which is responsible for managin the pagination behavoir 
+ * The 'useFecthPets' hook depends on 'usePagination' hook which is responsible for managin the pagination behavoir 
  * by updating the page number and the columns (or number of pet objects) to be retrieved per page.
- * Only when the 'pages' state is updated within 'usePagination', the 'useEffect' on this Hook is triggered 
- * to use the new 'pages' state to make the GET request with the new pagination params
+ * When the 'pages' state is updated within 'usePagination'a the 'useEffect' on this hook is triggered 
+ * to uses the new 'pages' state to make the GET request with the new pagination params in the string query
  * 
- * `/pets/${categoryType}?pageNo=${current_page}&pageSize=${columns_per_page}`;
+ * This 'useFetchPets' hook listens to changes on 'tagsList' state from 'DataPetsContext' to make a GET request based on pets attributes (tags)
+ * selected by the user.
+ * An if/else statement is used to build the appropiate URL fo GET request based on whether 'tagsList' is empty (not tags) or not.
+ * 
+ * /pets/${categoryType}?pageNo=${current_page}&pageSize=${columns_per_page};   (no tags GET request)
+ * /pets/${categoryType}/filter_by?tags=<tag>&<tag>&pageNo=${current_page}&pageSize=${columns_per_page};  (GET rquest with tags)
  * 
  * It handles potential errors before to prevent bad request is the 'pages' state do not contain the correct data
  * and after the GET request by cheking  the response status
  * 
- * The hook returnes the data retreive along with other useful states to be used accross the other modules that depend on this Hook
+ * This 'useFecthPets' hook also listens when 'currentPetCategory' state is changed from the 'DataPetsContext',
+ *  and to uses 'setPetsData' to set the state with new pets data list fetched.
+ * 
+ * This hook returnes the data retreive along with other useful states to be used accross the other modules that depend on this Hook
  * to perform operations
  * 
- * @returns petsData  - the pets data retreived
  * @returns pages  - the objetc with info of the current page state and amount of coulumns received from usePagination hook
  *  @returns loading   - state to inform while the GET request is in process
  *  @returns error     - the error message
  *  @returns totalPages - the current page number  '2', '3'..
  *  @returns goToNextPage  - method from usePagination that updates the 'pages' to retreive the next chunk of data 
- *  @returns goToPreviousPage - method from usePagination that updates the 'pages' to retreive the next chunk of data 
- * 
+ * @returns loadMore -  method variable to load next page with pets
  */
-const useFetchPets = (categoryType) => {
+const useFetchPets = () => {
 
-    const [petsData, setPetsData] = useState([]);   // pets data fetched from API
     const [loading, setLoading] = useState(false);  // state used for feedfack or UX purposes
     const [error, setError] = useState(null);       // state for error messages
     const num_of_columns = 6;                      // Number of items per page
 
+    // use DataPetContext to access 'dataPets' & current pet cateory states
+    const { currentPetCategory, setPetsData, tagsList } = useContext(DataPetContext);
 
     // call usePagination and access the returned values of the new upadated pagination state
-    const { pages, goToNextPage, resetPagination } = usePagination(categoryType, num_of_columns);
+    const { pages, goToNextPage } = usePagination(currentPetCategory, num_of_columns);
+
     // this keeps track of the page number. this state is used to enable and desable buttons 'next', 'prev'
     const [totalPages, setTotalPages] = useState(0);
 
 
-
-
+    // method resposible for handling GET request
     const fetchData = useCallback(async (append = false) => {
 
-        console.log('Pages state:', pages);
-        if (categoryType) {
+        if (currentPetCategory) {
             setLoading(true);  // set stateto true
 
             /********
@@ -62,25 +70,37 @@ const useFetchPets = (categoryType) => {
              * 
              *********
              ********/
-            if (!pages || !pages[categoryType]) {
-                // setError(`Data for pagination is not available for category: ${categoryType}`);
+            if (!pages || !pages[currentPetCategory]) {
+                // setError(Data for pagination is not available for category: ${categoryType});
                 // setLoading(false)
                 return;
             }
 
             try {
-                /* The first code line is assigning the value of
+                /* NOTE:  The first code line is assigning the value of
                   'pages[category]?.page' to the variable 'current_page'. If 'pages[category]?.page' is defined
                    and not null, then 'current_page' will be assigned that value. Otherwise, it will be assigned
                   the value of 0. */
-                let current_page = pages[categoryType]?.page ?? 0;
-                let columns_per_page = num_of_columns;
+                let current_page = pages[currentPetCategory]?.page ?? 0;
+                let url = "";
 
-                // GET request to target URL and pass the params expected in API for the paginaion feature
-                let url = `/pets/${categoryType}?pageNo=${current_page}&pageSize=${columns_per_page}`;
+                // build the appropiate URL based on condition
+                if (tagsList && tagsList.length > 0) {
+                    console.log(tagsList);
 
-                const response = await axios.get(url
-                );
+                    // build query string with each tag in the tags list by joining with '$'
+                    const tagsQuery = tagsList.map(tag => `tags=${tag}`).join('&');
+                    // GET request to target URL and pass the params expected in API for the paginaion feature
+                    url = `/pets/${currentPetCategory}/filter_by?${tagsQuery}&pageNo=${current_page}&pageSize=${num_of_columns}`;
+                }
+                else {
+
+                    url = `/pets/${currentPetCategory}?pageNo = ${current_page}& pageSize=${num_of_columns}`;
+
+                }
+
+                // GET request
+                const response = await instance.get(url);
 
                 // check if status ok or report error
                 if (response.status === 200) {
@@ -90,7 +110,7 @@ const useFetchPets = (categoryType) => {
                     if (result) {
                         const newPets = result.content;
                         append = true;
-                        // assuming the result is the array of pets
+
                         setPetsData(prevPets => append && [...prevPets, ...newPets]);
                         setTotalPages(result.totalPages);  // this data variable comes on JSON object response provided from Page class in API
                     } else {
@@ -98,7 +118,7 @@ const useFetchPets = (categoryType) => {
                     }
 
                 } else {
-                    throw new Error(`HTTP error! status: ${response.status}`)
+                    throw new Error(`HTTP error status: ${response.status}`)
                 }
             } catch (err) {    // catch any error during process
                 setError(err.message);
@@ -106,21 +126,34 @@ const useFetchPets = (categoryType) => {
 
             setLoading(false);   // set back to falase
         }
-    });
+    }, [currentPetCategory, pages, setPetsData, tagsList]);
 
-    ;
 
-    // usesEffect is only triggered when the 'pages' state is changed from usePagination Hook to make API request
+    /**
+    *  useEffect is only triggered when the 'pages' state is changed from usePagination Hook to make API request
+    */
     useEffect(() => {
-        fetchData(true);
-    }, [pages, categoryType]);  // if url or pages changes, the useEffect is re-triggered
+        fetchData(true);  // 'true' set boolean to allow and append new data to the existing list
+    }, [pages]);  // if url or pages changes, the useEffect is re-triggered
 
+
+    /**
+    * usesEffect is only triggered when the 'tagsList' state is changed from 'DataPetsContext' Hook to make API request
+    */
+    useEffect(() => {
+        fetchData(true);  // 'true' set boolean to allow and append new data to the existing list
+    }, [tagsList]);  // if url or pages changes, the useEffect is re-triggered
+
+
+    /**
+     * Helper method to initiate 'load more' pets functionality
+     * */
     const loadMore = () => {
-        goToNextPage(categoryType, num_of_columns);
+        goToNextPage(currentPetCategory, num_of_columns);
     };
 
 
-    return { petsData, pages, setPetsData, loadMore, loading, error, totalPages, goToNextPage } // return constants to be accessed from other parts in application
+    return { pages, loadMore, loading, error, totalPages, goToNextPage } // return constants to be accessed from other parts in application
 }
 
 export default useFetchPets;
