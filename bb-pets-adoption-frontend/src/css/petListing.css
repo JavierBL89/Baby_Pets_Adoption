@@ -1,3 +1,22 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+/* @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Lora:wght@500;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Sanchez:ital@0;1&display=swap'); */
+
+
+/****  COMMON  ***/
+.row {
+    padding: 0;
+}
+
+/******* FOOTER   ****/
+#footer_navbar {
+    position: relative;
+    margin-top: 100%;
+}
+
 #pet_listing_wrapper {
     width: 1000px;
 }
@@ -16,3 +35,193 @@
 .pet_card_wrapper .img_holder img {
     width: 100%;
 }
+
+/********************************* LOGIN */
+
+#login_wrapper {
+    min-width: 700px;
+    max-width: 750px;
+    height: 400px;
+    margin: 100px auto;
+}
+
+/****** PET VIEW **/
+#pet_view_wrapper {
+
+    min-width: 900px;
+    max-width: 1000px;
+    min-height: fit-content;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#pet_view_wrapper #pet_img_holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    /* Adjust based on your requirement */
+    width: 100%;
+    /* Ensure it takes up the full width of the container */
+}
+
+#pet_view_wrapper #pet_img_holder img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* Ensure the image covers the container */
+    max-width: 100%;
+    /* Responsive width */
+    max-height: 100%;
+    /* Responsive height */
+}
+
+
+/******** PET CREATION ******/
+
+#create_pet_wrapper {
+
+    min-width: 700px;
+    max-width: 990px;
+    min-height: fit-content;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#create_pet_container {
+    width: 80%;
+}
+
+#form_textarea {
+    /* padding-left: 15px;
+    padding-right: 15px; */
+}
+
+#list_pet_form label {
+
+    font-size: 14px;
+    margin-left: 15px;
+}
+
+#list_pet_form div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#list_pet_form input {
+    height: 50px;
+    font-size: 14px;
+    width: 70%;
+}
+
+#list_pet_form ::placeholder {
+    font-size: 12px;
+    font-style: italic;
+}
+
+#list_pet_form .form-check-input {
+
+    height: 25px;
+    width: 25px;
+    margin-left: 15px;
+}
+
+#create_pet_wrapper .parents_info_wraper {
+
+    margin-top: 40px;
+    padding: 10px;
+}
+
+#create_pet_container .parents_info_holder {
+
+    padding: 15px;
+    border: 1px solid;
+    border-radius: 10px;
+    border-color: grey;
+    margin-bottom: 10px;
+}
+
+.parents_info_holder #pet_category_holder #pet_category_row {
+    margin: 0;
+}
+
+.parents_info_holder #pet_category_holder {
+    margin: 0;
+}
+
+
+.parents_info_holder #pet_birth_date_holder,
+.parents_info_holder #pet_birth_date_holder .row {
+    margin: 0;
+}
+
+/* #pet_category_holder div {
+
+    padding: 0;
+} */
+
+#create_pet_wrapper h6 {
+
+    font-size: 17px;
+    margin-left: 15px;
+    margin-bottom: 0;
+}
+
+#create_pet_wrapper button[type="submit"] {
+
+    width: 93%;
+    margin: 0 auto;
+}
+
+#create_pet_wrapper textarea {
+
+    font-size: 13px;
+    height: 80px;
+    width: 90%;
+    margin-bottom: 30px;
+}
+
+/* 
+.container {
+    width: calc(var(--base-width) - 2rem);
+    height: calc(var(--base-height) - 2rem);
+    font-size: calc(var(--base-font-size) + 0.5vw);
+    box-sizing: border-box;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 1200px) {
+    :root {
+        --base-width: 90%;
+        --base-height: 90%;
+        --base-font-size: 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    :root {
+        --base-width: 80%;
+        --base-height: 80%;
+        --base-font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --base-width: 70%;
+        --base-height: 70%;
+        --base-font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --base-width: 60%;
+        --base-height: 60%;
+        --base-font-size: 12px;
+    }
+} */

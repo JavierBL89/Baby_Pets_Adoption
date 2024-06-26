@@ -1,10 +1,8 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import instance from "../../../scripts/axiosConfig";
+
 import usePagination from './pagination';
 import { DataPetContext } from '../../../context/DataPetContext';
-
-
-
 /***
  * Custom Hook makes API GET request to retreive pets data using pagination params in url queries.
  * 
@@ -38,65 +36,51 @@ import { DataPetContext } from '../../../context/DataPetContext';
  */
 const useFetchPets = () => {
 
-    const [loading, setLoading] = useState(false);  // state used for feedfack or UX purposes
+    const [loading, setLoading] = useState(false);  // state used for feedback or UX purposes
     const [error, setError] = useState(null);       // state for error messages
     const num_of_columns = 6;                      // Number of items per page
 
-    // use DataPetContext to access 'dataPets' & current pet cateory states
+    // use DataPetContext to access 'dataPets' & current pet category states
     const { currentPetCategory, setPetsData, tagsList } = useContext(DataPetContext);
 
-    // call usePagination and access the returned values of the new upadated pagination state
-    const { pages, goToNextPage } = usePagination(currentPetCategory, num_of_columns);
+    // call usePagination and access the returned values of the new updated pagination state
+    const { pages, goToNextPage } = usePagination(currentPetCategory);
 
-    // this keeps track of the page number. this state is used to enable and desable buttons 'next', 'prev'
+    // this keeps track of the page number. this state is used to enable and disable buttons 'next', 'prev'
     const [totalPages, setTotalPages] = useState(0);
 
 
-    // method resposible for handling GET request
+
+    // method responsible for handling GET request
     const fetchData = useCallback(async (append = false) => {
 
         if (currentPetCategory) {
-            setLoading(true);  // set stateto true
+            setLoading(true);  // set state to true
 
             /********
-             * *******
-             * 
-             * This block of code has the purpose of a  defensive programming
+             * This block of code has the purpose of defensive programming
              * to ensure pages and the category exist before making API request.
-             * 
-             * But because the way I have coded pagination adn hooks, the 'fetchData' method is always triggered twice on each render, 
-             * and always throws the error within since the condition is true on the very first render of the double render..
-             * and if remove the check, the list of pets is copied rather than replaced on every pet category change, so I've left it just like it is now
-             * 
-             *********
              ********/
             if (!pages || !pages[currentPetCategory]) {
-                // setError(Data for pagination is not available for category: ${categoryType});
-                // setLoading(false)
                 return;
             }
 
             try {
-                /* NOTE:  The first code line is assigning the value of
+                /* The first code line is assigning the value of
                   'pages[category]?.page' to the variable 'current_page'. If 'pages[category]?.page' is defined
                    and not null, then 'current_page' will be assigned that value. Otherwise, it will be assigned
                   the value of 0. */
                 let current_page = pages[currentPetCategory]?.page ?? 0;
                 let url = "";
 
-                // build the appropiate URL based on condition
+                // build the appropriate URL based on condition
                 if (tagsList && tagsList.length > 0) {
-                    console.log(tagsList);
-
-                    // build query string with each tag in the tags list by joining with '$'
+                    // build query string with each tag in the tags list by joining with '&'
                     const tagsQuery = tagsList.map(tag => `tags=${tag}`).join('&');
-                    // GET request to target URL and pass the params expected in API for the paginaion feature
+                    // GET request to target URL and pass the params expected in API for the pagination feature
                     url = `/pets/${currentPetCategory}/filter_by?${tagsQuery}&pageNo=${current_page}&pageSize=${num_of_columns}`;
-                }
-                else {
-
-                    url = `/pets/${currentPetCategory}?pageNo = ${current_page}& pageSize=${num_of_columns}`;
-
+                } else {
+                    url = `/pets/${currentPetCategory}?pageNo=${current_page}&pageSize=${num_of_columns}`;
                 }
 
                 // GET request
@@ -109,41 +93,38 @@ const useFetchPets = () => {
                     // check if result has data or set error message
                     if (result) {
                         const newPets = result.content;
-                        append = true;
-
-                        setPetsData(prevPets => append && [...prevPets, ...newPets]);
+                        setPetsData(prevPets => append ? [...prevPets, ...newPets] : newPets);
                         setTotalPages(result.totalPages);  // this data variable comes on JSON object response provided from Page class in API
                     } else {
                         setError("No data returned");
                     }
-
                 } else {
-                    throw new Error(`HTTP error status: ${response.status}`)
+                    throw new Error(`HTTP error status: ${response.status}`);
                 }
             } catch (err) {    // catch any error during process
                 setError(err.message);
-            };
-
-            setLoading(false);   // set back to falase
+            } finally {
+                setLoading(false);   // set back to false
+            }
         }
     }, [currentPetCategory, pages, setPetsData, tagsList]);
-
 
     /**
     *  useEffect is only triggered when the 'pages' state is changed from usePagination Hook to make API request
     */
     useEffect(() => {
-        fetchData(true);  // 'true' set boolean to allow and append new data to the existing list
-    }, [pages]);  // if url or pages changes, the useEffect is re-triggered
-
+        if (pages[currentPetCategory]) {
+            console.log("lajbcisdbcbsdci");
+            fetchData(true);  // 'true' set boolean to allow and append new data to the existing list
+        }
+    }, [fetchData, pages]);
 
     /**
-    * usesEffect is only triggered when the 'tagsList' state is changed from 'DataPetsContext' Hook to make API request
+    * useEffect is only triggered when the 'tagsList' state is changed from 'DataPetsContext' Hook to make API request
     */
     useEffect(() => {
         fetchData(true);  // 'true' set boolean to allow and append new data to the existing list
-    }, [tagsList]);  // if url or pages changes, the useEffect is re-triggered
-
+    }, [tagsList]);
 
     /**
      * Helper method to initiate 'load more' pets functionality
@@ -153,7 +134,7 @@ const useFetchPets = () => {
     };
 
 
-    return { pages, loadMore, loading, error, totalPages, goToNextPage } // return constants to be accessed from other parts in application
-}
+    return { pages, loadMore, loading, error, totalPages }; // return constants to be accessed from other parts in application
+};
 
 export default useFetchPets;

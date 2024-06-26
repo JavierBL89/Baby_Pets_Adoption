@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-
+import ButtonComponent from "../../../common/ButtonComponent";
+import { useNavigate } from "react-router-dom";
+import { DataPetContext } from '../../../../context/DataPetContext';
+import useFetchById from "../../../hooks/data/fetchById";
 
 
 /** 
@@ -9,17 +12,20 @@ import { Container, Row, Col } from "react-bootstrap";
  * @param {string} img - pet's image
  * @param {string} breed - pet's breed type
  * */
-const PetCard = ({ img, breed }) => {
+const PetCard = ({ img, breed, petId, onView }) => {
+
 
     // isLoaded flag is used to ensure that the pet image is only displayed when fully loaded
     const [isLoaded, setIsLoaded] = useState(false);
+    const navigate = useNavigate();
+
+    const { currentPetCategory } = useContext(DataPetContext);
 
     /***
      * Manages the state of isLoaded variable
      * 
      */
     const handleImageLoad = () => {
-
         setIsLoaded(true);
     }
 
@@ -42,6 +48,12 @@ const PetCard = ({ img, breed }) => {
         imgeELement.onload = handleImageLoad;  // check when is fully loaded and handle iit
     });
 
+    /***
+     * 
+     */
+    const handleView = (petId) => {
+        navigate(`/pets/${currentPetCategory}/view/${petId}`);
+    };
 
     return (
 
@@ -59,7 +71,7 @@ const PetCard = ({ img, breed }) => {
                         </Row>
                         <Row className="">
                             <Col className="text-center">
-                                <a href="#" >See more</a>
+                                <ButtonComponent onClick={() => handleView(petId)} text="View this beauty" />
                             </Col>
 
                         </Row>
@@ -73,4 +85,4 @@ const PetCard = ({ img, breed }) => {
     )
 };
 
-export default PetCard;
+export default React.memo(PetCard);

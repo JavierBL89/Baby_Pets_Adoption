@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
@@ -44,5 +45,7 @@ public interface DogRepository extends MongoRepository<Dog, ObjectId>{
 	@Query("{ 'tags': { $in: ?0 } }")
 	Page<Dog> findByTagsIn(List<String> tags, Pageable pageable);
 	
+	
+	Optional<Dog> findDogById(ObjectId petId);
 	
 }

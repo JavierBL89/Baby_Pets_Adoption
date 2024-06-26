@@ -6,10 +6,14 @@ package com.example.bb_pets_adoption;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 
 /**
@@ -30,7 +34,13 @@ public class JacksonConfiguration {
 		mapper.registerModule(new JavaTimeModule()); // JavaTimeModule is a module that adds support for the Java 8 Date and Time API 
 		                                             // (java.time). This module provides serializers and deserializers for LocalDate, 
 		                                             // LocalDateTime, Instant, etc., allowing Jackson to correctly handle these types
-		
+		 SimpleModule module = new SimpleModule();
+		 module.addSerializer(ObjectId.class, new ObjectIdSerializer());
+	     module.addDeserializer(ObjectId.class, new ObjectIdDeserializer());
+	     mapper.registerModule(module);
+	     
+	     mapper.registerModule(new Jdk8Module());
+	     
 		// these lines register the Cat and Dog classes as subtypes of Pet
 		mapper.registerSubtypes(new NamedType(Cat.class, "Cat"));
 		mapper.registerSubtypes(new NamedType(Dog.class, "Dog"));

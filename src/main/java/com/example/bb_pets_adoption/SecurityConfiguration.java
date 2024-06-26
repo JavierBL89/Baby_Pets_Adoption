@@ -7,6 +7,7 @@ import com.example.bb_pets_adoption.auth.controller.OAuth2FailureHandler;
 import com.example.bb_pets_adoption.auth.controller.OAuth2SuccessHandler;
 import com.example.bb_pets_adoption.auth.service.CustomOAuth2UserService;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -17,19 +18,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -90,19 +95,21 @@ public class SecurityConfiguration {
 	                .csrf(csrf -> csrf.disable())	                
 	                // allow public access to certain endpoints
 	                .authorizeHttpRequests(auth -> auth
-	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**", "/pets/kitties","/pets/puppies",
-	                        		"/pets/kitties/filter_by", "/pets/puppies/filter_by", "/auth/login/**", "/auth/logout/**", 
+	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**", "/pets/kitties", "/pets/kitties/view/**", "/pets/puppies", "/pets/puppies/view/**",
+	                        		"/pets/kitties/filter_by", "/pets/list_pet", "/pets/puppies/filter_by", "/auth/login/**", "/auth/logout/**", 
 	                        		"/auth/reset_password/**", "/oauth2/**", "/login").permitAll()
 	                     
 	                        // Secure other endpoints
-	                        .requestMatchers("/adoption/**").authenticated()
+	                        .requestMatchers(HttpMethod.POST, "/adoption").authenticated()
 	                        .anyRequest().authenticated()
 	                )
 	                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	                .formLogin(form -> form
 	                        .loginPage("http://localhost:3000/login")
-	                        .defaultSuccessUrl("http://localhost:3000/", true)
+	                        .defaultSuccessUrl("http://localhost:3000", true)
 	                        .failureUrl("http://localhost:3000/login?error=true")
+	                        .failureHandler(authenticationFailureHandler()) // customized failure handler
+	                        
 	                )
 	                .oauth2Login(oauth2 -> oauth2
 	                        .loginPage("http://localhost:3000/login")
@@ -125,6 +132,20 @@ public class SecurityConfiguration {
 			        return http.build();
 	}
 	
+	
+	@Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                                AuthenticationException exception) throws IOException, ServletException {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid email address or password. Please reset data entered and try again.");
+            }
+        };
+    }
+
+
 
 	/**
      * PasswordEncoder bean to use BCrypt for password hashing.

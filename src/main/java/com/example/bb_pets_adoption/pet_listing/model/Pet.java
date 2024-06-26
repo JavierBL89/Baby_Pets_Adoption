@@ -10,30 +10,39 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.Data;
 
 /**
- * Abstract class to represent a Pet object from which each pet subtype inherits from
+ * Abstract class to represent a Pet object from which each pet subtype inherits from.
+ * 
+ * It uses Lombok annotattion @Date to provide the claass with getters and setter plus a toString()
+ * It uses MonogoDb annoattions to map the object, and to map file field such as images fields
  */
 @Data
 public abstract class Pet {
 
 	
 	@Id
-	private ObjectId petId;
+	private ObjectId id;
 	private ObjectId providerId;
-	private String type;     // Cat or Dog
+	private String category;     // Cat or Dog
 	private String breed;
-	private String fur;
-	private List<String> color;
-	private String description;
+	@Field
+	private byte [] petImg;
+	private String comment;
 	private LocalDate birthDate;
 	private String location;
-	private List<Pet> parents;
-	private List<String> images;
-	private List<String> tags;
+	private String motherBreed;
+	@Field
+    private byte [] motherImg;
+    private String fatherBreed;
+    @Field
+    private byte [] fatherImg;
+	private float price;
+	private String[] tags;
 	
 	@DBRef
-    private List<Post> posts; // list of posts related to the pet
+    private List<PetList> posts; // list of posts related to the pet
 }

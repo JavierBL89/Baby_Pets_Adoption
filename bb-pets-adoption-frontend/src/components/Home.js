@@ -3,7 +3,7 @@ import LogoutButton from "./auth/components/LogoutButton";
 import { AuthContext } from "../context/AuthContext";
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Stack } from "react-bootstrap";
-import PetCategoriesHolder from "./pet/components/pet_listing/PetCategoriesHolder";
+import PetCategoriesHolder from "./pet/components/pet_categories/PetCategoriesHolder";
 import PetListingHolder from "./pet/components/pet_listing/PetListingHolder";
 import AdoptionInfoComponent from "./AdoptionInfoComponent";
 
@@ -23,7 +23,6 @@ const Home = () => {
 
         <Stack>
             <PetCategoriesHolder />
-            <PetListingHolder />
             <AdoptionInfoComponent />
         </Stack>
 

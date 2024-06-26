@@ -24,6 +24,7 @@ const AuthProvider = ({ children }) => {
 
     // useEffect to check the authentication status 
     useEffect(() => {
+
         const checkToken = () => {
             const searchParams = new URLSearchParams(location.search);
             const token = searchParams.get('token') || localStorage.getItem('token');
@@ -59,18 +60,17 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem('token', token);
         setIsAuthenticated(true);
         setRegisteredBy(registeredBy);
-        console.log(registeredBy);
-        navigate(`/home?token=${token}`); // redirect to home page after successful login
+        navigate(`/?token=${token}`); // redirect to home page after successful login
     };
 
     /**
      * Logout function to remove the token from localStorage and update the authentication state
      */
     const logout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
         setIsAuthenticated(false);   // reset state to false
         setRegisteredBy("");  // clear state
-        navigate(`/home`); // redirect to home page after successful logout
+        navigate("/"); // redirect to home page after successful logout
     };
 
     // pass the authentication state and functions to the component tree

@@ -6,12 +6,15 @@ package com.example.bb_pets_adoption.pet_listing.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.bb_pets_adoption.auth.model.User;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
+import com.example.bb_pets_adoption.pet_listing.model.Pet;
 
 /**
  * Interface defines common pet operations
@@ -25,7 +28,7 @@ import com.example.bb_pets_adoption.pet_listing.model.Dog;
  * 
  */
 @Service
-public interface PetService {
+public interface PetService<T> {
 
 	
 	/**
@@ -74,7 +77,7 @@ public interface PetService {
 	 * @param petType - the unique cat identifier
 	 * @return an `Optional` containing the found cat or empty if not found
 	 * */
-	  Optional findCatById(String id);
+	  Optional<Cat> findCatById(String petId);
 	  
 	  
 	/**
@@ -83,6 +86,44 @@ public interface PetService {
 	 * @param id - the unique dog identifier
 	 * @return an `Optional` containing the found cat or empty if not found
 	 * */
-	  Optional findDogById(String id);
+	  Optional<Dog> findDogById(String petId);
+	  
+	  
+		/**
+		 * Query to create a new cat 
+		 * 
+		 * @param id - the unique cat identifier
+		 * @return an `Optional` containing the found cat or empty if not found
+		 * */
+		public Cat createNewCat(Cat cat);
+		  
+		  
+			/**
+			 * Query to create a new dog 
+			 * 
+			 * @param id - the unique dog identifier
+			 * @return an `Optional` containing the found cat or empty if not found
+			 * */
+			public Dog createNewDog(Dog dog);
+			  
+			  
+			  /***
+			   * Method to use Auth Service for user authentication
+			   * 
+			   * @param token - the current session token
+			   * @return a boolean 
+			   * **/
+			  boolean authenticateUserByToken(String token);
+			  
+			  
+			  /**
+			   *Method for retrieving authenticated user from users colection
+			   *
+			   *@param token - string token of user's current session 
+			   **/
+			  Optional<User> findUserByToken(String token);
+			  
+			  
+			  
 	
 }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
 import com.example.bb_pets_adoption.pet_listing.service.PetServiceImpl;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +66,7 @@ public class SearchController {
 	 * @return an Optional containing the cat if found, or an empty Optional if not found
 	 */
 	@SuppressWarnings("unchecked")
-	@GetMapping("/kitties/{id}")
+	@GetMapping("/kitties/view/{id}")
 	public @ResponseBody Optional<Cat> findCatById(@PathVariable String id){
 		
 		return petServiceImpl.findCatById(id);
@@ -80,9 +82,9 @@ public class SearchController {
 	 * @return an Optional containing the dog if found, or an empty Optional if not found
 	 */
 	@SuppressWarnings("unchecked")
-	@GetMapping("/puppies/{id}")
-	public @ResponseBody Optional<Cat> findDogById(@PathVariable String id){
-		
+	@GetMapping("/puppies/view/{id}")
+	public @ResponseBody Optional<Dog> findDogById(@PathVariable String id){
+
 		return petServiceImpl.findDogById(id);
 	}
 	

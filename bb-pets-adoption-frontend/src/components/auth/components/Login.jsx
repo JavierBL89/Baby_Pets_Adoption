@@ -3,6 +3,8 @@ import instance from '../../../scripts/axiosConfig';
 import { useNavigate } from 'react-router-dom'
 import SocialLogin from "./SocialLogin";
 import { AuthContext } from '../../../context/AuthContext';
+import { Col, Container, Row } from "react-bootstrap";
+import Heading from "../../common/Heading";
 
 /**
  * Login component handles the login functionality
@@ -20,7 +22,6 @@ const Login = () => {
 
     const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [message, setMessage] = useState("");
-    const navigate = useNavigate();
     const { login, setRegisteredBy } = useContext(AuthContext);
 
     /**
@@ -86,32 +87,31 @@ const Login = () => {
 
         try {
             // POST request to the /login url enpoint
+            const response = await instance.post('/auth/login', credentials);
 
-            const response = await instance.post('/login', credentials);
+            if (response.status === 401) {
+                setMessage("Invalid email address or password. Please reset data entered and try again.");
+            }
 
             // check if response exists
             if (response.status === 201 && response.data) {
                 // set the message state with the response data
                 setMessage(response.data.message);
-
                 login(response.data.token, response.data.registeredBy);
-            } else {
-                setMessage("Unexpected error occurred. Please try again.");
+
             }
+
 
         } catch (error) {
 
             // check if error response exists
-            if (error.response && error.response.data) {
-                // check if error response exists
-                if (error.response) {
-                    console.error("Error response data:", error.response.data);
-                    console.error("Error response status:", error.response.status);
-                    // set the message state with the error response data
-                    setMessage(error.response.data);
-                }
+            if (error.response && error.response.status === 401) {
+                setMessage("Invalid email address or password. Please reset data entered and try again.");
+            } else if (error.response && error.response.data) {
+                console.error("Error response data:", error.response.data);
+                console.error("Error response status:", error.response.status);
+                setMessage("Unexpected error occurred. Please try again.");
             } else {
-                // set error message and log error
                 console.error(error);
                 setMessage("Something went wrong. Please try again.");
             }
@@ -119,22 +119,49 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <label>Email Address</label>
-                <input type="email" value={credentials.email} name="email" onChange={(e) => { handleCredentials(e) }} required />
-                <label>Password</label>
-                <input type="password" value={credentials.password} name="password" onChange={(e) => { handleCredentials(e) }} required />
-                <button type="submit">Login</button>
-            </form>
-            <button type="button" onClick={resetPassword}>Forgot password</button>
-            {message && <p>{message}</p>}
+        <Container id="login_wrapper">
+            <Container id="login_container">
+                <Row >
+                    <Row >
+                        <Heading type="h2" id="login_title" text="Login" />
+                    </Row>
+                    <h2>Login</h2>
+                    <Row >
+                        <form onSubmit={handleSubmit}>
+                            <Row >
+                                <label>Email Address</label>
+                                <input type="email" value={credentials.email} name="email" onChange={(e) => { handleCredentials(e) }} required />
 
-            <div>
-                {/*<SocialLogin></SocialLogin>*/}
-            </div>
-        </div>
+                            </Row>
+
+                            <Row >
+                                <label>Password</label>
+                                <input type="password" value={credentials.password} name="password" onChange={(e) => { handleCredentials(e) }} required />
+
+                            </Row>
+                            <Row >
+                                <Col >
+                                    <button type="submit">Login</button>
+                                </Col>
+                                <Col >
+                                    <a href="#" onClick={resetPassword}>Forgot password</a>
+                                </Col>
+                            </Row>
+
+                        </form>
+
+                        {message && <p>{message}</p>}
+
+                        <div>
+                            {/*<SocialLogin></SocialLogin>*/}
+                        </div>
+                    </Row>
+
+                </Row>
+
+            </Container>
+
+        </Container>
     )
 };
 

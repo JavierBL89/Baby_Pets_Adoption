@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -44,8 +45,19 @@ public interface CatRepository extends MongoRepository<Cat, ObjectId> {
 	 * 
 	 * It uses Pageable interface and Page class to only load the specified amount of objects in one go enhancing the site's loading time
 	 * and overall performance
+	 * 
+	 * @param tags - the list containing keywords to filter out the pet search
+	 * @params pageable - the pageable object the determines the number of documents to be retrieved
 	 * **/
 	@Query("{ 'tags': { $in: ?0 } }")
 	Page<Cat> findByTagsIn(List<String> tags, Pageable pageable);
+	
+	
+	/***
+	 * Custom query to find a cat by its id
+	 * 
+	 * @param petId - the pet id
+	 * **/
+	Optional<Cat> findCatById(ObjectId petId);
 
 }

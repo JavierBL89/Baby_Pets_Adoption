@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import useFetchPets from "./fetchPets.jsx"
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 
 /**
@@ -8,14 +7,17 @@ import useFetchPets from "./fetchPets.jsx"
  * 
  * The useEffect listens to changes on the param passed 'categoryType' from any of the methods where the variable is passed
  * 
- * @returns The function 'usePagination' returns an object
+ * @returns The function 'usePagination' returns an object memoized with the hook 'useMemo'
  *  with the following properties:
  **  { pages, goToNextPage, goToPrevPage };
+ * 
+ * 'useMemo' hook helps to store the values of the dependancies till the next update, 
+ * which helps to mantain a more consistant applicattion state
  */
 const usePagination = (categoryType) => {
 
     const num_of_columns = 6;                      // Number of items per page
-    const [pages, setPages] = useState({ [categoryType]: { page: 0, columns_per_page: num_of_columns } });
+    const [pages, setPages] = useState({});
 
 
     // useEfeect is triggered when 'categoryType' or 'num_of_columns' change. 
@@ -25,14 +27,14 @@ const usePagination = (categoryType) => {
         // update the pagination state when categoryType or num_of_columns change
         setPages({ [categoryType]: { page: 0, columns_per_page: num_of_columns } });
 
-    }, [categoryType, num_of_columns]);
+    }, [categoryType]);
 
 
     /**
      * The function 'goToNextPage' updates the page number 
      * for a given category in a state variable called 'pages'
      */
-    const goToNextPage = (categoryName, cols) => {
+    const goToNextPage = useCallback((categoryName, cols) => {
 
         setPages((prevState) => ({
             ...prevState,    // copy whatever is in the current state
@@ -42,15 +44,16 @@ const usePagination = (categoryType) => {
 
             }
         }));
-    }
+    }, []);
 
 
-    const resetPagination = () => {
+    const resetPagination = useCallback(() => {
         setPages({ [categoryType]: { page: 0, columns_per_page: num_of_columns } });
-    };
+    }, [categoryType]);
 
 
-    return { pages, goToNextPage }  // return consts to acces them from other parts in the app
+    return useMemo(() => ({ pages, goToNextPage, resetPagination }), [pages, goToNextPage, resetPagination]);
+    // return consts to acces them from other parts in the app
 };
 
 

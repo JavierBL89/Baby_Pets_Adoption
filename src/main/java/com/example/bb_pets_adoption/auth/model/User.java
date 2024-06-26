@@ -3,6 +3,7 @@
  */
 package com.example.bb_pets_adoption.auth.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -11,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.bb_pets_adoption.pet_listing.model.Pet;
-import com.example.bb_pets_adoption.pet_listing.model.Post;
+import com.example.bb_pets_adoption.pet_listing.model.PetList;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,9 +44,8 @@ public class User {
 	private String registeredBy;
 	private List<String> roles;  // list of roles ["Adopter", "Pet Provider"]
 	
-	@DBRef
-	private List<Pet> petList;        // list of pests that belongs to the user
-	@DBRef
-	private List<Post> petPostList;   // list of posts created by the user
+
+	private List<PetList> petList = new ArrayList<>();   // list of posts created by the user
+
 
 }
