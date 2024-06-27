@@ -15,8 +15,11 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import PaymentPolicy from "./components/PaymentPolicy";
 import PetDetailsView from "../src/components/pet/components/pet_view/PetDetailsView";
 import ListNewPet from "../src/components/pet/components/pet_creation/ListNewPet";
+import MyListings from "../src/components/management/components/listings_management/MyListings";
 
 import "./css/petListing.css";
+import "./css/forms.css";
+
 import { DataPetProvider } from "./context/DataPetContext";
 /***
  * PrivateRoute component to protect routes that require authentication
@@ -47,6 +50,7 @@ function App() {
               <Route path="/pets/:currentPetCategory/view/:petId" element={<PetDetailsView />} />
               <Route path="/list_new_pet/:token" element={<ListNewPet />} />
               <Route path="/verify_account/:token" element={<VerifyAccount />} />
+              <Route path="/my_listings/:token" element={<MyListings />} />
               <Route path="/data_deletion" element={<DataDeletionInstructions />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
               <Route path="/payment_policy" element={<PaymentPolicy />} />

@@ -3,8 +3,9 @@ import instance from '../../../scripts/axiosConfig';
 import { useNavigate } from 'react-router-dom'
 import SocialLogin from "./SocialLogin";
 import { AuthContext } from '../../../context/AuthContext';
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Form } from "react-bootstrap";
 import Heading from "../../common/Heading";
+import ButtonComponent from "../../common/ButtonComponent";
 
 /**
  * Login component handles the login functionality
@@ -19,9 +20,15 @@ import Heading from "../../common/Heading";
  */
 const Login = () => {
 
+    // set user name after successful authentication
+    const { setUserName } = useContext(AuthContext);
 
     const [credentials, setCredentials] = useState({ email: '', password: '' });
+
+    const [emailMessage, setEmailMessage] = useState("");
+    const [passwordMessage, setPasswordMessage] = useState("");
     const [message, setMessage] = useState("");
+
     const { login, setRegisteredBy } = useContext(AuthContext);
 
     /**
@@ -97,6 +104,7 @@ const Login = () => {
             if (response.status === 201 && response.data) {
                 // set the message state with the response data
                 setMessage(response.data.message);
+                setUserName(response.data.userName);
                 login(response.data.token, response.data.registeredBy);
 
             }
@@ -122,35 +130,54 @@ const Login = () => {
         <Container id="login_wrapper">
             <Container id="login_container">
                 <Row >
+                    {/* <Row >
+                        <Heading tagName="h2" id="login_title" text="Login" />
+                    </Row> */}
                     <Row >
-                        <Heading type="h2" id="login_title" text="Login" />
-                    </Row>
-                    <h2>Login</h2>
-                    <Row >
-                        <form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} id="login_form">
                             <Row >
-                                <label>Email Address</label>
-                                <input type="email" value={credentials.email} name="email" onChange={(e) => { handleCredentials(e) }} required />
+                                {/******** { email address } ********/}
+                                <Form.Group controlId="login_email">
+                                    <Form.Label>Email Address</Form.Label>
+                                    <Form.Control
+                                        type="email"
+                                        name="email"
+                                        value={credentials.email}
+                                        onChange={(e) => { handleCredentials(e) }}
+                                        required
+                                    />
+                                </Form.Group>
+                                {emailMessage && <p>{emailMessage}</p>}
 
                             </Row>
 
                             <Row >
-                                <label>Password</label>
-                                <input type="password" value={credentials.password} name="password" onChange={(e) => { handleCredentials(e) }} required />
+                                {/******** { password } ********/}
+                                <Form.Group controlId="login_password">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control
+                                        type="passsword"
+                                        name="password"
+                                        value={credentials.password}
+                                        onChange={(e) => { handleCredentials(e) }}
+                                        required
+                                    />
+                                </Form.Group>
+                                {passwordMessage && <p>{passwordMessage}</p>}
 
                             </Row>
-                            <Row >
+                            <Row id="login_action_holder">
                                 <Col >
-                                    <button type="submit">Login</button>
+                                    <button type="submit" id="login_submit_button" className="btn btn-primary" >LogIn!</button>
                                 </Col>
-                                <Col >
-                                    <a href="#" onClick={resetPassword}>Forgot password</a>
+                                <Col id="forgot_password_holder">
+                                    <a href="#nopath" onClick={resetPassword}>Forgot password</a>
                                 </Col>
                             </Row>
 
-                        </form>
+                        </Form>
 
-                        {message && <p>{message}</p>}
+                        {message && <p id="login_message">{message}</p>}
 
                         <div>
                             {/*<SocialLogin></SocialLogin>*/}
@@ -166,3 +193,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+<ButtonComponent type="submit" id="reg_submit_button" text="Go!" className="btn btn-primary" />

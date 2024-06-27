@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from '../../../scripts/axiosConfig';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { AuthContext } from '../../../context/AuthContext';
+import { Row, Col, Form, Container } from 'react-bootstrap';
+import ButtonComponent from '../../common/ButtonComponent';
+import Heading from '../../common/Heading';
 
 
 /**
@@ -19,12 +22,16 @@ const Register = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [confirmEmail, setConfirmEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [emailMessage, setEmailMessage] = useState("");
+    const [confirmEmailMessage, setConfirmEmailMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
+    const [confirmPasswordMessage, setConfirmPasswordMessage] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+
 
     /***
      * Check passwords entered match
@@ -35,8 +42,24 @@ const Register = () => {
         setConfirmPassword(input)
         if (input !== password) {
             setPasswordMessage("Passwords do not match");
+            return;
         } else {
             setPasswordMessage("Passwords match");
+        }
+    }
+
+    /***
+     * Check passwords entered match
+     * Reset re-entered password state
+     * @param {input}
+     */
+    const checkEmail = (input) => {
+        setConfirmEmail(input)
+        if (input !== confirmEmail) {
+            setConfirmEmailMessage("Email addresses do not match!");
+            return;
+        } else {
+            setPasswordMessage("Match!");
 
         }
     }
@@ -45,8 +68,9 @@ const Register = () => {
      * Handles the form submission for user registration.
      *
      * - Prevents the default form submission 
-     * - Checks if the password and the confirmation password match. If they don't, it sets an error message
-     * - If the passwords match, the submit button is enabled
+     * - Checks if the password and the confirmation password match. If they don't, it sets an error message and exits the funtion
+     * - If the passwords match, the submit button is enabled.
+     * - Checks if the password and the confirmation password match. If they don't, it sets an error message and exits the funtion
      * - Sends a POST request to the registration endpoint with the user's details
      * - Handles the response from the server
      * 
@@ -55,15 +79,8 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // prevents the default form submition
 
-        // check if the password and re-entered password match
-        if (confirmPassword !== password) {
-            // set the message state indicating that the passwords do not match
-            setPasswordMessage("Passwords do not match");
-            return; // Stop form submission
-        } else {
-            setPasswordMessage(''); // reset the password message if passwords match
-        }
-
+        checkPassword(); // check if the password and re-entered password match
+        checkEmail()     // check if the email address and confrim email address match
 
         try {
 
@@ -96,25 +113,125 @@ const Register = () => {
     }
 
     return (
-        <div>
-            <h2>Register</h2>
-            <form onSubmit={handleSubmit}>
-                <label>Name</label>
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-                <label>Last name</label>
-                <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                <label>Email</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                {emailMessage && <p>{emailMessage}</p>}
-                <label>Password</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                <label>Re-enter password</label>
-                <input type="password" value={confirmPassword} onChange={(e) => checkPassword(e.target.value)} required />
-                {passwordMessage && <p>{passwordMessage}</p>}
-                <button type="submit">Register</button>
-            </form>
-            {message && <p>{message}</p>}
-        </div>
+        <Container id="register_form_wrapper">
+            <Row >
+                <Heading tagName="h3" id="reg_heading" text="SignUp" />
+
+            </Row>
+            <Container id="register_form_container">
+
+
+                <Row id="register_form_holder">
+                    <Row >{message && <p>{message}</p>}</Row>
+                    <Form onSubmit={handleSubmit} id="reg_form">
+
+                        <Row id="reg_user_details_holder" className='reg_form_details_holder'>
+                            <Col>
+                                {/******** { user name } ********/}
+                                <Form.Group controlId="reg_Name">
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="breed"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                {/******** { user last name } ********/}
+                                <Form.Group controlId="reg_LastName">
+                                    <Form.Label>Last name</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="lastName"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                            </Col>
+
+                        </Row>
+
+                        <Row id="reg_email_holder" className='reg_form_details_holder'>
+                            <Col>
+                                {/******** { email address } ********/}
+                                <Form.Group controlId="reg_email">
+                                    <Form.Label>Email Address</Form.Label>
+                                    <Form.Control
+                                        type="email"
+                                        name="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                                {emailMessage && <p>{emailMessage}</p>}
+
+                            </Col>
+                            <Col>
+                                {/******** { email address confirmation } ********/}
+                                <Form.Group controlId="reg_confirmEmail">
+                                    <Form.Label>Confirm Email Address</Form.Label>
+                                    <Form.Control
+                                        type="email"
+                                        name="confirmEmail"
+                                        value={confirmEmail}
+                                        onChange={(e) => setConfirmEmail(e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                                {confirmEmailMessage && <p>{confirmEmailMessage}</p>}
+
+                            </Col>
+
+                        </Row>
+                        <Row id="reg_password_holder" className='reg_form_details_holder'>
+                            <Col>
+                                {/******** { password } ********/}
+                                <Form.Group controlId="reg_password">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control
+                                        type="passsword"
+                                        name="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                                {password && <p>{passwordMessage}</p>}
+
+                            </Col>
+                            <Col>
+                                {/******** { password} ********/}
+                                <Form.Group controlId="reg_confirmPassword">
+                                    <Form.Label>Confirm Password</Form.Label>
+                                    <Form.Control
+                                        type="password"
+                                        name="confirmPassword"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        required
+
+                                    />
+                                </Form.Group>
+                                {confirmPasswordMessage && <p>{confirmPasswordMessage}</p>}
+
+                            </Col>
+
+                        </Row>
+                        <Row >
+
+                            <button type="submit" id="reg_submit_button" className="btn btn-primary" >Go!</button>
+
+                        </Row>
+                    </Form>
+                </Row>
+
+            </Container>
+        </Container>
     )
 };
 

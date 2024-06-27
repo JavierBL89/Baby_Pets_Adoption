@@ -21,7 +21,6 @@ import useFetchPets from "../../../hooks/data/fetchPets";
  */
 const PetCategoriesHolder = () => {
 
-    const { isAuthenticated } = useContext(AuthContext);
 
     const { currentPetCategory, petsData, setCurrentPetCategory, resetPetsData } = useContext(DataPetContext);
     const { loading, error, totalPages, loadMore, pages } = useFetchPets();
@@ -56,11 +55,6 @@ const PetCategoriesHolder = () => {
                 </Col>
             </Row>
             <Row>
-                {!isAuthenticated ? (
-                    <div>
-                        <p>Sign in to access adoption services</p>
-                    </div>
-                ) : null}
             </Row>
             <Container>
                 {loading && <Spinner animation="border" role="status">

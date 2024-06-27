@@ -4,6 +4,8 @@
 package com.example.bb_pets_adoption.pet_listing.controller;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,8 +43,11 @@ import com.example.bb_pets_adoption.email.EmailService;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
 import com.example.bb_pets_adoption.pet_listing.model.Pet;
+import com.example.bb_pets_adoption.pet_listing.model.PetList;
+import com.example.bb_pets_adoption.pet_listing.service.PetListDateDescendingComparator;
+import com.example.bb_pets_adoption.pet_listing.service.PetListDateAscendingComparator;
 import com.example.bb_pets_adoption.pet_listing.service.PetServiceImpl;
-
+import com.example.bb_pets_adoption.pet_listing.service.S3Service;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -57,7 +63,7 @@ public class PetController {
 
 	// vars
 	PetServiceImpl petServiceImpl;
-	
+	S3Service s3Service;
 
 	// create an instance of Logger
 	private static final Logger logger = LoggerFactory.getLogger(PetController.class);
@@ -67,8 +73,9 @@ public class PetController {
 	  * Constructor injection for PetServiceImpl
 	  * */
 	 @Autowired
-	 public PetController( PetServiceImpl petServiceImpl) {
+	 public PetController( PetServiceImpl petServiceImpl, S3Service s3Service) {
 	        this.petServiceImpl = petServiceImpl;
+	        this.s3Service = s3Service;
 	        
 	    }
 	
@@ -166,6 +173,11 @@ public class PetController {
 		// if user is authenticated proceed to create a a new pet and assocciate this with the user pet listings
 		if (petServiceImpl.authenticateUserByToken(token)) {
 			
+			// upload images to S3 and get URLs
+		    String petImgUrl = petImg != null ? s3Service.uploadFile(petImg) : null;
+		    String motherImgUrl = motherImg != null ? s3Service.uploadFile(motherImg) : null;
+		    String fatherImgUrl = fatherImg != null ? s3Service.uploadFile(fatherImg) : null;
+			
 			Pet newPet;
 			// define the type of pet object to be instantiated
 			if(category.equals("cat")) {
@@ -186,12 +198,12 @@ public class PetController {
                     newPet.setBirthDate(LocalDate.of(Integer.parseInt(birthYear), Integer.parseInt(birthMonth), 1));
                     newPet.setProviderId(foundUser.get().getUserId());
                     newPet.setMotherBreed(motherBreed);
-                    newPet.setMotherImg(motherImg != null ? motherImg.getBytes() : null);  // Convert to byte array
+                    newPet.setMotherImg(motherImgUrl);  // Convert to byte array
                     newPet.setFatherBreed(fatherBreed);
-                    newPet.setFatherImg(fatherImg != null ? fatherImg.getBytes() :null);  // Convert to byte array
+                    newPet.setFatherImg(fatherImgUrl);  // Convert to byte array
                     newPet.setPrice(Float.parseFloat(price));
                     newPet.setComment(comment);
-                    newPet.setPetImg(petImg != null ? petImg.getBytes() : null);  // Convert to byte array
+                    newPet.setPetImg(petImgUrl != null ? petImgUrl : null);  // Convert to byte array
 				}
 				
 				// pass new pet, and user Optional objects to service 
@@ -212,6 +224,128 @@ public class PetController {
 		}
 		
 			
+	}
+	
+	
+	/**
+	 * Endpoint to handle GET requests and retrieve paginated lists of pet listings
+	 *  associated to the authenticated user
+	 * 
+	 * The parameters passed defined the number of pages and the number of items per page to retreive
+	 * E.g   pageNo 1, items 20
+	 *       pageNo 2, items 20 + 20
+	 * 
+	 * GET /pets/my_listings?token=token&page?page=0&size=10
+	 * 
+	 * @param token - the current session authentication token
+	 * @param pageNo - the page number to retrieve is 0 as default and updated on each request
+     * @param pageSize the number of records per page. It is set to 20 as default i not specified in request
+     * @return a Page object containing the paginated list of cats
+	 * */
+	@GetMapping("/my_listings")
+	public ResponseEntity<?>  getMyListings(
+			@RequestParam (value = "token", required = false)  String token,
+			@RequestParam (value = "order", required = false)  String order,
+			@RequestParam (value = "pageNo", defaultValue ="0", required = false)  int pageNo, 
+			@RequestParam (value = "pageSize", defaultValue = "6", required = false) int pageSize){
+		
+	    
+		// check if user is authenticated
+		if(petServiceImpl.authenticateUserByToken(token)) {
+			
+		    		
+			// try and double check user authentication,
+			// then create Pageable object,
+			// then delegate data fetching request proccess to PetServiceImpl
+			try {
+			
+					 List<PetList> petList = petServiceImpl.getUserPetList(token);
+					 
+					 // check if list is null
+					 if(petList == null ) {
+						 logger.info("Pet list is null");
+					    return ResponseEntity.status(500).body("Error retrieving pet listings. List is null");
+					 }
+					 
+					 // check if param indicates ascending or descendig order
+					 if(order.equals("asc")) {
+						 
+						 // sort the pet list from latest to oldest
+				         Collections.sort(petList, new PetListDateAscendingComparator());
+				         
+						 logger.info("List sorted in ascending order. Sending list...");
+						 return ResponseEntity.ok(petList);
+
+					 } else {
+						 // sort the pet list from oldest to the latest
+				         Collections.sort(petList, new PetListDateDescendingComparator());	
+				         
+						 logger.info("List sorted in ascending order.  Sending list...");
+				         return ResponseEntity.ok(petList);
+					 }
+					 
+					 
+			}catch(Exception e) {
+				return ResponseEntity.status(500).body("Error retrieving pet listings: " + e.getMessage());
+			}
+			
+		}else {
+			logger.info("Unauthorized user");
+            return ResponseEntity.status(403).body("Unauthorized");
+
+		}
+		   
+		
+	}
+	
+	
+	/**
+	 *
+	 ***/
+	@DeleteMapping("/delete_pet")
+	public ResponseEntity<String> deletePetList(
+			     @RequestParam (value="token", required=false) String token,
+			     @RequestParam(value="petListId", required=false)  String petListId ){
+		
+
+		// handle null value token
+	    if (token == null || token.isEmpty()) {
+	        logger.error("Authorization token is missing");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization token is missing");
+	    }
+	    
+	    // log passed values
+	    logger.info("Received token: " + token);
+	    logger.info("Received petListId: " + petListId);
+	    
+		try {
+		    // check if user is authenticated
+		    if(petServiceImpl.authenticateUserByToken(token)) { 
+			
+			     Optional<User> foundUser = petServiceImpl.findUserByToken(token);
+			     if(foundUser.isPresent()) {  
+				 
+				      petServiceImpl.deletePetList(petListId);   // pass petList id
+				
+				      logger.info("Pet successfully removed from user listings");
+	                  return ResponseEntity.ok("Pet successfully removed from you listings");
+	            
+			      }else {
+	                   logger.info("User not found");
+	                   return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found or unauthorized");
+	               }
+			     
+		       }else {
+		    	   
+			        logger.info("Unauthorized user");
+	                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized user");
+		        }
+			  
+		 }catch (Exception e) {
+			
+              logger.error("Error deleting PetList: " + e.getMessage());
+              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting PetList: " + e.getMessage());      
+	 }
 	}
 	
 }

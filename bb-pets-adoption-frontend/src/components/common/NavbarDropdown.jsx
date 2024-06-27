@@ -18,7 +18,7 @@ import NavLinkComponent from "./NavLinkComponent";
 */
 const NavbarDropDown = () => {
 
-    const { isAuthenticated, logout } = useContext(AuthContext);
+    const { isAuthenticated, logout, userName } = useContext(AuthContext);
 
 
     const token = localStorage.getItem('token');
@@ -26,25 +26,31 @@ const NavbarDropDown = () => {
     return (
         <NavDropdown
             id="nav-dropdown-dark-example"
-            title="Dropdown"
+            title={userName ? userName : "Account"}
             menuVariant="light"
         >
-            <NavDropdown.Item href="#action/3.1">
+            <NavDropdown.Item as="span">
                 <NavLinkComponent id="profile_link_nav" href={`#profile/?token=${token}`} text="Profile" />
             </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
+
+            <NavDropdown.Item as="span">
                 <NavLinkComponent id="profile_link_nav" href={`/list_new_pet/${token}`} text="List a Pet" />
             </NavDropdown.Item>
 
-            <NavDropdown.Item href="#action/3.2">
+            <NavDropdown.Item as="span">
+                <NavLinkComponent id="myListings_link_nav" href={`/my_listings/${token}`} text="My Listings" />
+            </NavDropdown.Item>
+
+            <NavDropdown.Item as="span">
                 <NavLinkComponent id="profile_link_nav" href={`/notifications/${token}`} text="Notifications" />
             </NavDropdown.Item>
 
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">
-                <NavLinkComponent id="signout_link_nav" onClic={() => logout()} href={"#signOut"} text="SignOut" />
 
+            <NavDropdown.Divider />
+            <NavDropdown.Item as="span">
+                <NavLinkComponent id="signout_link_nav" onClick={() => logout()} href={""} text="SignOut" />
             </NavDropdown.Item>
+
         </NavDropdown>
 
     )

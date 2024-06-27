@@ -4,8 +4,8 @@ import { AuthContext } from "../context/AuthContext";
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Stack } from "react-bootstrap";
 import PetCategoriesHolder from "./pet/components/pet_categories/PetCategoriesHolder";
-import PetListingHolder from "./pet/components/pet_listing/PetListingHolder";
 import AdoptionInfoComponent from "./AdoptionInfoComponent";
+import WelcomeComponent from "./pet/components/WelcomeComponent";
 
 
 /***
@@ -22,6 +22,7 @@ const Home = () => {
 
 
         <Stack>
+            <WelcomeComponent />
             <PetCategoriesHolder />
             <AdoptionInfoComponent />
         </Stack>

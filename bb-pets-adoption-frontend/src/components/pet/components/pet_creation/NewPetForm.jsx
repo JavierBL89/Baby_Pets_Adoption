@@ -4,6 +4,7 @@ import Heading from "../../../common/Heading";
 import ButtonComponent from "../../../common/ButtonComponent";
 import instance from "../../../../scripts/axiosConfig";
 import { useParams } from "react-router-dom";
+import TextComponent from "../../../common/TextComponent";
 
 
 
@@ -13,7 +14,7 @@ import { useParams } from "react-router-dom";
 * submitting pet information. Here is a summary of what the code is doing: 
 
 */
-const FormComponent = ({ action, className, id }) => {
+const FormComponent = () => {
 
     const [message, setMessage] = useState("");   // message state
     const { token } = useParams();      // grab token from url for user authentication
@@ -108,11 +109,12 @@ const FormComponent = ({ action, className, id }) => {
                 });
 
                 if (response.status === 200) {
-                    console.log('Form submitted successfully:', response.data);
                     setMessage("Form successfuly submitted!" +
                         "\n You should see the new pet list on your listings.");
+
                 } else {
-                    console.error('Form submission failed:', response.data);
+                    console.error("Form submission failed:", response.data);
+                    setMessage("Form coild not be submited. A server error occured. Please try again or contact admin to inform about the problem. ")
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
@@ -329,6 +331,12 @@ const FormComponent = ({ action, className, id }) => {
                 <Row>
                     <button id="list_pet_submit_button" className="btn btn-primary" type="submit">submit</button>
 
+                </Row>
+                <Row >
+                    {message &&
+                        <TextComponent text={message} />
+
+                    }
                 </Row>
             </Form>
             {/* {submitted && <p>Form submitted successfully!</p>} */}

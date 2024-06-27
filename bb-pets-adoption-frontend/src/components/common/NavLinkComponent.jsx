@@ -9,9 +9,9 @@ import { Nav } from 'react-bootstrap';
  * @prop text - the desired text
  * @prop text - the class name
  */
-const NavLinkComponent = ({ href, text, className, id }) => {
+const NavLinkComponent = ({ href, text, className, id, onClick }) => {
     return (
-        <Nav.Link href={href} className={className}>
+        <Nav.Link onClick={() => onClick()} href={href} id={id} className={className}>
             {text}
         </Nav.Link>
     );

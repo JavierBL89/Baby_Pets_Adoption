@@ -15,6 +15,7 @@ import com.example.bb_pets_adoption.auth.model.User;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
 import com.example.bb_pets_adoption.pet_listing.model.Pet;
+import com.example.bb_pets_adoption.pet_listing.model.PetList;
 
 /**
  * Interface defines common pet operations
@@ -122,6 +123,24 @@ public interface PetService<T> {
 			   *@param token - string token of user's current session 
 			   **/
 			  Optional<User> findUserByToken(String token);
+			  
+			  
+			  
+			  /**
+			   * Method for removing the current pet list from database
+			   * 
+			   * @param petList - the pet list id
+			   * **/
+			  void deletePetList(String petListId) throws Exception;
+			  
+			  
+			  /**
+			   * Method for removing a user from database
+			   * 
+			   * @param petList - the pet list instance
+			   * **/
+			  void deleteUser(User user);
+			  
 			  
 			  
 			  

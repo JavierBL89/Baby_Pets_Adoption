@@ -3,13 +3,16 @@
  */
 package com.example.bb_pets_adoption.auth.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.pet_listing.model.PetList;
 
 /**
  * UserRepository is the interface to storage, retreive, and search operations on User objects.
@@ -35,5 +38,7 @@ public interface UserRepository extends MongoRepository<User, ObjectId>{
      * @return an Optional that will contain the found User or empty if no User is found
      */
 	Optional<User> findByToken(String token);
+	
+	
 
 }

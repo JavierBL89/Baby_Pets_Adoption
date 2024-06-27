@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
     // state to keep track of whether the user is authenticated or not
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [registeredBy, setRegisteredBy] = useState("");
+    const [userName, setUserName] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -67,7 +68,9 @@ const AuthProvider = ({ children }) => {
      * Logout function to remove the token from localStorage and update the authentication state
      */
     const logout = () => {
+        console.log("PUTS");
         localStorage.removeItem("token");
+        console.log(localStorage.getItem("token") + "PUTS");
         setIsAuthenticated(false);   // reset state to false
         setRegisteredBy("");  // clear state
         navigate("/"); // redirect to home page after successful logout
@@ -75,7 +78,10 @@ const AuthProvider = ({ children }) => {
 
     // pass the authentication state and functions to the component tree
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, setRegisteredBy, registeredBy }}>
+        <AuthContext.Provider value={{
+            isAuthenticated, login, logout, setRegisteredBy, registeredBy,
+            setUserName, userName
+        }}>
             {children}
         </AuthContext.Provider>
     )

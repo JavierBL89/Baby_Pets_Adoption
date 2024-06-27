@@ -12,6 +12,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 /**
@@ -30,19 +32,18 @@ public abstract class Pet {
 	private String category;     // Cat or Dog
 	private String breed;
 	@Field
-	private byte [] petImg;
+	private String petImg;
 	private String comment;
 	private LocalDate birthDate;
 	private String location;
 	private String motherBreed;
 	@Field
-    private byte [] motherImg;
+    private String motherImg;
     private String fatherBreed;
     @Field
-    private byte [] fatherImg;
+    private String fatherImg;
 	private float price;
 	private String[] tags;
 	
-	@DBRef
     private List<PetList> posts; // list of posts related to the pet
 }

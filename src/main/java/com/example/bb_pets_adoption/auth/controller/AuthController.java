@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -86,7 +87,7 @@ public class AuthController {
      * @param user The user object containing registration details
      * @return A message indicating whether if registration was successful or not
      */
-	@PostMapping("/auth/register")
+	@PostMapping(value="/auth/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(@RequestBody User user) {
 		// log
 		logger.info("Registering user with email: {}", user.getEmail());
@@ -159,7 +160,7 @@ public class AuthController {
 			logger.info("PUTAAA " + user.getToken());
 			logger.info("PUTOOO " + token);
 		    response.put("registeredBy", foundUser.get().getRegisteredBy());  // send it with response message
-			
+			response.put("userName", foundUser.get().getName());
 			//log
 			logger.info("Login successful for user with email: {}", user.getEmail());
 			return ResponseEntity.status(201).body(response);
