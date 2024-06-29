@@ -98,7 +98,7 @@ public class SecurityConfiguration {
 	                        .requestMatchers("/auth/register/**", "/auth/forgot_password/**", "/pets/kitties", "/pets/kitties/view/**", "/pets/puppies", "/pets/puppies/view/**",
 	                        		"/pets/kitties/filter_by", "/pets/list_pet", "/pets/puppies/filter_by", "/auth/login/**", "/auth/logout/**", 
 	                        		"/pets/my_listings", "/auth/reset_password/**", "/oauth2/**", "/login",
-	                        		"/pets/delete_pet").permitAll()
+	                        		"/pets/delete_pet", "/pets/update_pet").permitAll()
 	                     
 	                        // Secure other endpoints
 	                        .requestMatchers(HttpMethod.POST, "/adoption").authenticated()

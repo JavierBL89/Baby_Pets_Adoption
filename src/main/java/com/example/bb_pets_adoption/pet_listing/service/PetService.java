@@ -142,7 +142,5 @@ public interface PetService<T> {
 			  void deleteUser(User user);
 			  
 			  
-			  
-			  
 	
 }

@@ -16,6 +16,7 @@ import PaymentPolicy from "./components/PaymentPolicy";
 import PetDetailsView from "../src/components/pet/components/pet_view/PetDetailsView";
 import ListNewPet from "../src/components/pet/components/pet_creation/ListNewPet";
 import MyListings from "../src/components/management/components/listings_management/MyListings";
+import PetUpdate from "../src/components/pet/components/pet_update/PetUpdate";
 
 import "./css/petListing.css";
 import "./css/forms.css";
@@ -49,6 +50,7 @@ function App() {
               <Route path="/auth/reset_password" element={<PasswordReset />} />
               <Route path="/pets/:currentPetCategory/view/:petId" element={<PetDetailsView />} />
               <Route path="/list_new_pet/:token" element={<ListNewPet />} />
+              <Route path="/update_pet/:petObjectString/:petListingId/:token" element={<PetUpdate />} />
               <Route path="/verify_account/:token" element={<VerifyAccount />} />
               <Route path="/my_listings/:token" element={<MyListings />} />
               <Route path="/data_deletion" element={<DataDeletionInstructions />} />

@@ -114,7 +114,6 @@ const useFetchPets = () => {
     */
     useEffect(() => {
         if (pages[currentPetCategory]) {
-            console.log("lajbcisdbcbsdci");
             fetchData(true);  // 'true' set boolean to allow and append new data to the existing list
         }
     }, [fetchData, pages]);

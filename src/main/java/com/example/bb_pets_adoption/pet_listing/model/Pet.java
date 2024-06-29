@@ -28,7 +28,8 @@ public abstract class Pet {
 	
 	@Id
 	private ObjectId id;
-	private ObjectId providerId;
+	private ObjectId userId;
+	private ObjectId petListId;
 	private String category;     // Cat or Dog
 	private String breed;
 	@Field

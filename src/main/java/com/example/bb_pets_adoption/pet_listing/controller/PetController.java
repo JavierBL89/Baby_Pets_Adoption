@@ -44,10 +44,13 @@ import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
 import com.example.bb_pets_adoption.pet_listing.model.Pet;
 import com.example.bb_pets_adoption.pet_listing.model.PetList;
+import com.example.bb_pets_adoption.pet_listing.model.PetUpdateData;
 import com.example.bb_pets_adoption.pet_listing.service.PetListDateDescendingComparator;
 import com.example.bb_pets_adoption.pet_listing.service.PetListDateAscendingComparator;
 import com.example.bb_pets_adoption.pet_listing.service.PetServiceImpl;
 import com.example.bb_pets_adoption.pet_listing.service.S3Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -140,7 +143,7 @@ public class PetController {
 	 * 
 	 * @param token     The authentication token to verify the user.
      * @param formData  The data of the pet to be created.
-     * @return ResponseEntity with a message indicating the result of the operation.
+     * @return ResponseEntity - an HTTP JSON object response with useful information about the request output
 	 * **/
 	@PostMapping(value= "/list_pet", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)		
 	public ResponseEntity<?> createPet(
@@ -196,7 +199,7 @@ public class PetController {
 					newPet.setBreed(breed);
 					newPet.setLocation(location);
                     newPet.setBirthDate(LocalDate.of(Integer.parseInt(birthYear), Integer.parseInt(birthMonth), 1));
-                    newPet.setProviderId(foundUser.get().getUserId());
+                    newPet.setUserId(foundUser.get().getUserId());
                     newPet.setMotherBreed(motherBreed);
                     newPet.setMotherImg(motherImgUrl);  // Convert to byte array
                     newPet.setFatherBreed(fatherBreed);
@@ -241,6 +244,7 @@ public class PetController {
 	 * @param pageNo - the page number to retrieve is 0 as default and updated on each request
      * @param pageSize the number of records per page. It is set to 20 as default i not specified in request
      * @return a Page object containing the paginated list of cats
+     *  @return ResponseEntity - an HTTP JSON object response with useful information about the request output
 	 * */
 	@GetMapping("/my_listings")
 	public ResponseEntity<?>  getMyListings(
@@ -300,7 +304,17 @@ public class PetController {
 	
 	
 	/**
-	 *
+	 * Endpoint to receive and manage pet DELETE requests
+	 * 
+	 * Steps:
+	 * 1. Check for token null values
+	 * 2. Authenticate user with passed token
+	 * 3. Ensure user exists on repository
+	 * 4. Call deletePetList() on PetServiceImpl to handle pet delete operation
+	 * 
+	 * @param token - the current session token
+	 * @param petListId - the id of the petList instance to be deleted
+	 * @return ResponseEntity - an HTTP JSON object response with useful information about the request output
 	 ***/
 	@DeleteMapping("/delete_pet")
 	public ResponseEntity<String> deletePetList(
@@ -318,10 +332,11 @@ public class PetController {
 	    logger.info("Received token: " + token);
 	    logger.info("Received petListId: " + petListId);
 	    
+	    
 		try {
 		    // check if user is authenticated
 		    if(petServiceImpl.authenticateUserByToken(token)) { 
-			
+			    // ensure user exists in db
 			     Optional<User> foundUser = petServiceImpl.findUserByToken(token);
 			     if(foundUser.isPresent()) {  
 				 
@@ -347,6 +362,112 @@ public class PetController {
               return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting PetList: " + e.getMessage());      
 	 }
 	}
+	
+	
+	/**
+	 * Endpoint to update an existing pet.
+	 * 
+	 * This method handles updating a pet's information based on the provided form data and images.
+	 * 
+	 * Steps:
+	 * 1. Check for null value on the passed token and ensure it's authenticated
+	 * 2. Remove any possible token "Barear" 
+	 * 3. Authenticate the user using the passed token
+	 * 4. Upload images into AWS S3 bucket and retrieve their URLs
+	 * 5. Create a PetUpdateData object to store the form data data fileds passsed in a object (PetUpdateData)
+	 * 6. Pass the authenticated user and PetUpdateData object to the petServiceImpl for handling repository operations
+	 * 
+     * @return ResponseEntity - an HTTP JSON object response with useful information about the request output
+	 */
+	@PostMapping(value= "/update_pet", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)		
+	public ResponseEntity<?> updatePet(
+			@RequestParam("token") String token,
+		    @RequestParam("petListingId") String petListingId,
+		    @RequestParam("petId") String petId,
+		    @RequestParam(value="category", required=false) String category,
+		    @RequestParam(value= "breed") String breed,
+		    @RequestParam(value="location") String location,
+		    @RequestParam(value="birthMonth") String birthMonth,
+		    @RequestParam(value="birthYear") String birthYear,
+		    @RequestParam(value="motherBreed") String motherBreed,
+		    @RequestPart(value="motherImg", required=false) MultipartFile motherImg,
+		    @RequestParam(value="fatherBreed", required=false) String fatherBreed,
+		    @RequestPart(value="fatherImg", required=false) MultipartFile fatherImg,
+		    @RequestParam(value="price") String price,
+		    @RequestParam(value="comment", required=false) String comment){
+	
+		
+	        
+	    logger.info(petListingId);
+	    
+	    if (token == null) {
+	        logger.error("Authorization token is missing");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization token is missing");
+	    }
+	    
+	    
+	    // remove Bearer prefix if present
+	    token = token.replace("Bearer ", token);
+	    logger.info("Received token: " + token);
+		
+	    
+		// if user is authenticated proceed to create a a new pet and assocciate this with the user pet listings
+		if (petServiceImpl.authenticateUserByToken(token)) {
+				
+
+		    
+		    // instantiate PetUpdateData to capture the form data passed in an object for data managing and methods communication
+		    PetUpdateData formData = new PetUpdateData();
+		    
+		    formData.setPetId(petId);  // object id need to be string to set form
+		    formData.setCategory(category);
+		    formData.setBreed(breed);
+		    formData.setLocation(location);
+	        // create a LOcalDate instance and set values with parsed data
+		    formData.setBirthMonth(birthMonth);
+		    formData.setBirthYear(birthYear);
+		    formData.setMotherBreed(motherBreed);
+		    formData.setMotherImg(motherImg);
+		    formData.setFatherBreed(fatherBreed);
+		    formData.setFatherImg(fatherImg);
+		    formData.setPrice(price);
+		    formData.setComment(comment);
+			   
+			   
+			// try and double check user authentication, 
+			// handle foundUser and formData(as PetUpdateData object) to  petServiceImpl.updatePet() for update operation task
+			try {
+				if (petServiceImpl.authenticateUserByToken(token)) {
+					
+	                Optional<User> foundUser = petServiceImpl.findUserByToken(token);
+	                User user = foundUser.get(); // cast optional into a User
+	                
+	                // delegate operation with object params (Optima<user>, PetList , PetUpdateData)
+	                petServiceImpl.updatePet(user, petListingId, formData);   
+	                
+	                return ResponseEntity.ok("Pet updated successfully");
+	                
+				} else {
+					
+					logger.info("Not found user");
+					return ResponseEntity.status(404).body("User could not be found"); 
+			     }
+				
+			}catch(Exception e) {
+				logger.info("Error updating pet: " + e.getMessage());
+                return ResponseEntity.status(500).body("Error updating pet: " + e.getMessage());
+			}
+						
+		}else {
+			logger.info("Unauthorized user");
+            return ResponseEntity.status(403).body("Unauthorized");
+
+		}
+		
+			
+	}
+	
+	
 	
 }
 

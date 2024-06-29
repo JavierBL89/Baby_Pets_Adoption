@@ -6,6 +6,7 @@ package com.example.bb_pets_adoption.pet_listing.model;
 
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -19,7 +20,9 @@ import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -33,8 +36,9 @@ import lombok.Data;
  * It uses MongoDb annotation to map the object and use the appropiate database collection
  * It uses Lombok @Data annotation to generate getters, setters and the useful toString()
  */
-@Data
-@Document(collection = "pet_listings")
+@Data                  // This annotation generates getters, setters, toString, equals, and hashCode methods 
+@NoArgsConstructor     // This annotation generates a no-argument constructor
+@AllArgsConstructor    // This annotation generates an all-argument constructor@Document(collection = "pet_listings")
 public class PetList{
 
 	@Id

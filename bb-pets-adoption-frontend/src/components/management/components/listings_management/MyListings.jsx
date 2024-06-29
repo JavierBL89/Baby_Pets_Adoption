@@ -3,9 +3,10 @@ import { Container, Row, Col, Stack, Spinner, Button } from "react-bootstrap";
 import Heading from "../../../common/Heading";
 import TimeStampComponent from "./TimeStampComponent";
 import CardList from "./CardList";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../../../scripts/axiosConfig";
 import TextComponent from "../../../common/TextComponent";
+import ButtonComponent from "../../../common/ButtonComponent";
 
 
 /***
@@ -27,8 +28,7 @@ const MyListings = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [orderBy, setOrderBy] = useState("asc");
 
-    // amazon S3 services base URL
-    const awsS3baseURL = "https://baby-pets-adoption.s3.eu-west-1.amazonaws.com/"
+    const navigate = useNavigate();
 
     const fetchListingsData = useCallback(async () => {
 
@@ -46,8 +46,8 @@ const MyListings = () => {
             if (response.status === 200) {
 
                 if (response.data && response.data.length > 0) {
-                    console.log(response.data);
-                    // format Dtae objects before being passed to "CardList"
+
+                    // format Date objects before setting data state
                     const formattedListings = response.data.map(listing => ({
                         ...listing,
                         createdOn: new Date(...listing.createdOn).toLocaleDateString(), // Convert array to date string
@@ -69,7 +69,8 @@ const MyListings = () => {
             setLoading(false);
         }
 
-    }, [token]);
+    }, [token, page, orderBy]);
+
 
 
     /***
@@ -77,26 +78,23 @@ const MyListings = () => {
      */
     const handleDelete = async (objectId) => {
 
-
         if (!token) {
 
             setMessage("Operation cannot be processed. Missing authenication token")
             return;
         }
 
-        const trimmedToken = token.trim();
+        const trimmedToken = token.trim();   // eliminate any possible white spaces
 
         if (objectId) {
 
-            console.log(objectId);
-            console.log(token);
             try {
                 // DELETE request
                 const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
                 if (response.status === 200) {
-                    fetchListingsData();
+                    fetchListingsData();    // reload page with new data
                     // set feedback message to be ddiplayed for 3 seconds
-                    setMessage("Pet successfully removed from our listings.")
+                    setMessage("Pet successfully removed from your listings.")
                     setTimeout(() => {
                         setMessage("");
                     }, 3000);
@@ -119,13 +117,18 @@ const MyListings = () => {
 
     };
 
+
     /***
      * 
      */
-    const handleUpdate = (objectId) => {
+    const handleUpdate = (petObject, petListingId) => {
 
-
+        // serialize listing object into a JSON string to pass it in URL param
+        const petObjectString = encodeURIComponent(JSON.stringify(petObject));
+        // redirect to
+        navigate(`/update_pet/${petObjectString}/${petListingId}/${token}`);
     };
+
 
     /****
      * useEffect listens to changes on 'page', 'token', 'fetchListingsData'
@@ -135,7 +138,7 @@ const MyListings = () => {
 
         fetchListingsData();
 
-    }, [page, token, orderBy, setOrderBy, fetchListingsData])
+    }, [page, token, orderBy, fetchListingsData])
 
 
     /****
@@ -152,8 +155,15 @@ const MyListings = () => {
 
         <Container id="my_listings_wrapper">
             <Container id="my_listings_container">
-                <Row >
 
+                <Row > { /***** CREATE NEW PET BUTTON  *****/}
+                    <Col xs={3}>
+                        <a id="create_new_pet" href={`/list_new_pet/${token}`} className="btn btn-primary" >List a New Pet</a>
+
+                    </Col>
+                </Row>
+                <Row >
+                    { /****** FILTER LISTINGS  *****/}
                     <Col xs={3} id="my_listings_period_holder">
                         <Row >
                             <Heading tagName="h6" id="my_listings_period_title" text="From" />
@@ -161,10 +171,7 @@ const MyListings = () => {
                         <Row>
                             <Stack>
                                 {
-
-                                    /*******
-                                             LOGIC HERE
-                                         */
+                                    /*******     LOGIC HERE    */
                                     <TimeStampComponent />
                                 }
 
@@ -172,6 +179,8 @@ const MyListings = () => {
                             </Stack>
                         </Row>
                     </Col>
+
+                    { /*************** PET LISTINGS  *********************/}
                     <Col xs={9}>
                         <Row >
                             <TextComponent id="my_listings_message" text={message && message} />
@@ -182,19 +191,25 @@ const MyListings = () => {
 
                                 {
 
-                                    listings && listings.map((listing, index) => {
+                                    listings && listings.map((petListing, index) => {
 
 
                                         return (
                                             <CardList key={index}
                                                 id={index}
-                                                motherImage={listing.pet.motherImg}
-                                                motherBreed={listing.pet.motherBreed}
-                                                createdOn={listing.createdOn}
-                                                price={listing.pet.price}
-                                                birthDate={listing.pet.birthDate}
-                                                objectId={listing.id}
+                                                // this field is crucial to retreive the obeject on back-end for updating functionality
+                                                petListing={petListing}
+                                                petId={petListing.id}
+                                                motherImage={petListing.pet.motherImg}
+                                                motherBreed={petListing.pet.motherBreed}
+                                                createdOn={petListing.createdOn}
+                                                price={petListing.pet.price}
+                                                birthDate={petListing.pet.birthDate}
+                                                petCreatedOn={petListing.createdOn}
+                                                petUpdatedOn={petListing.updatedOn}
+                                                // delete listing button passes the petId
                                                 onDelete={handleDelete}
+                                                // update listing button (pass the entire listing object)
                                                 onUpdate={handleUpdate}
 
                                             />)
@@ -208,6 +223,7 @@ const MyListings = () => {
                         </Row>
 
                     </Col>
+                    { /*************** LOADING SPINNER  *********************/}
                     {loading && <Spinner animation="border" />}
                     {!loading && page < totalPages - 1 && (
                         <Button onClick={loadMoreListings} disabled={loading}>

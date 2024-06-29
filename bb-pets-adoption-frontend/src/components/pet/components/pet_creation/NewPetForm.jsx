@@ -30,10 +30,10 @@ const FormComponent = () => {
         motherBreed: "",
         motherImg: "",
         fatherBreed: "",
-        fatherImg: "",
+        fatherImg: "https://baby-pets-adoption.s3.eu-west-1.amazonaws.com/2.jfif",
         price: "",
         comment: "",
-        token: ""
+        token: ""   // current session token neede for authentication
     });
 
     /**
@@ -94,7 +94,7 @@ const FormComponent = () => {
         formDataToSend.append('fatherImg', formData.fatherImg);
         formDataToSend.append('price', formData.price);
         formDataToSend.append('comment', formData.comment);
-        formDataToSend.append('token', token.trim());
+        formDataToSend.append('token', token.trim());    // current session token neede for authentication
 
 
         if (token) {

@@ -34,10 +34,6 @@ const NavbarDropDown = () => {
             </NavDropdown.Item>
 
             <NavDropdown.Item as="span">
-                <NavLinkComponent id="profile_link_nav" href={`/list_new_pet/${token}`} text="List a Pet" />
-            </NavDropdown.Item>
-
-            <NavDropdown.Item as="span">
                 <NavLinkComponent id="myListings_link_nav" href={`/my_listings/${token}`} text="My Listings" />
             </NavDropdown.Item>
 

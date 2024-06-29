@@ -211,7 +211,8 @@ input:-webkit-autofill,
 
 
 #create_pet_wrapper,
-#register_form_wrapper {
+#register_form_wrapper,
+#update_pet_wrapper {
 
     min-width: 700px;
     max-width: 990px;
@@ -236,7 +237,8 @@ input:-webkit-autofill,
 
 
 #create_pet_container .parents_info_holder,
-#register_form_wrapper #register_form_container {
+#register_form_wrapper #register_form_container,
+#update_pet_wrapper .update_pet_info_wraper {
 
     padding: 15px;
     border: 1px solid;
@@ -426,6 +428,33 @@ input:-webkit-autofill,
     cursor: pointer;
 
 }
+
+
+/************************* UPDATE PET*/
+
+
+#update_pet_wrapper .update_pet_img_holder {
+    height: inherit;
+}
+
+
+#update_pet_wrapper .update_pet_img_holder img {
+
+    width: 100%;
+}
+
+#update_pet_wrapper .update_pet_info_wraper .row,
+#update_pet_wrapper .update_pet_info_wraper .row .col,
+#update_pet_wrapper .update_pet_info_holder .row,
+#update_pet_wrapper .update_pet_info_holder div {
+    margin: 0;
+}
+
+#update_pet_wrapper #formBirthMonth .form-control,
+#update_pet_wrapper #formBirthYear .form-control {
+    height: 10px;
+}
+
 
 
 /* 
