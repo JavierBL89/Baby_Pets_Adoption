@@ -62,7 +62,7 @@ public class AdoptionApplicationController {
             @RequestParam("comments") String comments) {
     	
 
-        //// handle null value token
+        // handle null value token
 	    if (token == null) {
 	        logger.error("Authorization token is missing");
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization token is missing");
@@ -138,19 +138,53 @@ public class AdoptionApplicationController {
 
     
     /***
+     * Endpoint to receive and manage PUT request to update an adoption application
      * 
+     * 1. Check for token null value
+     * 2. Authenticate user by the token passed
+     * 3. Delegate object update process to AdoptionApplicationServiceImpl
      * 
+     * @RequestParam {String} applicationIdString - the applicationId to work on
+     * @RequestParam {String} token - current session token for user authentication
+     * @RequestParam {String} status) - the new application status to be set
      * **/
-    @PutMapping("/updateStatus/{id}")
-    public ResponseEntity<AdoptionApplication> updateApplicationStatus(
-            @PathVariable ObjectId id,
-            @RequestParam("status") String status) {
-        AdoptionApplication updatedApplication = adoptionApplicationServiceImpl.updateApplicationStatus(id, status);
-        if (updatedApplication != null) {
-            return ResponseEntity.ok(updatedApplication);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/updateStatus")
+    public ResponseEntity<?> updateApplicationStatus(
+    		@RequestParam String applicationIdString,
+            @RequestParam("token") String token,
+            @RequestParam("status") String status)  {
+    	
+    	
+        // handle null value token
+   	    if (token == null) {
+   	        logger.error("Authorization token is missing");
+   	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization token is missing");
+   	    }
+   	    
+   	    
+   	    // try and catch any errors during application update process
+   	    try {
+   	        // if user is authenticated proceed to update application
+   	 		if (adoptionApplicationServiceImpl.authenticateUserByToken(token)) {
+   	 		       	 			
+   	 			    // delegate operation to service @params ( String applicationIdString, String status)
+   	 				adoptionApplicationServiceImpl.updateApplicationStatus(applicationIdString, status);
+   	              					
+   	 		}else {
+   	 			
+   	 			logger.info("Unauthorized user");
+   	 			return ResponseEntity.status(403).body("Unauthorized user");
+   	 		}
+   	 		
+   	    } catch (Exception e) {
+   	        logger.error("Error creating updating application", e);
+   	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating adoption application: " + e.getMessage());
+   	    }
+   	    
+   	    logger.info("Application successfully updated");
+   	    return ResponseEntity.status(200).body("Application successfully updated");
+    	
+ 
     }
 
     

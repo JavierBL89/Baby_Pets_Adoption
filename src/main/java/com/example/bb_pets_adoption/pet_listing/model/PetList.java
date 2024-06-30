@@ -13,7 +13,6 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.bb_pets_adoption.auth.model.User;
@@ -21,12 +20,9 @@ import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
 import com.example.bb_pets_adoption.search.controller.SearchController;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 /**
@@ -62,6 +58,7 @@ public class PetList{
     private LocalDate createdOn;
     private LocalDate updatedOn;
     
+    private String status;   // 'available'(default), 'hidden' , 'unavailable'
     /// consturictor initializes adoptionApplicationIDs list
     public PetList() {
     	

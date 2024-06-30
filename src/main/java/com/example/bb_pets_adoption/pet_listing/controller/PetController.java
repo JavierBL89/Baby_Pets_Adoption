@@ -189,12 +189,12 @@ public class PetController {
 				newPet = new Dog();
 			}
 			
-			// try and double check user authentication, 
+			// Find user in database
 			// then set values of the newpet Object with the passed parameters
-			// then delegate pet storing proccess to petServiceImpl
+			// then delegate pet cretion proccess to petServiceImpl
 			try {
 				Optional<User> foundUser = petServiceImpl.findUserByToken(token);
-				if(foundUser.isPresent()) {  // double check user authentication
+				if(foundUser.isPresent()) { 
 					newPet.setCategory(category);
 					newPet.setBreed(breed);
 					newPet.setLocation(location);
@@ -207,9 +207,13 @@ public class PetController {
                     newPet.setPrice(Float.parseFloat(price));
                     newPet.setComment(comment);
                     newPet.setPetImg(petImgUrl != null ? petImgUrl : null);  // Convert to byte array
+                    // get tagsList and add tags into it
+                    List<String> tagsList = newPet.getTags();
+                    tagsList.add(location);     
+                    tagsList.add(motherBreed);
 				}
 				
-				// pass new pet, and user Optional objects to service 
+				// Delegate operation to PetServiceImpl (Optional user, Pet newPet )
 				petServiceImpl.savePet(foundUser, newPet);
 				
 				logger.info("New Pet successfully saved");

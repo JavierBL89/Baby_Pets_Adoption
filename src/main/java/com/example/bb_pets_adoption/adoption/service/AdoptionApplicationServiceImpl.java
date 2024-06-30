@@ -29,7 +29,7 @@ import com.example.bb_pets_adoption.search.controller.SearchController;
 @Service
 public class AdoptionApplicationServiceImpl implements AdoptionApplicationService{
 
-	
+	// vars
     AdoptionApplicationRepository adoptionApplicationRepository;
 	AuthenticationServiceImpl authenticationServiceImpl;
 	UserRepository userRepository;
@@ -127,9 +127,9 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	@Override
 	public AdoptionApplication createApplication(String petIdString, User user, String comments) throws Exception {
 		
+		// check if object petIdString is null or empty and convert into n ObjectId    
 		ObjectId petId;
-		// check if object petId is null or not a valid hexstring       
-		if(petIdString != null || !petIdString.isEmpty()) {
+		if(petIdString != null) {
 			
 			 petId = new ObjectId(petIdString); // convert string IDs into an ObjectId
 			 
@@ -166,10 +166,9 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 
                 return application;
         	 
-         }else {
-        	 
+         }else {       	 
         	 throw new Exception("PetList asssociated to pet id " + petId + " was not found.");
-         }
+         } 
          
 		}catch(Exception e) {
 			
@@ -180,22 +179,63 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 
 	
 	/**
+	 * Method responsible for handling application status update
 	 * 
+	 * Steps:
+	 * 1. Check applicationIdString for null value and convert into OjectId
+     * 2. Find the AdoptionApplication by ID in repository
+     * 3. Set with statues and save changes
+     * 
+	 * @param {String} applicationIdString - the applicationId to work on
+	 * @param {String} status - the new application status to be set
 	 * **/
 	@Override
-	public AdoptionApplication updateApplicationStatus(ObjectId id, String status) {
-		 Optional<AdoptionApplication> applicationOpt = adoptionApplicationRepository.findById(id);
-	        if (applicationOpt.isPresent()) {
-	            AdoptionApplication application = applicationOpt.get();
-	            application.setStatus(status);
-	            return adoptionApplicationRepository.save(application);
+	public AdoptionApplication updateApplicationStatus(String applicationIdString, String status) throws Exception{
+		
+		// check if object applicationIdString is null or empty and convert into an ObjectId   
+		ObjectId applicationId;  
+		if(applicationIdString != null) {	
+			
+			applicationId = new ObjectId(applicationIdString); // convert string IDs into an ObjectId		 
+		}else {
+			throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
+		}
+		
+		
+		// find the AdoptionApplication, set new status and save
+		try {
+		    Optional<AdoptionApplication> foundApplication = adoptionApplicationRepository.findById(applicationId);
+	       
+		    if (foundApplication.isPresent()) {
+	            AdoptionApplication application = foundApplication.get();  // cast optional into AdoptionApplication
+	            application.setStatus(status);   // set with new status
+	            
+	            return adoptionApplicationRepository.save(application);  // save changes
+	        }else {
+	        	
+	        	throw new Exception("Application was not found.");
 	        }
-	        return null;
+	        
+		}catch(Exception e) {
+			
+			throw new Exception("Error creating adoption aplication. " + e.getMessage());
+
+		}
 	}
 
 	
 	/**
+	 * Method manages and handle the deletion of a specific adoption application selected by the user
 	 * 
+	 * Steps:
+	 * 1. Check for petIdString null or empty value
+     * 2. Check for applicationIdString null or empty value
+     * 3. Convert petIdString into an ObjectId for repository operations
+     * 4. Convert applicationIdString into an ObjectId for repository operations
+     * 5. Find a store the PetList instance associated to the pet
+     * 6. Find the AdoptionApplication in database
+     * 7. Delete the AdoptionApplication from the Petlist adoptionApplicationsIDs list
+     * 8. Delete the AdoptionApplication instance from database
 	 * **/
 	@Override
 	public void deleteApplication(User user ,String petIdString, String applicationIdString) throws Exception{
@@ -210,6 +250,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 			   throw new Exception ("Invalid applicationId provided. Application ID is null or empty");
 		}
 	    
+		
 		
 		// convert string IDs into an ObjectId
 		ObjectId petId; 
@@ -228,30 +269,28 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	    }
 		
 		
+		
+		
 		// try and find the Petlist object related to the current pet by the petId
 		PetList petList;
-		try {
-			
+		try {			
             Optional<PetList> foundPetList = petListRepository.findByPetId(petId);
             if(foundPetList.isPresent()) {
-            	petList = foundPetList.get();
-            }else {
-           	 
+            	petList = foundPetList.get();  // cast optional into Petlist
+            }else {          	 
            	 throw new Exception("PetList asssociated to pet id " + petId + " was not found.");
             }               
-		}catch(Exception e) {
-			
-			throw new Exception("Error retrieving PetList related to pet ID " + petId + " " + e.getMessage());
+		}catch(Exception e) {		
+ 		throw new Exception("Error retrieving PetList related to pet ID " + petId + " " + e.getMessage());
 		}
 		
 		
 		
-		 //try and find and delete the AdoptionApplication instance
+		
+		 //find and delete the AdoptionApplication instance
         try {
-             Optional<AdoptionApplication> foundApplication = adoptionApplicationRepository.findById(applicationId);
-    
+             Optional<AdoptionApplication> foundApplication = adoptionApplicationRepository.findById(applicationId);  
              if(foundApplication.isPresent()) {
-
             	   // remove application id from PetList adoptionApplicationIds list
             	    petList.removeApplicationId(applicationId);
             	    petListRepository.save(petList); // save changes to PetList
@@ -259,17 +298,14 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
             	    // delete adoption application
                     adoptionApplicationRepository.deleteById(applicationId);
             	    logger.info("Adoption application successfully deleted");
-
-             }else {
-            	 
+             }else {       	 
             	 throw new Exception("PetList asssociated to pet id " + petId + " was not found.");
-             }
-             
-    		}catch(Exception e) {
-    			
+             }           
+    		}catch(Exception e) {  			
     			throw new Exception("Error deleting adoption aplication." + e.getMessage(), e);
     	}
 	}
+	
 	
 	
 	

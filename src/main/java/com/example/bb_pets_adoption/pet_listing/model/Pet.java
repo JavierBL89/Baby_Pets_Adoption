@@ -4,6 +4,7 @@
 package com.example.bb_pets_adoption.pet_listing.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,13 @@ public abstract class Pet {
     @Field
     private String fatherImg;
 	private float price;
-	private String[] tags;
+	private  List<String> tags;
 	
     private List<PetList> posts; // list of posts related to the pet
+    
+    // constructor initialises arrayList
+    public Pet() {
+    	this.tags = new ArrayList<>();
+    }
+    
 }

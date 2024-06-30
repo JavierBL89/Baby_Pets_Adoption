@@ -51,7 +51,7 @@ public interface AdoptionApplicationService {
     /***
      * 
      ***/
-    public AdoptionApplication updateApplicationStatus(ObjectId id, String status);
+    public AdoptionApplication updateApplicationStatus(String applicationIdString, String status) throws Exception;
 
     
     /***

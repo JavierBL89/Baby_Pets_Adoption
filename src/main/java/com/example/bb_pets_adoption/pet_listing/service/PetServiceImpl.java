@@ -262,6 +262,7 @@ public class PetServiceImpl implements PetService{
 			newPetList.setUserId(user.getUserId());
 			newPetList.setPet(newPet);
 			newPetList.setPetId(newPet.getId());   // pets need to be saved before this step to ensure the ID is generated
+			newPetList.setStatus("available");
 			petListRepository.save(newPetList);
 			
 		}catch(Exception error) {
