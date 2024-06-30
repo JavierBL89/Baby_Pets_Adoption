@@ -5,10 +5,13 @@ package com.example.bb_pets_adoption.pet_listing.model;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,6 +20,7 @@ import com.example.bb_pets_adoption.auth.model.User;
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
+import com.example.bb_pets_adoption.search.controller.SearchController;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -37,19 +41,32 @@ import lombok.NoArgsConstructor;
  * It uses Lombok @Data annotation to generate getters, setters and the useful toString()
  */
 @Data                  // This annotation generates getters, setters, toString, equals, and hashCode methods 
-@NoArgsConstructor     // This annotation generates a no-argument constructor
 @AllArgsConstructor    // This annotation generates an all-argument constructor@Document(collection = "pet_listings")
+@Document(collection = "pet_listings") // Marks this class as a MongoDB PetList document
 public class PetList{
 
+	
+	// create an instance of Logger
+    private static final Logger logger = LoggerFactory.getLogger(SearchController.class);
+    
+    
 	@Id
     private ObjectId id;
     
 	private ObjectId userId; // reference to the User who created the post
     
-    private Pet pet; // reference to the Pet related to the post
+    private Pet pet;         // Pet object related to the post
+    private ObjectId petId;  // reference to the Pet related to the post
+    private List<ObjectId> adoptionApplicationIDs;
     
     private LocalDate createdOn;
     private LocalDate updatedOn;
+    
+    /// consturictor initializes adoptionApplicationIDs list
+    public PetList() {
+    	
+    	this.adoptionApplicationIDs = new ArrayList<>();
+    }
     
     
     /**
@@ -72,4 +89,26 @@ public class PetList{
     	 }
     }
 
+    /**
+     * Method to removed an adoption application ID from adoptionApplicationIDs List 
+     * 
+     * @param catRepository - the Cat repository
+     * @param dogRepository - the Dog repository
+     * **/
+    public void removeApplicationId(ObjectId applicationID) throws Exception{
+    	
+    	  if (applicationID == null) {
+              throw new Exception("Application ID cannot be null");
+          }
+    	  
+    	  // try removing the element and grab the returned boolean to use it as a flag
+    	  boolean applicationRemoved = adoptionApplicationIDs.remove(applicationID);
+
+          if (applicationRemoved) {
+              logger.info("Adoption application successfully removed from PetList with id " + this.getId());
+          } else {
+              throw new Exception("Adoption application ID " + applicationID + " was not found in user adoptionApplicationIDs list");
+          }
+    	
+    }
 }

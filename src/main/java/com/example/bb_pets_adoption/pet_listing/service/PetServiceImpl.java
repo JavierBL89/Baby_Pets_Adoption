@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationService;
+import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationServiceImpl;
 import com.example.bb_pets_adoption.auth.model.User;
 import com.example.bb_pets_adoption.auth.repository.UserRepository;
 import com.example.bb_pets_adoption.auth.service.AuthenticationServiceImpl;
@@ -46,6 +48,7 @@ public class PetServiceImpl implements PetService{
 	private DogRepository dogRepository;
 	private PetListRepository petListRepository;
 	private AuthenticationServiceImpl authenticationServiceImpl;
+	private AdoptionApplicationServiceImpl adoptionApplicationServiceImpl;
 	UserRepository userRepository;
 	S3Service s3Service;
 
@@ -67,13 +70,14 @@ public class PetServiceImpl implements PetService{
 	@Autowired
     public PetServiceImpl(CatRepository catRepository, DogRepository dogRepository, UserRepository userRepository,
     		AuthenticationServiceImpl authenticationServiceImpl, PetListRepository petListRepository,
-    		 S3Service s3Service) {
+    		 S3Service s3Service, AdoptionApplicationServiceImpl adoptionApplicationServiceImpl) {
         this.catRepository = catRepository;
         this.dogRepository = dogRepository;
         this.authenticationServiceImpl = authenticationServiceImpl;
         this.petListRepository = petListRepository;
         this.s3Service = s3Service;
         this.userRepository = userRepository;
+        this.adoptionApplicationServiceImpl = adoptionApplicationServiceImpl;
     }
 
 	
@@ -257,6 +261,7 @@ public class PetServiceImpl implements PetService{
 			newPetList.setCreatedOn(LocalDate.now());
 			newPetList.setUserId(user.getUserId());
 			newPetList.setPet(newPet);
+			newPetList.setPetId(newPet.getId());   // pets need to be saved before this step to ensure the ID is generated
 			petListRepository.save(newPetList);
 			
 		}catch(Exception error) {
@@ -374,15 +379,32 @@ public class PetServiceImpl implements PetService{
 			throw new Exception("An error occured and the PetList object could not be removed from database. " + e.getMessage());
 			
 		}
-		
 	}
 
 	
+	/**
+	* Method for removing all related adoption applications
+	* Uses AdoptionApplicationServiceImpl service for delete operation
+	* Traces any exceptions during process
+	* 
+	* @param petId - the petId to search for
+	 * **/
+	@Override
+	public void deleteAdoptionApplications(ObjectId petId) {
+
+		try {		
+			adoptionApplicationServiceImpl.deleteAllApplicationsByPetId(petId);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}  
+ 
+	}
 	
 	/**
 	* Method for removing a user from database
 	* 
-	* @param petList - the pet list instance
+	* @param user - the user instance
 	 * **/
 	@Override
 	public void deleteUser(User user) {

@@ -262,7 +262,6 @@ public class PetController {
 			// then create Pageable object,
 			// then delegate data fetching request proccess to PetServiceImpl
 			try {
-			
 					 List<PetList> petList = petServiceImpl.getUserPetList(token);
 					 
 					 // check if list is null

@@ -135,6 +135,14 @@ public interface PetService<T> {
 			  
 			  
 			  /**
+				* Method for removing all related adoption applications
+				* 
+				* @param petId - the petId to search for
+				 * **/
+				public void deleteAdoptionApplications(ObjectId petId);
+				
+				
+			  /**
 			   * Method for removing a user from database
 			   * 
 			   * @param petList - the pet list instance
