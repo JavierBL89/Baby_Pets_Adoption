@@ -193,6 +193,16 @@ position: absolute;
     /* Responsive height */
 }
 
+#pet_adoption_wrapper {
+    margin-top: 100px;
+
+}
+
+#adoption_form_accordion_wrapper {
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
 /*********************************** COMMON FORM */
 
 /***** Override autofill default style behavoir ****/

@@ -57,11 +57,11 @@ public class AdoptionApplicationController {
      * **/
     @PostMapping("/apply")
     public ResponseEntity<?> applyForAdoption(
-            @RequestParam("petId") String petIdString,
-            @RequestParam("token") String token,
-            @RequestParam("comments") String comments) {
+            @RequestParam(value="petId", required=false) String petIdString,
+            @RequestParam(value="token", required=false) String token,
+            @RequestParam(value="comments", required=false) String comments) {
     	
-
+    logger.info(petIdString);
         // handle null value token
 	    if (token == null) {
 	        logger.error("Authorization token is missing");

@@ -8,6 +8,7 @@ import ImageComponent from "../../../common/ImageComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
 import TextComponent from "../../../common/TextComponent";
 import useFetchById from "../../../hooks/data/fetchById";
+import PetAdoptionComponent from "../pet_adoption/PetAdoptionComponent";
 
 
 
@@ -16,8 +17,8 @@ const PetDetailsView = () => {
     const { petId } = useParams();
 
     const { isAuthenticated } = useContext(AuthContext);
-    // const { petData } = useContext(DataPetContext);
 
+    // const { petData } = useContext(DataPetContext);
 
     const { loading, error, petData } = useFetchById(petId);
 
@@ -66,22 +67,23 @@ const PetDetailsView = () => {
                                 </Row>
                             </Row>
 
-                            <Row >
-                                {/* <Row>
-                                    <ButtonComponent href={"#"} id="adoption_request_button" text="Go for it!" className="" />
-                                    </Row> */}
-                                {
-                                    isAuthenticated ? <ButtonComponent onClick={handleClick} text="Go for it!" id="adoption_button" />
-                                        :
-
-                                        <TextComponent
-                                            text="Only subscribed users have access to adoption services" />
-
-                                }
-                            </Row>
                         </Col>
                     </Row>
                 }
+
+                <Row >
+                    {/* <Row>
+                                    <ButtonComponent href={"#"} id="adoption_request_button" text="Go for it!" className="" />
+                                    </Row> */}
+                    {
+                        isAuthenticated ? <PetAdoptionComponent petId={petId} />
+                            :
+
+                            <TextComponent
+                                text="Only subscribed users have access to adoption services !" />
+
+                    }
+                </Row>
             </Container>
         </Container>
     );
