@@ -26,6 +26,13 @@ const PetCategoriesHolder = () => {
     const { loading, error, totalPages, loadMore, pages } = useFetchPets();
 
 
+    /***
+     * useEffect resets data to empty on every render
+     */
+    useEffect(() => {
+        resetPetsData();
+    }, [resetPetsData]);
+
     /**
        * Sets category state based on user selection
        * 

@@ -24,13 +24,23 @@ const MyListings = () => {
     const [message, setMessage] = useState("");
     const [listings, setListings] = useState([]);
     const [page, setPage] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(0);
     const [orderBy, setOrderBy] = useState("asc");
 
     const navigate = useNavigate();
 
+
+    /*****
+     * 
+     * 
+     * 
+     * 
+     */
     const fetchListingsData = useCallback(async () => {
+
+        setListings([]);   // reset to empty before every render
+
 
         if (!token) {
             console.error("Missing authentication token. GET request could not be initiated");
@@ -41,27 +51,29 @@ const MyListings = () => {
         setLoading(true);
         try {
 
-            const response = await instance.get(`/pets/my_listings?token=${token}&order=${orderBy}&page=${page}&size=6`);
+            const response = await instance.get(`/pets/my_listings?token=${token}&order=${orderBy}&pageNo=${page}&page=${page}&size=6`);
 
             if (response.status === 200) {
+                console.log(response.data);
 
-                if (response.data && response.data.length > 0) {
+                if (response.data && response.data.petList && response.data.petList != null && response.data.petList.length > 0) {
 
+                    console.log(response.data.petList);
                     // format Date objects before setting data state
-                    const formattedListings = response.data.map(listing => ({
+                    const formattedListings = response.data.petList.map(listing => ({
                         ...listing,
                         createdOn: new Date(...listing.createdOn).toLocaleDateString(), // Convert array to date string
                         birthDate: new Date(...listing.pet.birthDate).toLocaleDateString() // Convert array to date string
                     }));
+
                     setListings(formattedListings);
                     setTotalPages(response.data.totalPages);
                 } else {
                     setMessage("No results.");
                 }
             } else {
-                throw new Error(`HTTP error status: ${response.status}`);
+                throw new Error(`HTTP error status: ${response.error}`);
             }
-
         } catch (error) {
             setMessage("Error while retrieving data. Please try again later." + error.message);
             throw new Error("Error while retrieving data: " + error.message);
@@ -79,7 +91,6 @@ const MyListings = () => {
     const handleDelete = async (objectId) => {
 
         if (!token) {
-
             setMessage("Operation cannot be processed. Missing authenication token")
             return;
         }
@@ -92,25 +103,17 @@ const MyListings = () => {
                 // DELETE request
                 const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
                 if (response.status === 200) {
+                    setListings([]);   // reset to empty before every render
                     fetchListingsData();    // reload page with new data
-                    // set feedback message to be ddiplayed for 3 seconds
-                    setMessage("Pet successfully removed from your listings.")
-                    setTimeout(() => {
-                        setMessage("");
-                    }, 3000);
                 } else {
 
                     console.error("Item could not be removed:", response.data);
                     setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
                 }
-
             } catch (error) {
                 console.error('Error deleting item:', error);
-
             }
-
         } else {
-
             setMessage("Item could not be deleted. Logout and try again")
             console.error("Missing object Id to complete operation. Please ensure variable 'objectId' is defined.");
         }
@@ -163,7 +166,7 @@ const MyListings = () => {
                     </Col>
                 </Row>
                 <Row >
-                    { /****** FILTER LISTINGS  *****/}
+                    { /**************** FILTER LISTINGS  ***********/}
                     <Col xs={3} id="my_listings_period_holder">
                         <Row >
                             <Heading tagName="h6" id="my_listings_period_title" text="From" />
@@ -174,29 +177,27 @@ const MyListings = () => {
                                     /*******     LOGIC HERE    */
                                     <TimeStampComponent />
                                 }
-
-
                             </Stack>
                         </Row>
                     </Col>
 
-                    { /*************** PET LISTINGS  *********************/}
+                    { /******************************* PET LISTINGS  ******************************/}
                     <Col xs={9}>
-                        <Row >
-                            <TextComponent id="my_listings_message" text={message && message} />
-                        </Row>
-                        <Row id="my_listings_list_wrapper">
 
-                            <Col id="my_listings_list_holder">
+                        <Row id="my_listings_list_holder">
+                            { /*************** LOADING SPINNER  *********************/}
+                            {loading &&
+                                <Row id="my_listings_spinner_holder">
+                                    <Spinner animation="border" />
+                                </Row>}
 
-                                {
-
-                                    listings && listings.map((petListing, index) => {
-
-
+                            {
+                                listings.length > 0 ? (
+                                    listings.map((petListing, index) => {
                                         return (
                                             <CardList key={index}
                                                 id={index}
+                                                token={token}
                                                 // this field is crucial to retreive the obeject on back-end for updating functionality
                                                 petListing={petListing}
                                                 petId={petListing.id}
@@ -214,17 +215,18 @@ const MyListings = () => {
 
                                             />)
                                     })
+                                ) : <>
+                                    <Row >
+                                        <TextComponent id="my_listings_message" text={message && message} />
+                                    </Row>
+                                </>
+                            }
 
-                                }
 
-
-                            </Col>
 
                         </Row>
 
                     </Col>
-                    { /*************** LOADING SPINNER  *********************/}
-                    {loading && <Spinner animation="border" />}
                     {!loading && page < totalPages - 1 && (
                         <Button onClick={loadMoreListings} disabled={loading}>
                             Load More

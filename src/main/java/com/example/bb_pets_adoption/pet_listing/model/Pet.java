@@ -13,7 +13,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.example.bb_pets_adoption.auth.model.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -29,7 +31,9 @@ public abstract class Pet {
 	
 	@Id
 	private ObjectId id;
-	private ObjectId userId;
+	private ObjectId ownerId;
+	private String ownerName;
+
 	private ObjectId petListId;
 	private String category;     // Cat or Dog
 	private String breed;

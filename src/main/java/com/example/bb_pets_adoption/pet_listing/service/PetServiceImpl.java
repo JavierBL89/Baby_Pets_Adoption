@@ -185,7 +185,11 @@ public class PetServiceImpl implements PetService{
 	}
 
     /**
+    * Method handles user authentication using the cuurent session token 
+    * by calling the Authentication Service and passing in the token
     * 
+    * @param {String} token - the current session token
+    * @return boolean
     * */
 	@Override
 	public boolean authenticateUserByToken(String token) {
@@ -195,13 +199,15 @@ public class PetServiceImpl implements PetService{
 
 
     /**
+     * Method to find a user in repository using the current session token 
      * 
-     * **/
+    * @param {String} token - the current session token
+    * @return user - the found user in db or an empty object if not found
+    * */
 	@Override
 	public Optional<User> findUserByToken(String token) {
 
-		Optional<User> user = userRepository.findByToken(token);
-        
+		Optional<User> user = userRepository.findByToken(token);     
 		return user;
 	}
 

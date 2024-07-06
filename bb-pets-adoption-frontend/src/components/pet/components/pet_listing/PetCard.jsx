@@ -4,6 +4,7 @@ import ButtonComponent from "../../../common/ButtonComponent";
 import { useNavigate } from "react-router-dom";
 import { DataPetContext } from '../../../../context/DataPetContext';
 import useFetchById from "../../../hooks/data/fetchById";
+import TextComponent from "../../../common/TextComponent";
 
 
 /** 
@@ -12,9 +13,9 @@ import useFetchById from "../../../hooks/data/fetchById";
  * @param {string} img - pet's image
  * @param {string} breed - pet's breed type
  * */
-const PetCard = ({ img, breed, petId, onView }) => {
+const PetCard = ({ img, breed, petId, onView, location, price }) => {
 
-
+    console.log(breed);
     // isLoaded flag is used to ensure that the pet image is only displayed when fully loaded
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
@@ -58,24 +59,45 @@ const PetCard = ({ img, breed, petId, onView }) => {
     return (
 
         <Container className="m-auto pet_card_wrapper" id="" >
-            <Container className="m-auto p-0" id="pet_card_container">
+            <Container className="m-auto p-0 pet_card_container">
+
                 {isLoaded &&
-                    <>
-                        <Container className="img_holder p-0">
+                    <>  {/********** Card head ************/}
+                        <Row className="petCard_head pt-2">
+                            <Col >
+                                <TextComponent text="Mother's pic" />
+                            </Col>
+                            <Col className="petCard_price ">
+                                {price ?
+                                    <TextComponent text={`Selling: ${price}€ e`} />
+                                    :
+                                    <TextComponent text={`Free adoption`} />
+                                }
+
+                            </Col>
+                        </Row>
+
+                        {/********** Image holder ************/}
+                        <Container className="img_holder ">
                             <img src={img} alt={breed} />
                         </Container>
+
+                        {/********** Card body ************/}
+                        <Row className="m-0">
+                            <Col className="pet_card_detail_holder">
+                                <TextComponent text={breed} />
+                            </Col>
+                            <Col className="pet_card_detail_holder">
+                                <TextComponent text={location} />
+                            </Col>
+                        </Row>
+                        {/********** Card button ************/}
                         <Row className="p-0">
-                            <Col className="">
-                                <p>{breed}</p>
-                            </Col>
-                        </Row>
-                        <Row className="">
-                            <Col className="text-center">
-                                <ButtonComponent onClick={() => handleView(petId)} text="View this beauty" />
+                            <Col className="text-center p-0">
+                                <ButtonComponent onClick={() => handleView(petId)} text="View this beauty" className="btn view_pet_button" />
                             </Col>
 
                         </Row>
-
                     </>
 
                 }

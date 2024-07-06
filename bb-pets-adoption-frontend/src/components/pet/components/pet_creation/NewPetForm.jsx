@@ -3,7 +3,7 @@ import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import Heading from "../../../common/Heading";
 import ButtonComponent from "../../../common/ButtonComponent";
 import instance from "../../../../scripts/axiosConfig";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import TextComponent from "../../../common/TextComponent";
 
 
@@ -17,7 +17,10 @@ import TextComponent from "../../../common/TextComponent";
 const FormComponent = () => {
 
     const [message, setMessage] = useState("");   // message state
+    const [isForSale, setIsForSale] = useState(false);   // message state
     const { token } = useParams();      // grab token from url for user authentication
+
+    const navigate = useNavigate();
 
     // form data state
     const [formData, setFormData] = useState({
@@ -30,8 +33,8 @@ const FormComponent = () => {
         motherBreed: "",
         motherImg: "",
         fatherBreed: "",
-        fatherImg: "https://baby-pets-adoption.s3.eu-west-1.amazonaws.com/2.jfif",
-        price: "",
+        fatherImg: "",
+        price: "0.0",
         comment: "",
         token: ""   // current session token neede for authentication
     });
@@ -100,7 +103,7 @@ const FormComponent = () => {
         if (token) {
 
             try {
-
+                console.log(formData.price);
 
                 const response = await instance.post('/pets/list_pet', formDataToSend, {
                     headers: {
@@ -109,8 +112,7 @@ const FormComponent = () => {
                 });
 
                 if (response.status === 200) {
-                    setMessage("Form successfuly submitted!" +
-                        "\n You should see the new pet list on your listings.");
+                    navigate(`/my_listings/${token}`);
 
                 } else {
                     console.error("Form submission failed:", response.data);
@@ -131,17 +133,19 @@ const FormComponent = () => {
         <Container >
             <Form onSubmit={handleSubmit} id="list_pet_form">
 
+                {/********************************* Pet Details Section **************************/}
+
                 <Container className="parents_info_wraper">
-                    <Row>
+                    <Row>{/******** { Section Heading  } ********/}
                         <Heading tagName="h6" text="Pet List Information" className="form_parents_info_title" />
                     </Row>
                     <Container className="parents_info_holder">
+
                         <Row >
                             {/******** { pet category } ********/}
                             <Col id="pet_category_holder" xs={4}>
                                 <Row id="pet_category_row">
                                     <Col xs={6}>
-
                                         <Form.Group controlId="formPetCategoryCat">
                                             <Form.Label>Cat</Form.Label>
                                             <Form.Check
@@ -150,28 +154,24 @@ const FormComponent = () => {
                                                 checked={formData.petCategory === "cat"}
                                                 value={"cat"}
                                                 onChange={handleChange}
-
                                             />
                                         </Form.Group>
                                     </Col>
                                     <Col xs={6}>
                                         <Form.Group controlId="formPetCategoryDog">
                                             <Form.Label>Dog</Form.Label>
-
                                             <Form.Check
                                                 type="radio"
                                                 name="petCategory"
                                                 checked={formData.petCategory === "dog"}
                                                 value={"dog"}
                                                 onChange={handleChange}
-
                                             />
                                         </Form.Group>
                                     </Col>
-
                                 </Row>
-
                             </Col>
+
                             <Col xs={8}>
                                 {/******** { pet's breeed } ********/}
                                 <Form.Group controlId="formBreed">
@@ -187,8 +187,8 @@ const FormComponent = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row >
-                            <Col xs={6} id="pet_birth_date_holder">
+                        <Row>
+                            <Col xs={12} lg={6} id="pet_birth_date_holder">
                                 {/****************************  pet's birth date  **********************/}
                                 <Row  >
                                     <Col xs={6}>
@@ -220,32 +220,82 @@ const FormComponent = () => {
                                             />
                                         </Form.Group>
                                     </Col>
-
                                 </Row>
                                 {/*********************************/}
                             </Col>
 
-
-                            <Col >
-                                <Col xs={6}>
-                                    {/******** { pet's price } ********/}
-                                    <Form.Group controlId="formPrice">
-                                        <Form.Label>Price €</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="price"
-                                            value={formData.price}
-                                            onChange={handleChange}
-                                            placeholder="E.g: 0.00"
-                                            required
-                                        />
-                                    </Form.Group>
-                                </Col>
+                            <Col xs={12} lg={6} className="mt-0">
+                                <Row >
+                                    <Col className="mt-0">
+                                        {/******** { pet's location } ********/}
+                                        <Form.Group controlId="formLocation">
+                                            <Form.Label>location</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                name="location"
+                                                value={formData.location}
+                                                onChange={handleChange}
+                                                placeholder="Galway"
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
                             </Col>
-
-
                         </Row>
-                        {/******** {  comment } ********/}
+                        <Row >
+                            {/******** { Offer Type }********/}
+                            <Col xs={6}>
+                                <Row id="pet_offerType_row">
+                                    <Col xs={6}>
+                                        <Form.Group controlId="formOfferTypeAdoption">
+                                            <Form.Label>For Adoption</Form.Label>
+                                            <Form.Check
+                                                type="radio"
+                                                name="offerType"
+                                                value={"adoption"}
+                                                onClick={() => { setIsForSale(false) }}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={6}>
+                                        <Form.Group controlId="formOfferTypeSale">
+                                            <Form.Label>For Sale</Form.Label>
+                                            <Form.Check
+                                                type="radio"
+                                                name="offerType"
+                                                value={"sale"}
+                                                onClick={() => setIsForSale(true)}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            {/* conditional rendering */}
+                            {isForSale &&
+                                <Col xs={6}>
+                                    <Row >
+                                        <Col className="mt-0">
+                                            {/******** { pet's price } ********/}
+                                            <Form.Group controlId="formPrice">
+                                                <Form.Label>Price €</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="price"
+                                                    value={formData.price}
+                                                    onChange={handleChange}
+                                                    placeholder="E.g: 0.00"
+                                                    required
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
+                                    </Row>
+                                </Col>
+                            }
+                        </Row>
+
+                        {/******** {  comment  } ********/}
                         <Form.Group controlId="formComment" id="form_textarea">
                             <Form.Label>Any further information for potential adopters</Form.Label>
                             <Form.Control
@@ -260,11 +310,10 @@ const FormComponent = () => {
 
                 </Container>
 
-
-
+                {/********************************** Pet Parent's Section **********************/}
 
                 <Container className="parents_info_wraper">
-                    <Row>
+                    <Row>{/******** { Section Heading  } ********/}
                         <Heading tagName="h6" text="Pet Mother Info" className="form_parents_info_title" />
                     </Row>
                     <Container className="parents_info_holder">

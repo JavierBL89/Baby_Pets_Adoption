@@ -41,6 +41,9 @@ const NavbarDropDown = () => {
                 <NavLinkComponent id="profile_link_nav" href={`/notifications/${token}`} text="Notifications" />
             </NavDropdown.Item>
 
+            <NavDropdown.Item as="span">
+                <NavLinkComponent id="profile_link_nav" href={`/my_applications/${token}`} text="My Applications" />
+            </NavDropdown.Item>
 
             <NavDropdown.Divider />
             <NavDropdown.Item as="span">

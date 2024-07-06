@@ -4,10 +4,10 @@ import React from "react";
 /***
  * Component to represent a pargraph HTML elemnt
  */
-const TextComponent = ({ text, id, className }) => {
+const TextComponent = ({ onClick, text, id, className }) => {
 
     return (
-        <p id={id} className={className}>
+        <p id={id} onClick={onClick} className={className}>
             {text}
         </p>
     )

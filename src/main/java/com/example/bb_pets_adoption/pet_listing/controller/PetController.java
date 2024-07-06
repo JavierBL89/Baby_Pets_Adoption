@@ -189,17 +189,20 @@ public class PetController {
 				newPet = new Dog();
 			}
 			
+
 			// Find user in database
 			// then set values of the newpet Object with the passed parameters
 			// then delegate pet cretion proccess to petServiceImpl
 			try {
 				Optional<User> foundUser = petServiceImpl.findUserByToken(token);
+				
 				if(foundUser.isPresent()) { 
 					newPet.setCategory(category);
 					newPet.setBreed(breed);
 					newPet.setLocation(location);
                     newPet.setBirthDate(LocalDate.of(Integer.parseInt(birthYear), Integer.parseInt(birthMonth), 1));
-                    newPet.setUserId(foundUser.get().getUserId());
+                    newPet.setOwnerId(foundUser.get().getUserId());
+                    newPet.setOwnerName(foundUser.get().getName());
                     newPet.setMotherBreed(motherBreed);
                     newPet.setMotherImg(motherImgUrl);  // Convert to byte array
                     newPet.setFatherBreed(fatherBreed);
@@ -211,7 +214,10 @@ public class PetController {
                     List<String> tagsList = newPet.getTags();
                     tagsList.add(location);     
                     tagsList.add(motherBreed);
+					logger.info("putaa");
+
 				}
+				logger.info(newPet.toString());
 				
 				// Delegate operation to PetServiceImpl (Optional user, Pet newPet )
 				petServiceImpl.savePet(foundUser, newPet);
@@ -236,7 +242,9 @@ public class PetController {
 	
 	/**
 	 * Endpoint to handle GET requests and retrieve paginated lists of pet listings
-	 *  associated to the authenticated user
+	 * associated to the authenticated user
+	 * 
+	 * It also handles list sorting (asc, des). Check the value of 'order' passed and acts accordingly.
 	 * 
 	 * The parameters passed defined the number of pages and the number of items per page to retreive
 	 * E.g   pageNo 1, items 20
@@ -257,7 +265,8 @@ public class PetController {
 			@RequestParam (value = "pageNo", defaultValue ="0", required = false)  int pageNo, 
 			@RequestParam (value = "pageSize", defaultValue = "6", required = false) int pageSize){
 		
-	    
+	    Map<String, Object> response = new HashMap<>(); // instantiate a HashMap to send response message
+
 		// check if user is authenticated
 		if(petServiceImpl.authenticateUserByToken(token)) {
 			
@@ -271,7 +280,9 @@ public class PetController {
 					 // check if list is null
 					 if(petList == null ) {
 						 logger.info("Pet list is null");
-					    return ResponseEntity.status(500).body("Error retrieving pet listings. List is null");
+						 
+					    response.put("message", "Error retrieving pet listings. List is null");
+					    return ResponseEntity.status(500).body(response);
 					 }
 					 
 					 // check if param indicates ascending or descendig order
@@ -281,19 +292,23 @@ public class PetController {
 				         Collections.sort(petList, new PetListDateAscendingComparator());
 				         
 						 logger.info("List sorted in ascending order. Sending list...");
-						 return ResponseEntity.ok(petList);
+						 
+						 response.put("petList", petList);
+						 return ResponseEntity.status(200).body(response);
 
 					 } else {
 						 // sort the pet list from oldest to the latest
 				         Collections.sort(petList, new PetListDateDescendingComparator());	
 				         
 						 logger.info("List sorted in ascending order.  Sending list...");
-				         return ResponseEntity.ok(petList);
+						 response.put("petList", petList);
+						 return ResponseEntity.status(200).body(response);
 					 }
 					 
 					 
 			}catch(Exception e) {
-				return ResponseEntity.status(500).body("Error retrieving pet listings: " + e.getMessage());
+				response.put("message", "Error retrieving pet listings: " + e.getMessage());
+				return ResponseEntity.status(500).body(response);
 			}
 			
 		}else {

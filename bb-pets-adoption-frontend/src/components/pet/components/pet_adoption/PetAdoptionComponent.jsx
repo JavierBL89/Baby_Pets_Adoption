@@ -9,13 +9,12 @@ import PetAdoptionForm from "./PetAdoptionForm";
 
 
 /***
- * Component atc as core of my_listings page.
+ * Component acts as core for the addoption application section
  * 
- * Is responsibe for displaying all pet listings assocciated to the user (authenticated),
- * , and allows them to review, update, and delete their listings.
+ * It is responsibe for holding the form for a pet adoption, 
+ * and any other components that could be added in future
  * 
- * The useEffetc listens to changes on variable token, which is retrieve from the url, to initiate the GET request procces.
- * 
+ * @returns  'PetAdoptionComponent' - thr component
  */
 const PetAdoptionComponent = ({ petId }) => {
 
@@ -26,7 +25,10 @@ const PetAdoptionComponent = ({ petId }) => {
 
         <Container id="pet_adoption_wrapper">
             <Container id="pet_adoption_container">
+                <Row >
 
+                    <Heading id="adoption_form_title" tagName="h4" text="Adoption Applications" />
+                </Row>
                 <Row >
                     <TextComponent id="before_application_text"
                         text="Before you apply....\n We'd like you to be sure of the responsabilities that come with introducing
@@ -36,8 +38,9 @@ const PetAdoptionComponent = ({ petId }) => {
 
                     />
                 </Row>
-                <Row id="adoption_form_accordion_wrapper"> { /***** CREATE NEW PET BUTTON  *****/}
 
+                { /***** Adoption Accordion *****/}
+                <Row id="adoption_form_accordion_wrapper">
                     <Accordion >
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Adoption Request</Accordion.Header>
@@ -52,16 +55,8 @@ const PetAdoptionComponent = ({ petId }) => {
                             </Accordion.Body>
                         </Accordion.Item>
 
-
                     </Accordion>
                 </Row>
-
-
-                <Row >
-
-                </Row>
-
-
             </Container>
 
         </Container>

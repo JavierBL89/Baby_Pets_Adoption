@@ -1,0 +1,200 @@
+/******************* MY APPLICATIONS PAGE **/
+
+#my_applications_wrapper {
+
+    min-width: 990px;
+    max-width: 1100px;
+    min-height: 300px;
+    height: 800px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    padding: 0;
+}
+
+#my_applications_spinner_holder {
+    height: inherit;
+    width: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+#my_applications_spinner_holder .spinner-border {
+    height: 80px;
+    width: 80px;
+    color: #9E7F66;
+    margin: 0 auto;
+    position: relative;
+    top: 40%;
+}
+
+#my_applications_wrapper #my_applications_container {
+    width: 90%;
+    min-height: fit-content;
+    padding: 0;
+    margin: 0 auto;
+}
+
+#my_applications_list_holder {
+    border: solid 1px black;
+    border-radius: 5px;
+    min-height: 300px;
+    height: 800px;
+}
+
+
+#my_applications_wrapper .applicationCard_wrapper .application_details_row {
+
+    height: 33%;
+    padding-top: 20px;
+}
+
+#my_applications_wrapper .applicationCard_wrapper .applicationCard_container {
+    border: solid 1px grey;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+/* Custom CSS to hide the dropdown arrow */
+.no-arrow::after {
+    display: none !important;
+}
+
+#my_applications_wrapper .applicationCard_wrapper .application_img_holder {
+
+    padding: 0;
+
+}
+
+#my_applications_wrapper .applicationCard_wrapper .application_img_holder img {
+    height: auto;
+    width: 100%;
+    border-top-left-radius: 10px;
+}
+
+#my_applications_wrapper .applicationCard_wrapper .drop_application_dropdown {
+    text-align: center;
+    background-color: beige;
+    margin-bottom: 0px;
+    padding: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    width: 100%;
+    background-color: #9E7F66;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#my_applications_wrapper .application_drop_holder .dropdown-menu {
+
+    padding: 0;
+    width: inherit;
+}
+
+#my_applications_wrapper .application_drop_holder .dropdown-item {
+    text-align: center;
+    background-color: #fae6d3;
+    padding: 10px;
+}
+
+#my_applications_wrapper .application_drop_holder .dropdown-item .drop_application_warning {
+
+    margin-top: 10px;
+    padding: 10px;
+}
+
+
+/*************************** Pet Applications Page ***********/
+
+#pet_applications_wrapper {
+
+    min-width: 990px;
+    max-width: 1100px;
+    min-height: 300px;
+    height: 800px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    padding: 0;
+}
+
+#pet_applications_wrapper #pet_applications_container {
+    width: 85%;
+    min-height: fit-content;
+    margin: 0 auto;
+}
+
+#pet_applications_spinner_holder {
+    height: inherit;
+    width: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+#pet_applications_spinner_holder .spinner-border {
+    height: 80px;
+    width: 80px;
+    color: #9E7F66;
+    margin: 0 auto;
+    position: relative;
+    top: 40%;
+}
+
+
+#pet_applications_list_holder {
+    border: solid 1px black;
+    border-radius: 5px;
+    min-height: 300px;
+    height: 800px;
+    margin: 0 auto;
+}
+
+
+#pet_applications_wrapper .applicationCard_wrapper .application_details_row {
+
+    height: 50%;
+    padding-top: 20px;
+}
+
+#pet_applications_wrapper .applicationCard_wrapper .applicationCard_container {
+    border: solid 1px grey;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+/* Custom CSS to hide the dropdown arrow */
+.no-arrow::after {
+    display: none !important;
+}
+
+#pet_applications_wrapper .applicationCard_wrapper .application_img_holder {
+
+    padding: 0;
+}
+
+#pet_applications_wrapper .applicationCard_wrapper .application_img_holder img {
+    height: auto;
+    width: 100%;
+}
+
+#pet_applications_wrapper .applicationCard_wrapper .drop_application_dropdown {
+    text-align: center;
+    background-color: beige;
+    margin-bottom: 0px;
+    padding: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+#pet_applications_wrapper .application_drop_holder .dropdown-item {
+    text-align: center;
+}
+
+#pet_applications_wrapper .application_drop_holder .dropdown-item .drop_application_warning {
+
+    margin-top: 10px;
+
+}

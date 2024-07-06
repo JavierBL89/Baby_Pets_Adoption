@@ -9,8 +9,10 @@ import com.example.bb_pets_adoption.auth.model.User;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +29,7 @@ public interface AdoptionApplicationService {
     /***
      * 
      * ***/
-    public AdoptionApplication createApplication(String petIdString, User user, String comments)  throws Exception;
+    public AdoptionApplication createApplication(String petIdString, String petCategory, User user, String comments)  throws Exception;
 
     
     /***
@@ -39,14 +41,15 @@ public interface AdoptionApplicationService {
     /***
      * 
      ***/
-    public List<AdoptionApplication> getApplicationsByUserId(ObjectId userId);
+    public List<AdoptionApplication> getApplicationsByApplicantId(ObjectId userId);
 
     
     /***
      * 
      ***/
-    public List<AdoptionApplication> getApplicationsByPetId(ObjectId petId);
-
+    Page<AdoptionApplication> getAllApplicationsByPetId(String petId, Pageable pageable) throws Exception;
+    
+    
     
     /***
      * 
@@ -57,7 +60,7 @@ public interface AdoptionApplicationService {
     /***
      * 
      ***/
-    public void deleteApplication(User user, String petIdString, String applicationIdString) throws Exception;
+    public void deleteApplication(User user, String applicationIdString) throws Exception;
     
     
     /***
@@ -70,5 +73,22 @@ public interface AdoptionApplicationService {
      * 
      * **/
 	public Optional<User> findUserByToken(String token);
+	
+	
+	/***
+	 * 
+	 * **/
+	boolean isDuplicate(String petIdString, User user) throws Exception;
+	
+	/**
+	 * 
+	 * **/
+	Page<AdoptionApplication> getAllApplicationsByApplicantId(User user, Pageable pageable) throws Exception;
+	
+	
+	/*
+	 * 
+	 ***/
+	List<AdoptionApplication>  sortList(List<AdoptionApplication> list, String order) throws Exception;
    
 }

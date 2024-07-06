@@ -4,6 +4,7 @@
 package com.example.bb_pets_adoption.adoption.service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,10 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
@@ -18,9 +23,18 @@ import com.example.bb_pets_adoption.adoption.repository.AdoptionApplicationRepos
 import com.example.bb_pets_adoption.auth.model.User;
 import com.example.bb_pets_adoption.auth.repository.UserRepository;
 import com.example.bb_pets_adoption.auth.service.AuthenticationServiceImpl;
+import com.example.bb_pets_adoption.pet_listing.model.Cat;
+import com.example.bb_pets_adoption.pet_listing.model.Dog;
+import com.example.bb_pets_adoption.pet_listing.model.Pet;
 import com.example.bb_pets_adoption.pet_listing.model.PetList;
+import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
+import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
+import com.example.bb_pets_adoption.pet_listing.repository.PetRepository;
 import com.example.bb_pets_adoption.search.controller.SearchController;
+
+import com.example.bb_pets_adoption.adoption.service.ApplicationDateDescendingComparator;
+import com.example.bb_pets_adoption.adoption.service.ApplicationDateAscendingComparator;
 
 
 /**
@@ -34,6 +48,8 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	AuthenticationServiceImpl authenticationServiceImpl;
 	UserRepository userRepository;
 	PetListRepository petListRepository;
+	CatRepository catRepository;
+	DogRepository dogRepository;
 	
 	
 
@@ -47,13 +63,15 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * **/
 	@Autowired
 	public AdoptionApplicationServiceImpl (AdoptionApplicationRepository adoptionApplicationRepository, AuthenticationServiceImpl authenticationServiceImpl,
-			UserRepository userRepository, PetListRepository petListRepository) {
+			UserRepository userRepository, PetListRepository petListRepository, CatRepository catRepository, DogRepository dogRepository ) {
 		
 		this.adoptionApplicationRepository = adoptionApplicationRepository;
 		this.authenticationServiceImpl  = authenticationServiceImpl;
 		this.userRepository = userRepository;
 		this.petListRepository = petListRepository;
-	}
+		this.dogRepository = dogRepository;
+		this.catRepository = catRepository;
+	} 
 	
 
 	/**
@@ -69,22 +87,51 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	 * 
 	 * **/
 	@Override
-	public List<AdoptionApplication> getApplicationsByUserId(ObjectId userId) {
+	public List<AdoptionApplication> getApplicationsByApplicantId(ObjectId userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
+
+
 	/**
+	 * Method responsible for retrieving all applications related to a single pet by its ID
+	 * using pagination.
 	 * 
-	 * **/
-	@Override
-	public List<AdoptionApplication> getApplicationsByPetId(ObjectId petId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+     * @param {String} petIdString - pet ID string of the pet to search for
+	 * @param {Pageable} pageable -  the object with info about the pageNo, and pageSize
+	 * @
+	 * */
+     @Override
+     public Page<AdoptionApplication> getAllApplicationsByPetId(String petIdString, Pageable pageable) throws Exception {
 
+    	// check if object petIdString is null or empty and convert into n ObjectId    
+ 		ObjectId petId;
+ 		if(petIdString != null) {		
+ 			 petId = new ObjectId(petIdString); // convert string IDs into an ObjectId
+ 			 
+ 		}else {
+ 			throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
+ 		}		
+	       return adoptionApplicationRepository.findAllByPetId(petId, pageable);
+     }
 
+     
+ 	/**
+ 	 * Method responsible for retrieving all applications related to a single pet by its ID
+ 	 * using pagination.
+ 	 * 
+      * @param {String} petIdString - pet ID string of the pet to search for
+ 	 * @param {Pageable} pageable -  the object with info about the pageNo, and pageSize
+ 	 * @
+ 	 * */
+      @Override
+      public Page<AdoptionApplication> getAllApplicationsByApplicantId(User user, Pageable pageable) throws Exception {
+		
+ 	       return adoptionApplicationRepository.findAllByApplicantId(user.getUserId(), pageable);
+      }
+      
     /***
      * 
      * **/
@@ -103,7 +150,6 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	public Optional<User> findUserByToken(String token) {
           
 	          Optional<User> user = userRepository.findByToken(token);
-        
 		return user;
 	}
 
@@ -115,6 +161,9 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * The association is done through the PetList instance which contains information about the the pet, 
      * the user, along with a list of all adoption application IDs related to the pet.
      * 
+     * It also checks for duplicate applications done by a user to a pet.
+	 * If another application matching the user ID and the Pet ID, user must either cancel the new application or override the previous one
+	 * 
      * Steps:
      * 1. Check the PetList object can be found before proceeding with operation, or exit it.
      * 2. Instantiate a new AdoptionApplication object
@@ -125,20 +174,20 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * @throws Exception - if something goes wrong
      **/
 	@Override
-	public AdoptionApplication createApplication(String petIdString, User user, String comments) throws Exception {
+	public AdoptionApplication createApplication(String petIdString, String petCategory, User user, String comments) throws Exception {
 		
 		// check if object petIdString is null or empty and convert into n ObjectId    
 		ObjectId petId;
-		if(petIdString != null) {
-			
-			 petId = new ObjectId(petIdString); // convert string IDs into an ObjectId
-			 
+		if(petIdString != null) {			
+			 petId = new ObjectId(petIdString); // convert string IDs into an ObjectId			 
 		}else {
 			throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
 		}
-		
-		 
-				
+			
+		// retreive the pet from db based on its category to the save it within the adoption application
+		Pet pet = this.getPetByCategory(petCategory, petId);
+
+
 		try {
         // find and update Petlist instance with the new application id added into adoptionApplicationIDs list.
          Optional<PetList> foundPetList = petListRepository.findByPetId(petId);
@@ -148,7 +197,9 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
         	    PetList petList = foundPetList.get();  // cast optional into PetList instance 	 
         	    AdoptionApplication application = new AdoptionApplication();  // instantiate an AdoptionApplication object
                 application.setPetId(petId);
-                application.setUserId(user.getUserId());
+                application.setPet(pet);
+                application.setApplicantId(user.getUserId());
+                application.setApplicant(user);
                 application.setComments(comments);
                 application.setStatus("Pending");
                 application.setApplicationDate(LocalDate.now());
@@ -177,6 +228,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
       
 	}
 
+	
 	
 	/**
 	 * Method responsible for handling application status update
@@ -236,32 +288,23 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * 6. Find the AdoptionApplication in database
      * 7. Delete the AdoptionApplication from the Petlist adoptionApplicationsIDs list
      * 8. Delete the AdoptionApplication instance from database
+     * 
+     * @param
+     * @param
+     * @param
 	 * **/
 	@Override
-	public void deleteApplication(User user ,String petIdString, String applicationIdString) throws Exception{
+	public void deleteApplication(User user , String applicationIdString) throws Exception{
 		
-		// check if object petId is null or not a valid hexstring       
-		if(petIdString == null || petIdString.isEmpty()) {
-			  throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
-		}
-		
+
 		// check if object petId is null or not a valid hexstring       
 		if(applicationIdString == null || applicationIdString.isEmpty()) {
 			   throw new Exception ("Invalid applicationId provided. Application ID is null or empty");
 		}
 	    
 		
-		
 		// convert string IDs into an ObjectId
-		ObjectId petId; 
-		ObjectId applicationId;
-		
-		try {
-	        petId = new ObjectId(petIdString);
-	    } catch (IllegalArgumentException e) {
-	        throw new Exception("Invalid pet ID. Pet ID is not a valid ObjectId: " + petIdString, e);
-	    }
-		
+		ObjectId applicationId;				
 		try {
 	        applicationId = new ObjectId(applicationIdString);
 	    } catch (IllegalArgumentException e) {
@@ -269,44 +312,49 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	    }
 		
 		
+		/**
+		 * Find the AdoptionApplication object related to the current pet by the petId
+		 * */
+		AdoptionApplication adoptionApplication;	
+        Optional<AdoptionApplication> foundApplication = adoptionApplicationRepository.findById(applicationId);  
+         if(foundApplication.isPresent()) {
+              adoptionApplication = foundApplication.get();
+          }else {       	 
+   	          throw new Exception("Adoption application with id " + applicationId + " was not found.");
+          }           	        
 		
 		
-		// try and find the Petlist object related to the current pet by the petId
-		PetList petList;
-		try {			
-            Optional<PetList> foundPetList = petListRepository.findByPetId(petId);
+		/**
+		 * Find the Petlist object related to the current pet by the petId
+		 * */
+        PetList petList;
+        Optional<PetList> foundPetList = petListRepository.findByPetId(adoptionApplication.getPetId());
             if(foundPetList.isPresent()) {
             	petList = foundPetList.get();  // cast optional into Petlist
             }else {          	 
-           	 throw new Exception("PetList asssociated to pet id " + petId + " was not found.");
-            }               
-		}catch(Exception e) {		
- 		throw new Exception("Error retrieving PetList related to pet ID " + petId + " " + e.getMessage());
-		}
+           	 throw new Exception("PetList asssociated to pet id " + adoptionApplication.getPetId() + " was not found.");
+            }          
 		
 		
 		
-		
-		 //find and delete the AdoptionApplication instance
-        try {
-             Optional<AdoptionApplication> foundApplication = adoptionApplicationRepository.findById(applicationId);  
-             if(foundApplication.isPresent()) {
-            	   // remove application id from PetList adoptionApplicationIds list
-            	    petList.removeApplicationId(applicationId);
-            	    petListRepository.save(petList); // save changes to PetList
+		/**
+		 * - Remove applicationId from PetList instance and save changes
+		 * - Lastly remove the adoption application
+		 * */
+	    try {
+            // remove application id from PetList adoptionApplicationIds list
+            petList.removeApplicationId(applicationId);
+            petListRepository.save(petList); // save changes to PetList
             	    
-            	    // delete adoption application
-                    adoptionApplicationRepository.deleteById(applicationId);
-            	    logger.info("Adoption application successfully deleted");
-             }else {       	 
-            	 throw new Exception("PetList asssociated to pet id " + petId + " was not found.");
-             }           
-    		}catch(Exception e) {  			
-    			throw new Exception("Error deleting adoption aplication." + e.getMessage(), e);
-    	}
-	}
+            // delete adoption application
+            adoptionApplicationRepository.deleteById(applicationId);
+            logger.info("Adoption application successfully deleted");
+			
+	      }catch(Exception e) {  			
+	           throw new Exception("Error deleting adoption aplication." + e.getMessage(), e);
+           }
 	
-	
+}
 	
 	
 	/**
@@ -324,7 +372,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		 
 		 try {
 		     // store in a list all applications related to the pet
-		     List<AdoptionApplication> list =  adoptionApplicationRepository.findByPetId(petId);
+		     List<AdoptionApplication> list =  adoptionApplicationRepository.findAllByPetId(petId);
 		 
 		     // iterate over list and remove each object from repository
 		     for(AdoptionApplication app : list) {
@@ -336,4 +384,131 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
            throw new Exception("Error deleting adoption applications related to pet ID " + petId + ". " + e.getMessage(), e);
        }
 	 }
+
+	 
+	 
+	 /**
+	  * Method responsible for finding any application duplicat
+	  * 
+	  * If a user tries to apply for a pet which has previously applied for, 
+	  * this method will notify them.
+	  * 
+	  * Steps:
+	  * 1. Check petString is not null
+	  * 2. Convert petString into an ObjectId instance
+	  * 3. Find all applications linked to the current user
+	  * 4. Check if any of those applications also has the petID field matching with the pet ID
+	  *    of the the user is trying to apply for
+	  * 
+	  *@param {String} petIdString - the string id type of the pet
+	  *@param {User} user - the current user
+	  *@throws Exception - any exception occured i the proccess
+	  * */
+	 public boolean isDuplicate(String petIdString, User user) throws Exception{
+		 	
+		    // check if object petIdString is null or empty and convert into n ObjectId    
+			ObjectId petId;
+			if(petIdString != null) {				
+				 petId = new ObjectId(petIdString); // convert string IDs into an ObjectId				 
+			}else {
+				throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
+			}
+		 
+			
+			// flag to exit loop
+	 		boolean applicationFound = false;
+	 			
+	 		List<AdoptionApplication> applications = adoptionApplicationRepository.findByApplicantId(user.getUserId());
+	 		
+	 		//
+	 		for(AdoptionApplication app : applications) {
+	 			
+	 			if(app.getPetId().equals(petId)) {
+	 				return applicationFound = true;
+	 			}
+	 		
+	 		}
+	 		
+	 	return applicationFound;
+	 	
+	 }
+
+
+	 /**
+	  * 
+	  * ***/
+	@Override
+	public List<AdoptionApplication> sortList(List<AdoptionApplication> list, String order) throws Exception{
+
+	
+		if (list == null || list.isEmpty()) {
+	        logger.warn("List is null or empty. Nothing to sort.");
+	        return list;
+	    }
+		
+		// Check if param indicates ascending or descending order
+	    if (order == null || order.equalsIgnoreCase("asc")) {
+	        // Sort the applications list from latest to oldest
+	        logger.debug("Before sorting ascending: " + list);
+	        Collections.sort(list, new ApplicationDateAscendingComparator());
+	        logger.info("List sorted in ascending order. Sorted list: " + list);
+	        
+	    } else if ("desc".equalsIgnoreCase(order)) {
+	        // Sort the applications list from oldest(default) to the latest
+	        logger.debug("Before sorting descending: " + list);
+	        Collections.sort(list, new ApplicationDateDescendingComparator());
+	        logger.info("List sorted in descending order. Sorted list: " + list);
+	    } else {
+	        logger.error("Invalid order parameter: {}", order);
+	        throw new Exception("Invalid order parameter");
+	    }
+	    
+	    // Log the final sorted list before returning
+	    logger.debug("Final sorted list: " + list);
+		return list;
+	}
+	
+	
+	
+	
+	/***
+	 * Method to identify the pet category of the current pet which adoption application is meant to be.
+	 * 
+	 * This method dynamically creates the concrete pet class type based on the pet category, 
+	 * and returns a Pet object with the concrete pet reference.
+	 * 
+	 * @params {String} category - the current pet category
+	 * @param {String}  - the current pet id
+	 * @throws Exception - with a descriptive message of a potential error
+	 * **/
+	public Pet getPetByCategory(String category, ObjectId petId) throws Exception{
+		
+		 Pet pet = null;
+		 
+		    switch (category) {
+		    
+		        case "kitties":
+		            Optional<Cat> cat = catRepository.findById(petId);
+		            if (cat.isPresent()) {
+		                pet = cat.get();
+		            } else {
+		                throw new Exception("Cat not found with ID: " + petId);
+		            }
+		            break;
+
+		            
+		        case "puppies":
+		            Optional<Dog> dog = dogRepository.findById(petId);
+		            if (dog.isPresent()) {
+		                pet = dog.get();
+		            } else {
+		                throw new Exception("Dog not found with ID: " + petId);
+		            }	
+		            break;
+		        default:
+		            throw new Exception("Invalid pet category: " + category);
+		    }
+		    
+		    return pet;
+	    }
 }

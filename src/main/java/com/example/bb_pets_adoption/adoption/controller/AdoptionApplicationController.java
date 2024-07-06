@@ -5,16 +5,24 @@ import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationService;
 import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationServiceImpl;
 import com.example.bb_pets_adoption.auth.model.User;
 import com.example.bb_pets_adoption.pet_listing.controller.PetController;
+import com.example.bb_pets_adoption.adoption.service.ApplicationDateDescendingComparator;
+import com.example.bb_pets_adoption.adoption.service.ApplicationDateAscendingComparator;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -29,7 +37,6 @@ public class AdoptionApplicationController {
     
     private AdoptionApplicationService adoptionApplicationServiceImpl;
 
-    
 	// create an instance of Logger
 	private static final Logger logger = LoggerFactory.getLogger(PetController.class);
 		
@@ -48,7 +55,8 @@ public class AdoptionApplicationController {
      * 1.Check for token null value
      * 2. Authenticate user by the token passed
      * 3. Find user in database
-     * 4. Delegate application process to AdoptionApplicationServiceImpl
+     * 4. Check for duplicate applications. 
+     * 5. Delegate application process to AdoptionApplicationServiceImpl
      * 
      * @RequestParam {ObjectId} petId - the petId for adoption request
      * @RequestParam {String} token  - the current session auhentication token
@@ -58,10 +66,13 @@ public class AdoptionApplicationController {
     @PostMapping("/apply")
     public ResponseEntity<?> applyForAdoption(
             @RequestParam(value="petId", required=false) String petIdString,
+            @RequestParam(value="petCategory", required=false) String petCategory,
             @RequestParam(value="token", required=false) String token,
-            @RequestParam(value="comments", required=false) String comments) {
+            @RequestParam(value="comments", required=false) String comments,
+            @RequestParam(value="override", required=false) boolean override) {
     	
-    logger.info(petIdString);
+    logger.info(petCategory);
+    
         // handle null value token
 	    if (token == null) {
 	        logger.error("Authorization token is missing");
@@ -73,15 +84,22 @@ public class AdoptionApplicationController {
 	    try {
 	        // if user is authenticated proceed to create a a new pet and assocciate this with the user pet listings
 	 		if (adoptionApplicationServiceImpl.authenticateUserByToken(token)) {
-	 		    
+
 	 			// find user
 	 			Optional<User> foundUser = adoptionApplicationServiceImpl.findUserByToken(token);
 	 			if(foundUser.isPresent()) {
-	 				
+
 	 				User user = foundUser.get(); // cast optimal to a User instance
 	 				
+	 			     // check for duplicate applications
+	     	    	 boolean foundDuplicate = adoptionApplicationServiceImpl.isDuplicate(petIdString, user);
+	     	    	if (foundDuplicate) {
+                        logger.info("Duplicate adoption application");
+                        return ResponseEntity.status(409).body("Duplicate application");
+                    }
+		 			   
 	 			    // delegate opeation to service. @params ( String petId, User user, String comments
-	 				adoptionApplicationServiceImpl.createApplication(petIdString, user, comments);
+	 				adoptionApplicationServiceImpl.createApplication(petIdString, petCategory, user, comments);
 	              				
 	 			}else {
 	 				
@@ -123,20 +141,178 @@ public class AdoptionApplicationController {
      * **/
     @GetMapping("/user/{userId}")
     public List<AdoptionApplication> getApplicationsByUserId(@PathVariable ObjectId userId) {
-        return adoptionApplicationServiceImpl.getApplicationsByUserId(userId);
+        return adoptionApplicationServiceImpl.getApplicationsByApplicantId(userId);
     }
 
     
     /***
-     * 
-     * 
+     * Endpoint
+     * It also handles list sorting (asc, des). Check the value of 'order' passed and acts accordingly.
+
      * **/
-    @GetMapping("/pet/{petId}")
-    public List<AdoptionApplication> getApplicationsByPetId(@PathVariable ObjectId petId) {
-        return adoptionApplicationServiceImpl.getApplicationsByPetId(petId);
+    @GetMapping("/pet/applications")
+    public ResponseEntity<Map<String, Object>> getAllApplicationsByPetId(
+    		@RequestParam(value="petId", required=false) String petIdString,
+			@RequestParam(value= "order", required = false, defaultValue="asc")  String order,
+    		@RequestParam(value="token",  required=false) String token,
+    		@RequestParam(value="pageNo",  defaultValue= "0", required=false) int pageNo,
+    		@RequestParam(value="pageSize",  defaultValue="6", required=false)int pageSize) {
+    	
+    	Map <String, Object> response = new HashMap<>(); // instantiate a Hashmap to send response message
+    	
+    	
+    	 // handle null value token
+   	    if (token == null) {
+   	        logger.error("Authorization token is missing");    // set response message
+   	        response.put("message", "Authorization token is missing");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+   	    }
+   	    
+   	    
+   	    
+   	    // authenticate by using token
+   	    if(adoptionApplicationServiceImpl.authenticateUserByToken(token)) {
+   	    	
+   	    	// find user in database
+   	    	try {
+   	    		Optional<User> foundUser = adoptionApplicationServiceImpl.findUserByToken(token);
+   	    		if(foundUser.isPresent()) { 
+					 logger.info(foundUser.get().toString());
+
+   	    		   // create Pageable instance	
+   	    	   	   Pageable pageable = PageRequest.of(pageNo, pageSize);  
+   	    	   	    	    	   	   
+   	    	   	   // grab the page of items returned
+                   Page<AdoptionApplication> applicationsPage = adoptionApplicationServiceImpl.getAllApplicationsByPetId(petIdString, pageable);
+                   
+                   // pass the content to List to be able to sort it by using Coolections.sort()
+                   List<AdoptionApplication> applications = applicationsPage.getContent();
+					 logger.info(applications.toString());
+
+                   
+                   response.put("applications", applications);      	 
+                   return ResponseEntity.status(200).body(response);
+
+                   // Check if param indicates ascending or descending order
+                /*   if (order == null || "asc".equalsIgnoreCase(order)) {
+                       // Sort the applications list from latest to oldest
+                       Collections.sort(applications, new ApplicationDateAscendingComparator());
+                       logger.info("List sorted in ascending order. Sending list...");
+                   } else if ("desc".equalsIgnoreCase(order)) {
+                       // Sort the applications list from oldest(default) to the latest
+                       Collections.sort(applications, new ApplicationDateDescendingComparator());
+                       logger.info("List sorted in descending order. Sending list...");
+                   } else {
+                       response.put("message", "Invalid order parameter");
+                       logger.error("Invalid order parameter: {}", order);
+                       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                   }
+
+          */
+           
+
+   	    		}else {  	    			
+   	    			response.put("message", "User could not be found");  // set response message
+   	    			
+   	    			logger.error("User could not be found");
+   	    	    	return ResponseEntity.status(404).body(response);
+   	    		}
+   	    		
+   	    	}catch(Exception e) {
+   	    		
+	    	 logger.error("Error while retrieving user data: " + e.getMessage());  
+             response.put("message", "Error while retrieving user data: " + e.getMessage());    // set response message
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);       
+   	    	}
+   	    	
+   	    }else {
+   	    	
+   	    	logger.error("User could not be authenticated");
+   	    	
+            response.put("message", "User could not be authenticated");    // set response message
+   	    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+   	    }
+    	
     }
 
     
+    
+    /***
+     * Endpoint
+     * It also handles list sorting (asc, des). Check the value of 'order' passed and acts accordingly.
+
+     * **/
+    @GetMapping("/my_applications")
+    public ResponseEntity<Map<String, Object>> getAllApplicationsByUserId(
+			@RequestParam(value= "order", required = false, defaultValue="asc")  String order,
+    		@RequestParam(value="token",  required=false) String token,
+    		@RequestParam(value="pageNo",  defaultValue= "0", required=false) int pageNo,
+    		@RequestParam(value="pageSize",  defaultValue="6", required=false)int pageSize) {
+    	
+    	Map <String, Object> response = new HashMap<>(); // instantiate a Hashmap to send response message
+    	    	
+    	 // handle null value token
+   	    if (token == null) {
+   	        logger.error("Authorization token is missing");    // set response message
+   	        response.put("message", "Authorization token is missing");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+   	    }
+   	      
+   	    
+   	    // authenticate by using token
+   	    if(adoptionApplicationServiceImpl.authenticateUserByToken(token)) {
+   	    	
+   	    	// find user in database
+   	    	try {
+   	    		Optional<User> foundUser = adoptionApplicationServiceImpl.findUserByToken(token);
+   	    		if(foundUser.isPresent()) { 
+   	    		   
+   	    			User user = foundUser.get();
+   	    		   // create Pageable instance	
+   	    	   	   Pageable pageable = PageRequest.of(pageNo, pageSize);  
+   	    	   	    	    	   	   
+   	    	   	   // grab the page of items returned
+                   Page<AdoptionApplication> applicationsPage = adoptionApplicationServiceImpl.getAllApplicationsByApplicantId(user, pageable);
+                   // pass the content to List to be able to sort it using Coolections.sort()
+                   List<AdoptionApplication> applications = applicationsPage.getContent();
+                   
+              	  response.put("applications", applications);      	 
+                  return ResponseEntity.status(200).body(response);  
+                  
+                    // sort list based on user preference
+                 /*   try {                  	
+                    	adoptionApplicationServiceImpl.sortList(applications, order);
+                    	  response.put("applications", applications);      	 
+                          return ResponseEntity.status(200).body(response);                          
+                    }catch(Exception e) {                  	
+                        response.put("message", e.getMessage());
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                    }
+                */
+                   
+                   
+   	    		}else {  	   	    			
+   	    			response.put("message", "User could not be found");  // set response message 	    			
+   	    			logger.error("User could not be found");
+   	    	    	return ResponseEntity.status(404).body(response);
+   	    		}
+   	    		
+   	    	}catch(Exception e) {
+   	    		
+	    	 logger.error("Error while retrieving user data: " + e.getMessage());  
+             response.put("message", "Error while retrieving user data: " + e.getMessage());    // set response message
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);       
+   	    	}
+   	    	
+   	    }else {
+   	    	
+   	    	logger.error("User could not be authenticated");
+   	    	
+            response.put("message", "User could not be authenticated");    // set response message
+   	    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+   	    }
+    	
+    }
     /***
      * Endpoint to receive and manage PUT request to update an adoption application
      * 
@@ -168,14 +344,11 @@ public class AdoptionApplicationController {
    	 		if (adoptionApplicationServiceImpl.authenticateUserByToken(token)) {
    	 		       	 			
    	 			    // delegate operation to service @params ( String applicationIdString, String status)
-   	 				adoptionApplicationServiceImpl.updateApplicationStatus(applicationIdString, status);
-   	              					
-   	 		}else {
-   	 			
+   	 				adoptionApplicationServiceImpl.updateApplicationStatus(applicationIdString, status); 	              					
+   	 		}else { 			
    	 			logger.info("Unauthorized user");
    	 			return ResponseEntity.status(403).body("Unauthorized user");
-   	 		}
-   	 		
+   	 		}   	 		
    	    } catch (Exception e) {
    	        logger.error("Error creating updating application", e);
    	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating adoption application: " + e.getMessage());
@@ -205,7 +378,6 @@ public class AdoptionApplicationController {
      * **/
     @DeleteMapping("/delete_application")
     public ResponseEntity<?> deleteApplication(
-    		@RequestParam("petId") String petIdString,
             @RequestParam("token") String token,
             @RequestParam("applicationId") String applicationIdString
             ) {
@@ -230,7 +402,7 @@ public class AdoptionApplicationController {
 	 				User user = foundUser.get(); // cast optimal to a User instance
 	 				
 	 			    // delegate opeation to service. @params ( User user, String petIdString, String applicationIdString )
-	 				adoptionApplicationServiceImpl.deleteApplication(user, petIdString, applicationIdString);
+	 				adoptionApplicationServiceImpl.deleteApplication(user, applicationIdString);
 	 			  
 	 			    logger.info("Application successfully deleted");
 	 			    return ResponseEntity.status(200).body("Application succesfully deleted"); 
