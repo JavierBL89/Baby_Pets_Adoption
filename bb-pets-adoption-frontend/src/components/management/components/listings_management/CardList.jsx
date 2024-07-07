@@ -6,10 +6,12 @@ import { MdOutlineDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
 
-
 /***
+ * The CardList represents a card to display information about  apet listings visually organized and appealing
+ * It includes various details such as the mother's image, birth date, creation date, price, 
+ * and status of the pet. It also provides action buttons for updating and deleting the pet listing. 
  * 
- * 
+ * Additionally, there is a link to view all pet applications
  */
 const CardList = ({ motherImage, motherBreed, createdOn, price, token,
     birthDate, id, petId, onDelete, onUpdate, petListing, petCreatedOn, petUpdatedOn }) => {
@@ -20,6 +22,7 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
             <Container id={`myPetCard_container_${id}`} className="myPetCard_container">
                 {/******* See Pet Applications Button *******/}
                 <Row className="view_pet_applications_link_holder">
+
                     <Col className="view_pet_applications_link">
                         <a href={`/pet_applications/${petId}/${token}`} >
                             <small >Applications</small>

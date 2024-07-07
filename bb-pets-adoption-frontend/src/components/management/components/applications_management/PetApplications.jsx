@@ -5,11 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../../../scripts/axiosConfig";
 import TextComponent from "../../../common/TextComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
-import MyApplicationCard from "./MyApplicationCard";
-import useFetchById from "../../../hooks/data/fetchById";
+import PetApplicationCard from "./PetApplicationCard";
+import ApplicationStatusTabComponent from "./ApplicationStatusTabComponent";
 
 /***
- * Component acts as core of my_listings page.
+ * Component atc as core of my_listings page.
  * 
  * Is responsibe for displaying all pet listings assocciated to the user (authenticated),
  * , and allows them to review, update, and delete their listings.
@@ -17,13 +17,15 @@ import useFetchById from "../../../hooks/data/fetchById";
  * The useEffetc listens to changes on variable token, which is retrieve from the url, to initiate the GET request procces.
  * 
  */
-const MyApplications = () => {
+const PetApplications = () => {
 
-    const { token } = useParams();  // grab token from url params
-
+    const { token, petId } = useParams();  // grab token from url params
 
     const [message, setMessage] = useState("");
-    const [applications, setApplications] = useState([]);
+
+    const [applications, setApplications] = useState([])
+    const [selectedTab, setSelectedTab] = useState("Pending")
+
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
@@ -31,10 +33,11 @@ const MyApplications = () => {
 
     const navigate = useNavigate();
 
+
+    /***
+     * 
+     */
     const fetchApplicationsData = useCallback(async () => {
-
-        setApplications([]);   // rest data state every time the method is called
-
 
         // ensure token is not empty
         if (!token) {
@@ -44,22 +47,27 @@ const MyApplications = () => {
         }
 
         setLoading(true);  // set to true while retrieving data
-
+        console.log(selectedTab);
+        setApplications([]);  // reset state to an empty list before fetching any data
         try {
 
-            const response = await instance.get(`/adoption/my_applications?token=${token}&order=${orderBy}&page=${page}&size=6`);
+            const response = await instance.get(`/adoption/pet/applications?token=${token}&petId=${petId}&status=${selectedTab}&order=${orderBy}&page=${page}&size=6`);
 
             if (response.status === 200) {
-
+                console.log(response.data);
                 if (response.data && response.data.applications.length > 0) {
-                    console.log(response.data.applications);
+                    console.log(response.data);
+
                     // format Date objects before setting data state
-                    const formattedListings = response.data.applications.map(listing => ({
-                        ...listing,
-                        createdOn: new Date(...listing.applicationDate).toLocaleDateString(), // Convert array to date string
+                    const formattedListings = response.data.applications.map(appplication => ({
+                        ...appplication,
+                        applicationDate: new Date(...appplication.applicationDate).toLocaleDateString(), // Convert array to date string
+                        birthDate: new Date(...appplication.pet.birthDate).toLocaleDateString() // Convert array to date string
                     }));
                     setApplications(formattedListings);
                     setTotalPages(response.data.totalPages);
+                    console.log(formattedListings);
+
                 } else {
                     setMessage("No results.");
                 }
@@ -74,13 +82,15 @@ const MyApplications = () => {
             setLoading(false);
         }
 
-    }, [token, page, orderBy]);
+    }, [token, page, selectedTab, petId]);
+
+
 
     /***
      * 
      */
-    const handleDrop = async (applicationId) => {
-        console.log("putaa");
+    const handleDrop = async (objectId) => {
+
         if (!token) {
 
             setMessage("Operation cannot be processed. Missing authenication token")
@@ -89,13 +99,19 @@ const MyApplications = () => {
 
         const trimmedToken = token.trim();   // eliminate any possible white spaces
 
-        if (applicationId) {
+        if (objectId) {
 
             try {
                 // DELETE request
-                const response = await instance.delete(`/adoption/delete_application?token=${trimmedToken}&applicationId=${applicationId}`);
+                const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
                 if (response.status === 200) {
-                    fetchApplicationsData();
+                    fetchApplicationsData();    // reload page with new data
+                    // set feedback message to be ddiplayed for 3 seconds
+                    setMessage("Pet successfully removed from your listings.")
+                    setTimeout(() => {
+                        setMessage("");
+                    }, 3000);
+                    navigate(`/my_applications/${token}`);
 
                 } else {
 
@@ -117,15 +133,29 @@ const MyApplications = () => {
     };
 
 
+    /***
+     * 
+     */
+    const handleUpdate = () => {
+        // redirect to
+        navigate(`/my_applications/${token}`);
+    };
+
+    /***
+     * 
+     */
+    const handleTabSelection = (tabName) => {
+        setSelectedTab(tabName);
+        console.log("Selected Tab:", tabName); // You can remove this line, it's just for demonstration
+    };
+
     /****
      * useEffect listens to changes on 'page', 'token', 'fetchListingsData'
      * to calls the  fetchListingsData()
      */
     useEffect(() => {
-
         fetchApplicationsData();
-
-    }, [page, token, orderBy, fetchApplicationsData])
+    }, [fetchApplicationsData, token, petId, selectedTab])
 
 
     /****
@@ -140,38 +170,42 @@ const MyApplications = () => {
 
     return (
 
-        <Container id="my_applications_wrapper">
-            <Container id="my_applications_container">
+        <Container id="pet_applications_wrapper">
+            <Container id="pet_applications_container">
                 <Row >
+
                     { /*************** APLICATIONS LIST  *********************/}
                     <Row >
-                        <TextComponent id="my_applications_message" text={message && message} />
+                        <TextComponent id="pet_applications_message" text={message && message} />
                     </Row>
-                    <Row id="my_applications_list_wrapper">
-                        <Row id="my_applications_list_holder">
+                    <Row>
+                        < ApplicationStatusTabComponent onTabSelect={handleTabSelection} />
+                    </Row>
+                    <Row id="pet_applications_list_wrapper">
+                        <Row id="pet_applications_list_holder" >
+
                             { /************ LOADING SPINNER  ************/}
                             {loading &&
                                 <Row id="my_applications_spinner_holder">
                                     <Spinner animation="border" />
                                 </Row>}
 
-
                             {
                                 applications && applications.map((application, index) => {
 
                                     return (
-                                        <MyApplicationCard key={index}
+                                        <PetApplicationCard key={index}
                                             id={index}
-                                            applicationId={application.id}
+                                            application={application}
                                             status={application.status}
-                                            price={application.pet.price}
-                                            ownerName={application.pet.ownerName}
-                                            motherImg={application.pet.motherImg}
-                                            motherBreed={application.pet.motherBreed}
-                                            applicationDate={application.applicationDate}
-                                            location={application.pet.location}
+                                            token={token}
+                                            comments={application.comments}
+                                            petId={application.petId}
+                                            onFetchData={fetchApplicationsData}
                                             // delete listing button passes the petId
-                                            onDelete={handleDrop}
+                                            onDelete={() => handleDrop()}
+                                            // update listing button (pass the entire listing object)
+                                            onUpdate={() => handleUpdate()}
 
                                         />
                                     )
@@ -197,4 +231,4 @@ const MyApplications = () => {
 
 };
 
-export default MyApplications;
+export default PetApplications;

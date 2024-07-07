@@ -64,9 +64,10 @@ const PetCategoriesHolder = () => {
             <Row>
             </Row>
             <Container>
-                {loading && <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>}
+                {loading &&
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>}
                 {error && <p>Error fetching pets. Please try later</p>}
                 {error && console.log("Error fetching pets: ", { error })}
                 {petsData.length > 0 && (

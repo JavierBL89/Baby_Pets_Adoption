@@ -11,7 +11,7 @@ import { FaEdit } from "react-icons/fa";
  * 
  * 
  */
-const ApplicationCard = ({ applicationDate, id, applicationId, petId, price,
+const MyApplicationCard = ({ applicationDate, id, applicationId, petId, price,
     location, onDelete, onUpdate, motherImg, motherBreed, ownerName, status }) => {
 
     return (
@@ -102,4 +102,4 @@ const ApplicationCard = ({ applicationDate, id, applicationId, petId, price,
 };
 
 
-export default ApplicationCard;
+export default MyApplicationCard;

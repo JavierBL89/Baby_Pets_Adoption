@@ -132,6 +132,36 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
  	       return adoptionApplicationRepository.findAllByApplicantId(user.getUserId(), pageable);
       }
       
+      
+      /**
+  	 * Method responsible for retrieving all applications related to a single pet by its ID
+  	 * using pagination.
+  	 * 
+       * @param {String} petIdString - pet ID string of the pet to search for
+  	 * @param {Pageable} pageable -  the object with info about the pageNo, and pageSize
+  	 * @
+  	 * */
+       @Override
+       public Page<AdoptionApplication> getAllApplicationsByStatus(String petIdString, Pageable pageable, String status) throws Exception {
+        
+    	   // ensure status is not null
+    	   if(status == null || status.isEmpty()) {		   
+    		   throw new Exception ("Status cannot be null or empty");
+      		}		
+    	   
+    	   
+      	    // check if object petIdString is null or empty and convert into n ObjectId    
+   		    ObjectId petId;
+   		    if(petIdString != null) {		
+   		    	 petId = new ObjectId(petIdString); // convert string IDs into an ObjectId
+   			 
+   		    }else {
+   			    throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
+   		    } 		
+  	           return adoptionApplicationRepository.findAllByStatus(petId, status, pageable);
+       }
+       
+       
     /***
      * 
      * **/
@@ -257,7 +287,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		// find the AdoptionApplication, set new status and save
 		try {
 		    Optional<AdoptionApplication> foundApplication = adoptionApplicationRepository.findById(applicationId);
-	       
+
 		    if (foundApplication.isPresent()) {
 	            AdoptionApplication application = foundApplication.get();  // cast optional into AdoptionApplication
 	            application.setStatus(status);   // set with new status
@@ -270,7 +300,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	        
 		}catch(Exception e) {
 			
-			throw new Exception("Error creating adoption aplication. " + e.getMessage());
+			throw new Exception("Error updating adoption aplication. " + e.getMessage());
 
 		}
 	}

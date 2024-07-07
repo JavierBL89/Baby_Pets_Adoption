@@ -50,6 +50,11 @@ public interface AdoptionApplicationService {
     Page<AdoptionApplication> getAllApplicationsByPetId(String petId, Pageable pageable) throws Exception;
     
     
+    /**
+     * 
+     * */
+    Page<AdoptionApplication> getAllApplicationsByStatus(String petIdString, Pageable pageable, String status) throws Exception;
+    
     
     /***
      * 

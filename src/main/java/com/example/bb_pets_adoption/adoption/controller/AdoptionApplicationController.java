@@ -154,6 +154,7 @@ public class AdoptionApplicationController {
     public ResponseEntity<Map<String, Object>> getAllApplicationsByPetId(
     		@RequestParam(value="petId", required=false) String petIdString,
 			@RequestParam(value= "order", required = false, defaultValue="asc")  String order,
+			@RequestParam(value= "status", required = false, defaultValue="asc")  String status,
     		@RequestParam(value="token",  required=false) String token,
     		@RequestParam(value="pageNo",  defaultValue= "0", required=false) int pageNo,
     		@RequestParam(value="pageSize",  defaultValue="6", required=false)int pageSize) {
@@ -181,13 +182,13 @@ public class AdoptionApplicationController {
 
    	    		   // create Pageable instance	
    	    	   	   Pageable pageable = PageRequest.of(pageNo, pageSize);  
-   	    	   	    	    	   	   
+ 	   	   
    	    	   	   // grab the page of items returned
-                   Page<AdoptionApplication> applicationsPage = adoptionApplicationServiceImpl.getAllApplicationsByPetId(petIdString, pageable);
-                   
+                   Page<AdoptionApplication> applicationsPage = adoptionApplicationServiceImpl.getAllApplicationsByStatus(petIdString, pageable, status);
+          	       logger.info("Applications list succesfully retrieved with status '" + status + "'");    // set response message
+
                    // pass the content to List to be able to sort it by using Coolections.sort()
                    List<AdoptionApplication> applications = applicationsPage.getContent();
-					 logger.info(applications.toString());
 
                    
                    response.put("applications", applications);      	 
@@ -324,11 +325,11 @@ public class AdoptionApplicationController {
      * @RequestParam {String} token - current session token for user authentication
      * @RequestParam {String} status) - the new application status to be set
      * **/
-    @PutMapping("/updateStatus")
+    @PutMapping("/pet/applications/updateStatus")
     public ResponseEntity<?> updateApplicationStatus(
-    		@RequestParam String applicationIdString,
-            @RequestParam("token") String token,
-            @RequestParam("status") String status)  {
+            @RequestParam(value= "token", required = false) String token,
+            @RequestParam(value= "status", required = false) String status,
+            @RequestParam(value= "applicationId", required = false) String applicationIdString)  {
     	
     	
         // handle null value token
@@ -342,7 +343,7 @@ public class AdoptionApplicationController {
    	    try {
    	        // if user is authenticated proceed to update application
    	 		if (adoptionApplicationServiceImpl.authenticateUserByToken(token)) {
-   	 		       	 			
+
    	 			    // delegate operation to service @params ( String applicationIdString, String status)
    	 				adoptionApplicationServiceImpl.updateApplicationStatus(applicationIdString, status); 	              					
    	 		}else { 			
@@ -350,7 +351,7 @@ public class AdoptionApplicationController {
    	 			return ResponseEntity.status(403).body("Unauthorized user");
    	 		}   	 		
    	    } catch (Exception e) {
-   	        logger.error("Error creating updating application", e);
+   	        logger.error("Error updating application", e);
    	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating adoption application: " + e.getMessage());
    	    }
    	    

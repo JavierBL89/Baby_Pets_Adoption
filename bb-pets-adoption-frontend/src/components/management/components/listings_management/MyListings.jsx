@@ -200,7 +200,7 @@ const MyListings = () => {
                                                 token={token}
                                                 // this field is crucial to retreive the obeject on back-end for updating functionality
                                                 petListing={petListing}
-                                                petId={petListing.id}
+                                                petId={petListing.pet.id}
                                                 motherImage={petListing.pet.motherImg}
                                                 motherBreed={petListing.pet.motherBreed}
                                                 createdOn={petListing.createdOn}
