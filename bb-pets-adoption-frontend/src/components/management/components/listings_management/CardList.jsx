@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Row, Col, Stack } from "react-bootstrap";
+import React, { useState } from "react";
+import { Container, Row, Col, Stack, Dropdown } from "react-bootstrap";
 import ImageComponent from "../../../common/ImageComponent";
 import TextComponent from "../../../common/TextComponent";
 import { MdOutlineDelete } from "react-icons/md";
@@ -15,6 +15,20 @@ import { FaEdit } from "react-icons/fa";
  */
 const CardList = ({ motherImage, motherBreed, createdOn, price, token,
     birthDate, id, petId, onDelete, onUpdate, petListing, petCreatedOn, petUpdatedOn }) => {
+
+    const [viewApplication, setviewApplication] = useState(false);
+
+
+    /**** 
+     * Method toggles the view application accordion.
+     * 
+     * Sets the state to the oposite of the current state is
+     * false to true | true to false
+    */
+    const viewToggle = () => {
+
+        setviewApplication(!viewApplication);
+    }
 
     return (
 
@@ -97,7 +111,9 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
                                         <FaEdit onClick={() => onUpdate(petListing.pet, petListing.id)} className="update_listing" />
                                     </Col>
                                     <Col xs={4} >
-                                        <MdOutlineDelete onClick={() => onDelete(petId)} className="delete_listing" />
+                                        <MdOutlineDelete onClick={() => viewToggle()} className="delete_listing" />
+
+
                                     </Col>
                                 </Row>
 
@@ -105,9 +121,19 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
 
                         </Row>
                     </Col>
+
+
                 </Row>
 
+                {viewApplication ?
+                    <Row className="drop_petList_accordion_wrapper">
+                        <TextComponent className="drop_petList_warning_text" text="All data related to this application will be deleted, and application will not be recoverable." />
+                        <TextComponent onClick={() => onDelete(petListing.id)} text="Confirm" className="btn drop_petList_confirm_button" />
 
+                    </Row>
+                    :
+                    null
+                }
             </Container>
 
         </Container>

@@ -15,7 +15,6 @@ import TextComponent from "../../../common/TextComponent";
  * */
 const PetCard = ({ img, breed, petId, onView, location, price }) => {
 
-    console.log(breed);
     // isLoaded flag is used to ensure that the pet image is only displayed when fully loaded
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();

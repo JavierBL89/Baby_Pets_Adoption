@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { Container, Row, Col, Stack, Spinner, Button } from "react-bootstrap";
 import Heading from "../../../common/Heading";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,6 +7,8 @@ import TextComponent from "../../../common/TextComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
 import PetApplicationCard from "./PetApplicationCard";
 import ApplicationStatusTabComponent from "./ApplicationStatusTabComponent";
+import { FeedbackContext } from "../../../../context/FeedBackContext";
+import PostActionMessage from "../../../common/PostActionMessage";
 
 /***
  * Component atc as core of my_listings page.
@@ -20,10 +22,10 @@ import ApplicationStatusTabComponent from "./ApplicationStatusTabComponent";
 const PetApplications = () => {
 
     const { token, petId } = useParams();  // grab token from url params
-
-    const [message, setMessage] = useState("");
+    const { postActionMessage, setPostActionMessage } = useContext(FeedbackContext);  // get global message from FeedbackContext
 
     const [applications, setApplications] = useState([])
+    const [message, setMessage] = useState("")
     const [selectedTab, setSelectedTab] = useState("Pending")
 
     const [page, setPage] = useState(0);
@@ -33,8 +35,20 @@ const PetApplications = () => {
 
     const navigate = useNavigate();
 
-
-    /***
+    /*
+    * Method responsible for retrieving all adoption applications related to a single pet,
+    * and filters the search based on the applciations status selected
+    *
+    * Steps:
+    * 1. Set data list to empty 
+    * 2. Set loading variable to true while proccessing task
+    * 2. Check if token variable is missing
+    * 4. Make GET request
+    * 5. Check and handle the response while setting messages for user feedback
+    * 
+     * useCallback hook is used to memoize the fetchListingsData. It returns a memoized version 
+     * of the callback that only changes if one of the dependencies has changed
+     * It optimizes performance by preventing re-renders.
      * 
      */
     const fetchApplicationsData = useCallback(async () => {
@@ -42,13 +56,13 @@ const PetApplications = () => {
         // ensure token is not empty
         if (!token) {
             console.error("Missing authentication token. GET request could not be initiated");
-            setMessage("Missing authentication token. Please login and try again");
+            setMessage("'Missing authentication token. Please login and try again")
             return;
         }
 
         setLoading(true);  // set to true while retrieving data
-        console.log(selectedTab);
         setApplications([]);  // reset state to an empty list before fetching any data
+        setMessage("");   // reset message state
         try {
 
             const response = await instance.get(`/adoption/pet/applications?token=${token}&petId=${petId}&status=${selectedTab}&order=${orderBy}&page=${page}&size=6`);
@@ -56,7 +70,6 @@ const PetApplications = () => {
             if (response.status === 200) {
                 console.log(response.data);
                 if (response.data && response.data.applications.length > 0) {
-                    console.log(response.data);
 
                     // format Date objects before setting data state
                     const formattedListings = response.data.applications.map(appplication => ({
@@ -66,10 +79,9 @@ const PetApplications = () => {
                     }));
                     setApplications(formattedListings);
                     setTotalPages(response.data.totalPages);
-                    console.log(formattedListings);
 
                 } else {
-                    setMessage("No results.");
+                    setMessage("No applications with status '" + selectedTab + "'");
                 }
             } else {
                 throw new Error(`HTTP error status: ${response.status}`);
@@ -92,7 +104,6 @@ const PetApplications = () => {
     const handleDrop = async (objectId) => {
 
         if (!token) {
-
             setMessage("Operation cannot be processed. Missing authenication token")
             return;
         }
@@ -105,48 +116,33 @@ const PetApplications = () => {
                 // DELETE request
                 const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
                 if (response.status === 200) {
-                    fetchApplicationsData();    // reload page with new data
-                    // set feedback message to be ddiplayed for 3 seconds
-                    setMessage("Pet successfully removed from your listings.")
-                    setTimeout(() => {
-                        setMessage("");
-                    }, 3000);
+                    fetchApplicationsData();    // reload page with new data                 
+                    // Store feedback message in localStorage
+                    localStorage.setItem('feedbackMessage', 'Application successfully removed!');
                     navigate(`/my_applications/${token}`);
 
                 } else {
-
                     console.error("Item could not be removed:", response.data);
                     setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
                 }
 
             } catch (error) {
                 console.error('Error deleting item:', error);
-
             }
-
         } else {
-
             setMessage("Item could not be deleted. Logout and try again")
             console.error("Missing object Id to complete operation. Please ensure variable 'objectId' is defined.");
         }
 
     };
 
-
     /***
+     * Method sets the state with the selected status tab name
      * 
-     */
-    const handleUpdate = () => {
-        // redirect to
-        navigate(`/my_applications/${token}`);
-    };
-
-    /***
-     * 
+     * @param {String} tabName - the selected status tab name
      */
     const handleTabSelection = (tabName) => {
         setSelectedTab(tabName);
-        console.log("Selected Tab:", tabName); // You can remove this line, it's just for demonstration
     };
 
     /****
@@ -172,12 +168,18 @@ const PetApplications = () => {
 
         <Container id="pet_applications_wrapper">
             <Container id="pet_applications_container">
+                { /*************** Post-action Feedback message  *********************/}
+                <Row >
+                    <Container id="post_action_message_holder">
+                        {!loading && postActionMessage && (
+                            <PostActionMessage text={postActionMessage} />
+                        )}
+                    </Container>
+                </Row>
+
                 <Row >
 
                     { /*************** APLICATIONS LIST  *********************/}
-                    <Row >
-                        <TextComponent id="pet_applications_message" text={message && message} />
-                    </Row>
                     <Row>
                         < ApplicationStatusTabComponent onTabSelect={handleTabSelection} />
                     </Row>
@@ -189,6 +191,13 @@ const PetApplications = () => {
                                 <Row id="my_applications_spinner_holder">
                                     <Spinner animation="border" />
                                 </Row>}
+
+                            { /*************** Feedback message  *********************/}
+                            {message &&
+                                <Row id="pet_applications_message_holder">
+                                    <TextComponent id="pet_applications_message" text={message} />
+                                </Row>
+                            }
 
                             {
                                 applications && applications.map((application, index) => {
@@ -204,8 +213,6 @@ const PetApplications = () => {
                                             onFetchData={fetchApplicationsData}
                                             // delete listing button passes the petId
                                             onDelete={() => handleDrop()}
-                                            // update listing button (pass the entire listing object)
-                                            onUpdate={() => handleUpdate()}
 
                                         />
                                     )
@@ -216,13 +223,6 @@ const PetApplications = () => {
 
                         </Row>
                     </Row>
-
-                    { /*************** Load More Button  *********************/}
-                    {!loading && page < totalPages - 1 && (
-                        <Button onClick={loadMoreListings} disabled={loading}>
-                            Load More
-                        </Button>
-                    )}
                 </Row>
 
             </Container>

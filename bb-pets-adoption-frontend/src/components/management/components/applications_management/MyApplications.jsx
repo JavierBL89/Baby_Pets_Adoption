@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { Container, Row, Col, Stack, Spinner, Button } from "react-bootstrap";
 import Heading from "../../../common/Heading";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,6 +7,8 @@ import TextComponent from "../../../common/TextComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
 import MyApplicationCard from "./MyApplicationCard";
 import useFetchById from "../../../hooks/data/fetchById";
+import { FeedbackContext } from "../../../../context/FeedBackContext";
+import PostActionMessage from "../../../common/PostActionMessage";
 
 /***
  * Component acts as core of my_listings page.
@@ -20,7 +22,7 @@ import useFetchById from "../../../hooks/data/fetchById";
 const MyApplications = () => {
 
     const { token } = useParams();  // grab token from url params
-
+    const { postActionMessage, setPostActionMessage } = useContext(FeedbackContext);
 
     const [message, setMessage] = useState("");
     const [applications, setApplications] = useState([]);
@@ -29,12 +31,24 @@ const MyApplications = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [orderBy, setOrderBy] = useState("asc");
 
-    const navigate = useNavigate();
-
+    /***
+     * Method responibe for making a GET request to fetch all adoption 
+     * applications related to the authenticated user
+     * 
+     * Steps:
+     * 1. Set data list to empty 
+     * 2. Check if token variable is missing
+     * 3. Set loading variable to true while proccessing task
+     * 4. Make GET request
+     * 5. Check and handle the response while setting messages for user feedback
+     * 
+     * useCallback hook is used to memoize the 'fetchApplicationsData'. It returns a memoized version 
+     * of the callback that only changes if one of the dependencies has changed
+     * It optimizes performance by preventing re-renders.
+     */
     const fetchApplicationsData = useCallback(async () => {
 
         setApplications([]);   // rest data state every time the method is called
-
 
         // ensure token is not empty
         if (!token) {
@@ -46,9 +60,7 @@ const MyApplications = () => {
         setLoading(true);  // set to true while retrieving data
 
         try {
-
             const response = await instance.get(`/adoption/my_applications?token=${token}&order=${orderBy}&page=${page}&size=6`);
-
             if (response.status === 200) {
 
                 if (response.data && response.data.applications.length > 0) {
@@ -61,8 +73,9 @@ const MyApplications = () => {
                     setApplications(formattedListings);
                     setTotalPages(response.data.totalPages);
                 } else {
-                    setMessage("No results.");
+                    setMessage("You don't have any adoption application currently on process.");
                 }
+
             } else {
                 throw new Error(`HTTP error status: ${response.status}`);
             }
@@ -95,6 +108,7 @@ const MyApplications = () => {
                 // DELETE request
                 const response = await instance.delete(`/adoption/delete_application?token=${trimmedToken}&applicationId=${applicationId}`);
                 if (response.status === 200) {
+                    setPostActionMessage("Application successfully removed")
                     fetchApplicationsData();
 
                 } else {
@@ -142,14 +156,27 @@ const MyApplications = () => {
 
         <Container id="my_applications_wrapper">
             <Container id="my_applications_container">
+                { /*************** Post-action Feedback message  *********************/}
+                <Row >
+                    <Container id="post_action_message_holder">
+                        {!loading && postActionMessage && (
+                            <PostActionMessage text={postActionMessage} />
+                        )}
+                    </Container>
+                </Row>
                 <Row >
                     { /*************** APLICATIONS LIST  *********************/}
-                    <Row >
-                        <TextComponent id="my_applications_message" text={message && message} />
-                    </Row>
+
                     <Row id="my_applications_list_wrapper">
                         <Row id="my_applications_list_holder">
-                            { /************ LOADING SPINNER  ************/}
+                            { /************ Message  ************/}
+                            {message &&
+                                <Row id="my_applications_message_holder">
+                                    <TextComponent id="my_applications_message" text={message && message} />
+                                </Row>
+                            }
+
+                            { /************ Loading spinner  ************/}
                             {loading &&
                                 <Row id="my_applications_spinner_holder">
                                     <Spinner animation="border" />

@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import instance from "../../../scripts/axiosConfig";
 import { DataPetContext } from "../../../context/DataPetContext";
+import { useParams } from "react-router-dom";
 
 
 
@@ -21,25 +22,33 @@ import { DataPetContext } from "../../../context/DataPetContext";
 const useFetchById = (petId) => {
 
     // use DataPetContext to access states for pet search and management 
-    const { currentPetCategory, setDataReadyForRedirect } = useContext(DataPetContext);
+    const { setDataReadyForRedirect } = useContext(DataPetContext);
     const [petData, setPetData] = useState("");       // state for error messages
 
     const [loading, setLoading] = useState(false);  // state used for feedback or UX purposes
     const [error, setError] = useState("");       // state for error messages
 
+    const { currentPetCategory } = useParams();
 
-
+    //const currentPetCategory = localStorage.getItem('currentPetCategory');
     const fetchPet = useCallback(async () => {
 
 
         // check if id is null or empty and exit function
         if (!petId) {
+            console.error("'petId' is empty or null");
+
+            return;
+        }
+
+        if (!currentPetCategory) {
+            console.error("'currentPetCategory' is empty or null");
             return;
         }
 
         setLoading(true);  // set state to true
         setDataReadyForRedirect(false);  // set the redirection flag
-
+        console.log(currentPetCategory);
         try {
             // url appropiate thr appropiate target endpoint
             const url = `/pets/${currentPetCategory}/view/${petId}`;

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import TextComponent from "../../../common/TextComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
 import { DataPetContext } from "../../../../context/DataPetContext";
+import { FeedbackContext } from "../../../../context/FeedBackContext";
 
 
 
@@ -22,20 +23,20 @@ import { DataPetContext } from "../../../../context/DataPetContext";
  * 
  * @returns  `PetAdoptionForm` component 
  */
-const PetAdoptionForm = ({ petId }) => {
+const PetAdoptionForm = ({ petId, userName }) => {
 
-    const { currentPetCategory } = useContext(DataPetContext);
+    const { currentPetCategory, setCurrentPetCategory } = useContext(DataPetContext);
+    const [postActionMessage, setPostActionMessage] = useState(FeedbackContext)
 
 
     const [message, setMessage] = useState("");   // message state
-    const [successMessage, setSuccessMessage] = useState(false);   // successMessage state
     const [failedMessage, setFailedMessage] = useState(false);   // failedMessage state
 
     const [override, setOverride] = useState(false)
     const [isDuplicate, setIsDuplicate] = useState(false);
+
     var token = localStorage.getItem('token');  // grab current token from locat storage
 
-    const navigate = useNavigate();
 
     // form data state
     const [formData, setFormData] = useState({
@@ -59,7 +60,6 @@ const PetAdoptionForm = ({ petId }) => {
     }, [token, petId, currentPetCategory]);
 
 
-
     /**
      * Method handles changes on inputs and set formdata values accordingly
      * 
@@ -73,19 +73,6 @@ const PetAdoptionForm = ({ petId }) => {
             [name]: value
         });
     };
-
-
-    /**
-     * Method handles previous application override
-     * If the user decides to override, set override to true, 
-     * hide the duplicate message, and resubmit the form.
-     */
-    const handleOverride = () => {
-        setOverride(true);
-        setIsDuplicate(false);
-        handleSubmit(new Event('submit', { bubbles: true }));
-    };
-
 
 
     /***
@@ -109,7 +96,6 @@ const PetAdoptionForm = ({ petId }) => {
 
         if (token) {
 
-            setSuccessMessage(false);
             setFailedMessage(false);
 
             try {
@@ -122,13 +108,10 @@ const PetAdoptionForm = ({ petId }) => {
                 });
 
                 if (response.status === 200) {
-                    setMessage("Form successfuly submitted!" +
-                        "\n You should see a new application your Applications section.");
-                    setSuccessMessage(true);
-                    setTimeout(() => {
-                        navigate(`/pets/${currentPetCategory}/view/${petId}`);
-                    }, 1000)
-
+                    setPostActionMessage("Form successfully submitted! You should see a new application in your Applications section.");
+                    localStorage.setItem('feedbackMessage', "Form successfully submitted! You should see a new application in your Applications section.");
+                    window.location.reload();
+                    // navigate(`/pets/${currentPetCategory}/view/${petId}`);
 
                 }
                 else {
@@ -155,24 +138,41 @@ const PetAdoptionForm = ({ petId }) => {
 
     return (
         <Container id="adoption_application_wrapper">
-            <Form onSubmit={handleSubmit} id="adoption_application_form">
-                <Container className="adoption_application_wrapper">
+            <Container className="adoption_application_wrapper">
 
-                    {/******** Info Section ******/}
+                <Form onSubmit={handleSubmit} id="adoption_application_form">
+
+                    <Heading
+                        tagName="h6"
+                        id="before_application_text"
+                        text="Such a beautiful decision from you!"
+                    />
 
                     <Row>{/************ text ********/}
                         <TextComponent
                             tagName="h6"
-                            text="We will provide your name associated to your account 
-                        for the reciever. It will be visisble as..."
+                            text={`We will provide the pet provider with the user name associated to your account.`}
                             className="form_update_info_title"
                         />
                     </Row>
 
 
-                    <Row id="adoption_form_email">
-
-                        <Row >
+                    <Row id="adoption_form_details">
+                        <Col xs={12} lg={6}>
+                            {/***************** {  email } ********/}
+                            <Form.Label>Your prefered contact email address</Form.Label>
+                            <Form.Group controlId="formLocation">
+                                <Form.Control
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="lovepets@gmail.com"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col xs={12} lg={6}>
                             {/***************** {  location } ********/}
                             <Form.Label>County of your current location</Form.Label>
                             <Form.Group controlId="formLocation">
@@ -185,7 +185,7 @@ const PetAdoptionForm = ({ petId }) => {
                                     required
                                 />
                             </Form.Group>
-                        </Row>
+                        </Col>
                     </Row>
 
                     {/******************* {  comment } ***********/}
@@ -199,23 +199,21 @@ const PetAdoptionForm = ({ petId }) => {
                             placeholder=""
                         />
                     </Form.Group>
-                </Container>
-                {/******** Feedback Message ********/}
-                <Row >
-                    {message &&
-                        <>
-                            {successMessage && <TextComponent id="adoption_form_success_text" text={message} />}
-                            {failedMessage && <TextComponent id="adoption_form_failed_text" text={message} />}
-                        </>
-                    }
-                </Row>
+                    {/******** Feedback Message ********/}
+                    <Row >
+                        {message &&
+                            <>
+                                {failedMessage && <TextComponent id="adoption_form_failed_text" text={message} />}
+                            </>
+                        }
+                    </Row>
 
-                {/******** Submit Button ********/}
-                <Row>
-                    <button id="adoption_application_submit_button" className="btn btn-primary" type="submit">submit</button>
-                </Row>
-
-            </Form>
+                    {/******** Submit Button ********/}
+                    <Row>
+                        <ButtonComponent id="adoption_application_submit_button" className="btn btn-primary" type="submit" text="Submit" />
+                    </Row>
+                </Form>
+            </Container>
 
         </Container>
     )

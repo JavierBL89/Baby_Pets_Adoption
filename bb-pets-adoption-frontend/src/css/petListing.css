@@ -70,6 +70,23 @@ body {
     padding: 0;
 }
 
+#post_action_message_holder {
+    width: 100%;
+    height: 70px;
+    margin: 10px auto 40px;
+}
+
+
+
+#post_action_message_wrapper #post_action_message_container {
+    width: 90%;
+    background-color: #e8d6bf;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    color: #6a5b48;
+}
 
 #sign_in_messsage {
     text-align: center;
@@ -214,6 +231,57 @@ body {
 /****** adoption section */
 #pet_adoption_wrapper {
     margin-top: 100px;
+    margin-bottom: 100px;
+    margin: 100px auto;
+}
+
+#pet_adoption_wrapper #pet_adoption_dropdown_button {
+    width: 100%;
+    border: solid 1px #9E7F66;
+    margin-top: 50px;
+    height: 50px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #9E7F66;
+}
+
+#pet_adoption_wrapper #adoption_application_wrapper {
+    padding: 0;
+    margin: 0 auto;
+}
+
+#pet_adoption_wrapper .adoption_application_wrapper {
+
+    border: solid 1px #000000;
+    border-radius: 10px;
+    padding: 70px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h6 {
+    text-align: center;
+}
+
+#adoption_form_dropdown {
+    margin: 50px auto 0;
+}
+
+#adoption_form_dropdown .row,
+#adoption_form_body {
+    padding: 0;
+    margin: 0 auto;
+}
+
+#adoption_form_dropdown #adoption_form_body {
+    margin-top: 50px;
+}
+
+#adoption_form_dropdown #adoption_application_submit_button {
+    width: 40%;
+    margin: 0 auto;
+    height: 40px;
+    padding: 0;
 
 }
 
@@ -222,9 +290,30 @@ body {
     margin-bottom: 30px;
 }
 
-#adoption_form_accordion_wrapper {
+#pet_adoption_wrapper #adoption_form_details {
     margin-top: 50px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+}
+
+#pet_adoption_wrapper #form_textarea {
+
+    margin-bottom: 40px;
+    width: 80%;
+    margin: 0 auto 40px;
+    font-size: 14px;
+}
+
+#pet_adoption_wrapper #adoption_form_details input {
+    height: 40px;
+}
+
+
+#pet_adoption_wrapper #adoption_form_details input::placeholder {
+    font-size: 18px;
+    letter-spacing: 0.2px;
+    font-style: italic;
+    padding-left: 3px;
+    text-align: center;
 }
 
 #adoption_form_accordion_wrapper #adoption_form_success_text {
@@ -241,6 +330,7 @@ body {
     text-align: center;
 
 }
+
 
 /*********************************** COMMON FORM */
 
@@ -277,10 +367,17 @@ input:-webkit-autofill,
     width: 80%;
 }
 
+#pet_adoption_wrapper #adoption_form_details label,
+#pet_adoption_wrapper #form_textarea label,
 #list_pet_form label,
 #reg_form label,
 #login_form {
-    font-size: 14px;
+    font-size: 15px;
+}
+
+#list_pet_form label,
+#reg_form label,
+#login_form {
     margin-left: 15px;
 }
 
@@ -545,6 +642,34 @@ input:-webkit-autofill,
 }
 
 
+.drop_petList_accordion_wrapper {
+    background-color: #f2dfcfb6;
+    width: inherit;
+    margin: 0 auto;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.drop_petList_accordion_wrapper .drop_petList_confirm_button {
+
+    width: 30%;
+    background-color: #9E7F66;
+    text-align: center;
+    margin: 10px auto;
+    color: #FFFFF0;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    font-size: 18px;
+}
+
+.drop_petList_accordion_wrapper .drop_petList_warning_text {
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 30px;
+    text-align: center;
+}
+
 /************************* UPDATE PET*/
 
 
@@ -626,6 +751,25 @@ input:-webkit-autofill,
 
 .pet_card_wrapper .img_holder img {
     width: 100%;
+}
+
+#update_pet_failed_message_holder,
+#create_pet_failed_message_holder {
+    width: 100%;
+    height: 100px;
+    margin: 20px auto;
+
+}
+
+#update_pet_failed_message,
+#create_pet_failed_message {
+    margin: 0 auto;
+    text-align: center;
+    width: inherit;
+    padding: 20px;
+    color: #b53c3c;
+    font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
 /* 

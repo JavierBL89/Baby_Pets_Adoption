@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import Heading from "../../../common/Heading";
 import ButtonComponent from "../../../common/ButtonComponent";
@@ -6,6 +6,7 @@ import instance from "../../../../scripts/axiosConfig";
 import { useParams, useNavigate } from "react-router-dom";
 import TextComponent from "../../../common/TextComponent";
 import ImageComponent from "../../../common/ImageComponent";
+import { FeedbackContext } from "../../../../context/FeedBackContext";
 
 
 
@@ -21,6 +22,8 @@ const PetUpdateForm = () => {
     const { petObjectString, petListingId, token } = useParams();      // grab token from url for user authentication
     const [currentPet, setCurrentPet] = useState({})
     const navigate = useNavigate();
+
+    const { setPostActionMessage } = useContext(FeedbackContext);
 
     // form data state
     const [formData, setFormData] = useState({
@@ -57,7 +60,6 @@ const PetUpdateForm = () => {
                 // set pet state with the current pet object
                 setCurrentPet(currentPet);
 
-                console.log(currentPet);
                 setFormData({
                     category: currentPet.category,
                     breed: currentPet.breed,
@@ -76,6 +78,7 @@ const PetUpdateForm = () => {
                     petId: currentPet.id          // pass the current pet id for db operations
                 });
             } catch (error) {
+                setMessage("An error occured and operationg could not be done. Please try again later, or contact site administartor.")
                 console.error('Error parsing pet data:', error);
             }
         }
@@ -162,14 +165,16 @@ const PetUpdateForm = () => {
                 });
 
                 if (response.status === 200) {
-                    setMessage("Form successfuly submitted!" +
-                        "\n You should see the new pet list on your listings.");
+                    setPostActionMessage("Pet has been Updated!" +
+                        "\n You should can review changes on the pet listing.");
                     navigate(`/my_listings/${token}`);
                 } else {
                     console.error("Form submission failed:", response.data);
                     setMessage("Form could not be submited. A server error occured. Please try again or contact admin to inform about the problem. ")
+                    console.log(message);
                 }
             } catch (error) {
+                setMessage("Error submitting form. Please check the form fields and ensure you enter valid data.")
                 console.error('Error submitting form:', error);
             }
 
@@ -398,15 +403,14 @@ const PetUpdateForm = () => {
                 <Row>
                     <button id="update_pet_submit_button" className="btn btn-primary" type="submit">submit</button>
                 </Row>
-
-                {/******** Feedback Message ********/}
-                <Row >
-                    {message &&
-                        <TextComponent text={message} />
-                    }
-                </Row>
             </Form>
-            {/* {submitted && <p>Form submitted successfully!</p>} */}
+
+            {/******** Feedback Message ********/}
+            <Row id="update_pet_failed_message_holder">
+                {message &&
+                    <TextComponent id="update_pet_failed_message" text={message} />
+                }
+            </Row>
         </Container>
     )
 

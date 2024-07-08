@@ -21,7 +21,7 @@ import LogInDropDown from "./LoginDropDown";
 const Header = () => {
 
     const { isAuthenticated } = useContext(AuthContext);
-
+    const token = localStorage.getItem("token")
 
 
     return (
@@ -32,7 +32,7 @@ const Header = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ms-auto">
                         {/**  Nav Links **/}
-                        <Nav.Link id="home_link_nav" href="/">Main</Nav.Link>
+                        <Nav.Link id="home_link_nav" href={`/${token}`}>Main</Nav.Link>
                         { // condition to display different links
                             !isAuthenticated ? (
                                 <>

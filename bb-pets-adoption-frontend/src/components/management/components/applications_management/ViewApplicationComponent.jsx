@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import TextComponent from "../../../common/TextComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
 import { DataPetContext } from "../../../../context/DataPetContext";
+import { FeedbackContext } from "../../../../context/FeedBackContext";
 
 
 
@@ -16,11 +17,10 @@ import { DataPetContext } from "../../../../context/DataPetContext";
  */
 const ViewApplicationComponent = ({ application, status, comments, applicationId, onFetchData, token }) => {
 
-    const { currentPetCategory } = useContext(DataPetContext);
+    const { postActionMessage, setPostActionMessage } = useContext(FeedbackContext);  // get global message from FeedbackContext
 
 
     const [message, setMessage] = useState("");   // message state
-    const [successMessage, setSuccessMessage] = useState(false);   // successMessage state
     const [failedMessage, setFailedMessage] = useState(false);   // failedMessage state
 
 
@@ -45,6 +45,13 @@ const ViewApplicationComponent = ({ application, status, comments, applicationId
     }, [token, status, applicationId]);
 
 
+    /****
+     * 
+     * 
+     */
+    const handleAction = (msg) => {
+        setPostActionMessage(msg);
+    }
 
     /**
      * Method handles changes on inputs and set formdata values accordingly
@@ -80,7 +87,6 @@ const ViewApplicationComponent = ({ application, status, comments, applicationId
 
         if (token) {
 
-            setSuccessMessage(false);
             setFailedMessage(false);
 
             try {
@@ -93,12 +99,9 @@ const ViewApplicationComponent = ({ application, status, comments, applicationId
                 });
 
                 if (response.status === 200) {
-                    setMessage("Application status successfully updated!" +
-                        "\n You should see a the application moved to on the status tab.");
-                    setSuccessMessage(true);
-                    setTimeout(() => {
-                        onFetchData();
-                    }, 2000)
+                    // Store feedback message in localStorage
+                    handleAction("Application status was updated. You can now see it within '" + formData.status + "' tab");
+                    onFetchData();
                 }
                 else {
                     console.error("Form submission failed:", response.data);
@@ -116,9 +119,12 @@ const ViewApplicationComponent = ({ application, status, comments, applicationId
         } else {
             setMessage("Authentication needed. Update could not be submited!")
             setFailedMessage(true);
+
         }
 
     };
+
+
 
     return (
 
@@ -195,19 +201,10 @@ const ViewApplicationComponent = ({ application, status, comments, applicationId
                     </Row>
 
                 </Container>
-
-
-
-                {/******** Feedback Message ********/}
-                <Row >
-                    {message &&
-                        <>
-                            {successMessage && <TextComponent id="adoption_form_success_text" text={message} />}
-                            {failedMessage && <TextComponent id="adoption_form_failed_text" text={message} />}
-                        </>
-                    }
-                </Row>
-
+                { /*************** Feedback message  *********************/}
+                {failedMessage && (
+                    <TextComponent id="postActionMessage" tagName="h6" text={failedMessage} />
+                )}
                 {/******** Submit Button ********/}
                 <Row>
                     <button id="view_app_update_status_submit_button" className="btn btn-primary" type="submit">Update</button>

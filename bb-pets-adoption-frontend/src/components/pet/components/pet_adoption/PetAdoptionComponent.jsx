@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Container, Row, Col, Stack, Spinner, Button, Dropdown, Accordion } from "react-bootstrap";
+import React, { useCallback, useEffect, useState, useContext } from "react";
+import { Container, Row } from "react-bootstrap";
 import Heading from "../../../common/Heading";
-import { useNavigate, useParams } from "react-router-dom";
-import instance from "../../../../scripts/axiosConfig";
 import TextComponent from "../../../common/TextComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
 import PetAdoptionForm from "./PetAdoptionForm";
+import { AuthContext } from "../../../../context/AuthContext";
 
 
 /***
@@ -16,10 +15,19 @@ import PetAdoptionForm from "./PetAdoptionForm";
  * 
  * @returns  'PetAdoptionComponent' - thr component
  */
-const PetAdoptionComponent = ({ petId }) => {
+const PetAdoptionComponent = ({ petId, userName }) => {
 
-    const [message, setMessage] = useState("");
+    const [viewForm, setViewForm] = useState(null);
 
+    /**** 
+     * Method toggles the view application dropdown.
+     * 
+     * Sets the state to the oposite of the current state is
+     * false to true | true to false
+    */
+    const viewFormToggle = () => {
+        setViewForm(!viewForm);
+    }
 
     return (
 
@@ -37,29 +45,27 @@ const PetAdoptionComponent = ({ petId }) => {
                      In the meantime you can track your application status. We also notify you of any statues changes.\n "
 
                     />
+
+                </Row>
+                <Row className="application_adoption_holder">
+                    {/******* Drop app button *******/}
+                    <Row id="adoption_form_dropdown">
+                        <ButtonComponent onClick={viewFormToggle} id="pet_adoption_dropdown_button" className="btn no-arrow "
+                            text=" Adoption Request" />
+
+
+                        {
+                            viewForm &&
+                            <Row id="adoption_form_body">
+                                <PetAdoptionForm petId={petId} userName={userName} />
+                            </Row>
+                        }
+                    </Row>
                 </Row>
 
-                { /***** Adoption Accordion *****/}
-                <Row id="adoption_form_accordion_wrapper">
-                    <Accordion >
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header>Adoption Request</Accordion.Header>
-                            <Accordion.Body>
-                                <Heading tagName="h6" id="before_application_text"
-                                    text="Such a beautiful decision from you!"
-
-                                />
-                                <PetAdoptionForm
-                                    petId={petId}
-                                />
-                            </Accordion.Body>
-                        </Accordion.Item>
-
-                    </Accordion>
-                </Row>
             </Container>
 
-        </Container>
+        </Container >
     );
 
 };

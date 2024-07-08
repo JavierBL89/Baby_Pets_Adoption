@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Stack, Spinner, Button } from "react-bootstrap";
 import Heading from "../../../common/Heading";
 import TimeStampComponent from "./TimeStampComponent";
@@ -7,6 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../../../scripts/axiosConfig";
 import TextComponent from "../../../common/TextComponent";
 import ButtonComponent from "../../../common/ButtonComponent";
+import PostActionMessage from "../../../common/PostActionMessage";
+import { FeedbackContext } from "../../../../context/FeedBackContext";
 
 
 /***
@@ -21,6 +23,8 @@ import ButtonComponent from "../../../common/ButtonComponent";
 const MyListings = () => {
 
     const { token } = useParams();  // grab token from url params
+    const { postActionMessage, setPostActionMessage } = useContext(FeedbackContext);
+
     const [message, setMessage] = useState("");
     const [listings, setListings] = useState([]);
     const [page, setPage] = useState(0);
@@ -31,12 +35,23 @@ const MyListings = () => {
     const navigate = useNavigate();
 
 
-    /*****
-     * 
-     * 
-     * 
-     * 
-     */
+    /***
+       * Method responsible for making a GET request to retrieve all pet listings
+       *  related to the current authenticated user
+       * 
+       * Steps:
+        * 1. Set data list to empty 
+        * 2. Check if token variable is missing
+        * 3. Set loading variable to true while proccessing task
+        * 4. Make GET request
+        * 5. Check and handle the response while setting messages for user feedback
+        * 
+        * useCallback hook is used to memoize the fetchListingsData. It returns a memoized version 
+        * of the callback that only changes if one of the dependencies has changed
+        * It optimizes performance by preventing re-renders.
+        * 
+        * @param {String} objectId - the id of the petList to be removed
+        */
     const fetchListingsData = useCallback(async () => {
 
         setListings([]);   // reset to empty before every render
@@ -69,7 +84,7 @@ const MyListings = () => {
                     setListings(formattedListings);
                     setTotalPages(response.data.totalPages);
                 } else {
-                    setMessage("No results.");
+                    setMessage("You have currently no pets listed available.");
                 }
             } else {
                 throw new Error(`HTTP error status: ${response.error}`);
@@ -86,7 +101,16 @@ const MyListings = () => {
 
 
     /***
+    * Method responsible for making a DELETE request to remove the selected petList
+    * from the database
+    * 
+    * Steps:
+     * 1. Check if token variable is missing
+     * 2. Check if the current pet listing id is not empty
+     * 3. Make DELETE request
+     * 5. Check and handle the response while setting messages for user feedback
      * 
+     * @param {String} objectId - the id of the petList to be removed
      */
     const handleDelete = async (objectId) => {
 
@@ -97,18 +121,20 @@ const MyListings = () => {
 
         const trimmedToken = token.trim();   // eliminate any possible white spaces
 
+        // check id variable is not empty
         if (objectId) {
-
             try {
                 // DELETE request
                 const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
+
                 if (response.status === 200) {
+                    setPostActionMessage("Pet listing has been sucessfully removed.") // store post-action message
                     setListings([]);   // reset to empty before every render
                     fetchListingsData();    // reload page with new data
                 } else {
 
                     console.error("Item could not be removed:", response.data);
-                    setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
+                    setMessage("A server error occured and pet could not be removed.Please try later or contact admin to inform about the problem.")
                 }
             } catch (error) {
                 console.error('Error deleting item:', error);
@@ -122,13 +148,16 @@ const MyListings = () => {
 
 
     /***
+     * Method to redirect user to /update_pet page
+     * to allow them to update the selected pet data
      * 
+     * @param {String} petObject - the objectId of the curent pet
+     * @param {String} petListingId - the id of the current PetList object(container for post data)
      */
     const handleUpdate = (petObject, petListingId) => {
 
         // serialize listing object into a JSON string to pass it in URL param
         const petObjectString = encodeURIComponent(JSON.stringify(petObject));
-        // redirect to
         navigate(`/update_pet/${petObjectString}/${petListingId}/${token}`);
     };
 
@@ -158,6 +187,14 @@ const MyListings = () => {
 
         <Container id="my_listings_wrapper">
             <Container id="my_listings_container">
+                { /*************** Post-action Feedback message  *********************/}
+                <Row >
+                    <Container id="post_action_message_holder">
+                        {!loading && postActionMessage && (
+                            <PostActionMessage text={postActionMessage} />
+                        )}
+                    </Container>
+                </Row>
 
                 <Row > { /***** CREATE NEW PET BUTTON  *****/}
                     <Col xs={3}>

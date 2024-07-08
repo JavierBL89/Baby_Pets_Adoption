@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import Heading from "../../../common/Heading";
 import ButtonComponent from "../../../common/ButtonComponent";
 import instance from "../../../../scripts/axiosConfig";
 import { useParams, useNavigate } from "react-router-dom";
 import TextComponent from "../../../common/TextComponent";
+import { FeedbackContext } from "../../../../context/FeedBackContext";
 
 
 
@@ -19,6 +20,8 @@ const FormComponent = () => {
     const [message, setMessage] = useState("");   // message state
     const [isForSale, setIsForSale] = useState(false);   // message state
     const { token } = useParams();      // grab token from url for user authentication
+
+    const { setPostActionMessage } = useContext(FeedbackContext);  // get global message from FeedbackContext
 
     const navigate = useNavigate();
 
@@ -112,13 +115,16 @@ const FormComponent = () => {
                 });
 
                 if (response.status === 200) {
+                    setPostActionMessage("Pet listing sucessfully added. From now on users can see it when navigating through the pet category.")
                     navigate(`/my_listings/${token}`);
 
                 } else {
                     console.error("Form submission failed:", response.data);
-                    setMessage("Form coild not be submited. A server error occured. Please try again or contact admin to inform about the problem. ")
+                    setMessage("Form could not be submited. A server error occured. Please try again or contact admin to inform about the problem. ")
                 }
             } catch (error) {
+                setMessage("Error submitting form. Please check the form fields and ensure you enter valid data.")
+
                 console.error('Error submitting form:', error);
             }
 
@@ -381,15 +387,14 @@ const FormComponent = () => {
                     <button id="list_pet_submit_button" className="btn btn-primary" type="submit">submit</button>
 
                 </Row>
-                <Row >
-                    {message &&
-                        <TextComponent text={message} />
 
-                    }
-                </Row>
             </Form>
-            {/* {submitted && <p>Form submitted successfully!</p>} */}
-        </Container>
+            {/******** Feedback Message ********/}
+            <Row id="create_pet_failed_message_holder">
+                {/* {message && */}
+                <TextComponent id="create_pet_failed_message" text={message} />
+                {/* } */}
+            </Row>        </Container>
     )
 
 };

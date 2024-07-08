@@ -20,9 +20,15 @@ export const DataPetProvider = ({ children }) => {
     const [petId, setPetId] = useState("");     // state for the current petId
     const [dataReadyForRedirect, setDataReadyForRedirect] = useState(false);  // state indicates when data is ready and user cn be redirected
 
+
+    /***
+     * Store the currentPetCategory in local storage whenever it changes
+     */
     useEffect(() => {
-        console.log("DataPetContext: petId changed to:", petId);
-    }, [petId]);
+        localStorage.setItem('currentPetCategory', currentPetCategory);
+        setCurrentPetCategory(localStorage.getItem('currentPetCategory'))
+    }, [currentPetCategory, setCurrentPetCategory]);
+
 
     /**
      * Method to reset data when a new category is selected or

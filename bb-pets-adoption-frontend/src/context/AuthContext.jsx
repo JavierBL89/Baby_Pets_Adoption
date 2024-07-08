@@ -70,7 +70,6 @@ const AuthProvider = ({ children }) => {
     const logout = () => {
         console.log("PUTS");
         localStorage.removeItem("token");
-        console.log(localStorage.getItem("token") + "PUTS");
         setIsAuthenticated(false);   // reset state to false
         setRegisteredBy("");  // clear state
         navigate("/"); // redirect to home page after successful logout
