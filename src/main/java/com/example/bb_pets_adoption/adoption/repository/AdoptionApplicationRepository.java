@@ -5,7 +5,7 @@ package com.example.bb_pets_adoption.adoption.repository;
 
 
 import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
-import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.account_management.Model.User;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;

@@ -3,9 +3,7 @@
  */
 package com.example.bb_pets_adoption.pet_listing.service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,16 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationService;
 import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationServiceImpl;
-import com.example.bb_pets_adoption.auth.model.User;
-import com.example.bb_pets_adoption.auth.repository.UserRepository;
+import com.example.bb_pets_adoption.account_management.Model.User;
+import com.example.bb_pets_adoption.account_management.Repository.UserRepository;
 import com.example.bb_pets_adoption.auth.service.AuthenticationServiceImpl;
 import com.example.bb_pets_adoption.pet_listing.controller.PetController;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
@@ -34,8 +28,6 @@ import com.example.bb_pets_adoption.pet_listing.model.PetUpdateData;
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
-import com.example.bb_pets_adoption.pet_listing.service.S3Service;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Class to host business logic around pet operations

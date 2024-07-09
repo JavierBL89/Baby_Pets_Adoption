@@ -8,34 +8,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.bb_pets_adoption.auth.repository.UserRepository;
+import com.example.bb_pets_adoption.account_management.Repository.UserRepository;
 import com.example.bb_pets_adoption.email.EmailService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.account_management.Model.User;
 
 /**
  * Controller class for authentication funtionalities, and password reset
@@ -118,7 +115,7 @@ public class AuthController {
 	         
 			//log
 			logger.info("Registrartion need account verification from ", user.getEmail());
-			return ResponseEntity.status(201).body("User registered successfully");
+			return ResponseEntity.status(201).body("User registered successfully. Registration needs account verification to be completed");
 		} else {                                                         
 			// if email is found, log the error and return a message
 			//log
@@ -157,13 +154,11 @@ public class AuthController {
 			// update user token and save changes	   
 			registereduser.setToken(token);
 			userRepository.save(registereduser);
-			logger.info("PUTAAA " + user.getToken());
-			logger.info("PUTOOO " + token);
 		    response.put("registeredBy", foundUser.get().getRegisteredBy());  // send it with response message
-			response.put("userName", foundUser.get().getName());
+			response.put("userName", registereduser.getName());
 			//log
 			logger.info("Login successful for user with email: {}", user.getEmail());
-			return ResponseEntity.status(201).body(response);
+			return ResponseEntity.status(200).body(response);
 		} else {
 			//log
             logger.error("Login failed for user with email: {}", user.getEmail());

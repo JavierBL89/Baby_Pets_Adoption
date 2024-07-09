@@ -57,10 +57,11 @@ const AuthProvider = ({ children }) => {
     * Login function sets the token in localStorage and update the authentication state
     * @param {string} token - JWT token received after successful login
     */
-    const login = (token, registeredBy) => {
+    const login = (token, registeredBy, userName) => {
         localStorage.setItem('token', token);
         setIsAuthenticated(true);
         setRegisteredBy(registeredBy);
+        setUserName(userName);
         navigate(`/?token=${token}`); // redirect to home page after successful login
     };
 
@@ -68,10 +69,10 @@ const AuthProvider = ({ children }) => {
      * Logout function to remove the token from localStorage and update the authentication state
      */
     const logout = () => {
-        console.log("PUTS");
         localStorage.removeItem("token");
         setIsAuthenticated(false);   // reset state to false
         setRegisteredBy("");  // clear state
+        setUserName("");  // clear state
         navigate("/"); // redirect to home page after successful logout
     };
 

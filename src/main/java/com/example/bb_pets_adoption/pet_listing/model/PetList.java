@@ -6,7 +6,6 @@ package com.example.bb_pets_adoption.pet_listing.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -15,10 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.example.bb_pets_adoption.auth.model.User;
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
-import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
 import com.example.bb_pets_adoption.search.controller.SearchController;
 
 import lombok.AllArgsConstructor;

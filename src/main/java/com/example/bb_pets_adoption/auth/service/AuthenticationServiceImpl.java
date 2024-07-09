@@ -3,18 +3,16 @@
  */
 package com.example.bb_pets_adoption.auth.service;
 
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.bb_pets_adoption.auth.model.User;
-import com.example.bb_pets_adoption.auth.repository.UserRepository;
+import com.example.bb_pets_adoption.account_management.Model.User;
+import com.example.bb_pets_adoption.account_management.Repository.UserRepository;
 import com.example.bb_pets_adoption.search.controller.SearchController;
 
 

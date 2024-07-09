@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.auth.model;
+package com.example.bb_pets_adoption.account_management.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,10 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.example.bb_pets_adoption.pet_listing.model.Pet;
 import com.example.bb_pets_adoption.pet_listing.model.PetList;
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,6 +43,7 @@ public class User{
 	private String email;
 	private String password;
 	private String token;
+	private String location;
 	private String registeredBy;
 	private List<String> roles;  // list of roles ["Adopter", "Pet Provider"]
 	

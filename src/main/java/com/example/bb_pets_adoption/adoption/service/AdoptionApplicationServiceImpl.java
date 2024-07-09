@@ -14,14 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
 import com.example.bb_pets_adoption.adoption.repository.AdoptionApplicationRepository;
-import com.example.bb_pets_adoption.auth.model.User;
-import com.example.bb_pets_adoption.auth.repository.UserRepository;
+import com.example.bb_pets_adoption.account_management.Model.User;
+import com.example.bb_pets_adoption.account_management.Repository.UserRepository;
 import com.example.bb_pets_adoption.auth.service.AuthenticationServiceImpl;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
@@ -30,11 +28,9 @@ import com.example.bb_pets_adoption.pet_listing.model.PetList;
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
-import com.example.bb_pets_adoption.pet_listing.repository.PetRepository;
+
 import com.example.bb_pets_adoption.search.controller.SearchController;
 
-import com.example.bb_pets_adoption.adoption.service.ApplicationDateDescendingComparator;
-import com.example.bb_pets_adoption.adoption.service.ApplicationDateAscendingComparator;
 
 
 /**

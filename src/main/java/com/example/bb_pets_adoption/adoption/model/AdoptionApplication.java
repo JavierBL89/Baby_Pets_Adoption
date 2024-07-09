@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.account_management.Model.User;
 import com.example.bb_pets_adoption.pet_listing.model.Pet;
 
 import lombok.Data;

@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.account_management.Model.User;
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
 import com.example.bb_pets_adoption.pet_listing.model.Dog;
 import com.example.bb_pets_adoption.pet_listing.model.Pet;

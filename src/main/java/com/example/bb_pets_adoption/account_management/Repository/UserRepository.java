@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.auth.repository;
+package com.example.bb_pets_adoption.account_management.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.account_management.Model.User;
 import com.example.bb_pets_adoption.pet_listing.model.PetList;
 
 /**

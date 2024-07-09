@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -17,8 +16,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.example.bb_pets_adoption.auth.model.User;
-import com.example.bb_pets_adoption.auth.repository.UserRepository;
+import com.example.bb_pets_adoption.account_management.Model.User;
+import com.example.bb_pets_adoption.account_management.Repository.UserRepository;
 
 /**
  * CustomOAuth2UserService extends DefaultOAuth2UserService to load the user

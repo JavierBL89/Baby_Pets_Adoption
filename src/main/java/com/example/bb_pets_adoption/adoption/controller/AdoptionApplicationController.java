@@ -3,7 +3,7 @@ package com.example.bb_pets_adoption.adoption.controller;
 import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
 import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationService;
 import com.example.bb_pets_adoption.adoption.service.AdoptionApplicationServiceImpl;
-import com.example.bb_pets_adoption.auth.model.User;
+import com.example.bb_pets_adoption.account_management.Model.User;
 import com.example.bb_pets_adoption.pet_listing.controller.PetController;
 import com.example.bb_pets_adoption.adoption.service.ApplicationDateDescendingComparator;
 import com.example.bb_pets_adoption.adoption.service.ApplicationDateAscendingComparator;

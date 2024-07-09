@@ -28,10 +28,12 @@ import PetUpdate from "../src/components/pet/components/pet_update/PetUpdate";
 import "./css/petListing.css";
 import "./css/forms.css";
 import "./css/applications.css";
+import "./css/profile.css";
 
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { DataPetProvider } from "./context/DataPetContext";
 import { FeedbackProvider } from "./context/FeedBackContext";
+import ProfileDashBoard from "./components/management/components/account_management/ProfileDashBoard";
 
 
 /***
@@ -57,12 +59,13 @@ function App() {
             <div className="App">
               <Header />
               <Routes>
+                <Route path="/" element={<Home />} />
                 <Route path="/:token" element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/auth/reset_password" element={<PasswordReset />} />
-                <Route path="/verify_account/:token" element={<VerifyAccount />} />
-
+                <Route path="/verify_account" element={<VerifyAccount />} />
+                <Route path="/profile/:token" element={<ProfileDashBoard />} />
                 <Route path="/pet_applications/:petId/:token" element={<PetApplications />} />
                 <Route path="/my_applications/:token" element={<MyApplications />} />
                 <Route path="/pets/:currentPetCategory/view/:petId" element={<PetDetailsView />} />

@@ -21,11 +21,9 @@ import ButtonComponent from "../../../common/ButtonComponent";
  * Usage:
  *  <ApplicationStatusTabComponent onTabSelect={handleTabSelection} />
  */
-const ApplicationStatusTabComponent = ({ onTabSelect }) => {
+const DashBoardTabComponent = ({ onTabSelect }) => {
 
-    const [statusesList] = useState(["Pending", "Viewed", "Accepted", "Selected"]);
-    const [status, setStatus] = useState("Pending");
-
+    const [tabOptions] = useState(["My details", "Email address"]);
 
     /***
     * Method handles status selection.
@@ -35,8 +33,7 @@ const ApplicationStatusTabComponent = ({ onTabSelect }) => {
     * 
     * @params title - the status title
     */
-    const handleStatus = (name) => {
-        setStatus(name);
+    const handleTab = (name) => {
         onTabSelect(name); // Pass the selected status back to the parent
     };
 
@@ -48,16 +45,17 @@ const ApplicationStatusTabComponent = ({ onTabSelect }) => {
             <Container id="statuses_tap_container">
                 <Row >
                     {
-                        statusesList.map((status, statusIndex) => {
+                        tabOptions.map((tabName, statusIndex) => {
                             return (
-                                <Col xs={6} lg={3}>
+                                <Col xs={6}>
                                     <ButtonComponent
-                                        key={statusIndex} text={status}
+                                        key={statusIndex}
+                                        text={tabName}
                                         id={`tab_${statusIndex}`}
-                                        className={`tab_${status}`}
-                                        eventKey={`${status}`}
-                                        name={`${status}`}
-                                        onClick={() => handleStatus(status)}
+                                        className={`tab_${tabName}`}
+                                        eventKey={`${tabName}`}
+                                        name={`${tabName}`}
+                                        onClick={() => handleTab(tabName)}
                                     >
                                         {/* Add any additional content you need inside each Tab */}
                                     </ButtonComponent>
@@ -70,4 +68,4 @@ const ApplicationStatusTabComponent = ({ onTabSelect }) => {
         </Container>
     );
 };
-export default ApplicationStatusTabComponent;
+export default DashBoardTabComponent;

@@ -30,7 +30,7 @@ const NavbarDropDown = () => {
             menuVariant="light"
         >
             <NavDropdown.Item as="span">
-                <NavLinkComponent id="profile_link_nav" href={`#profile/?token=${token}`} text="Profile" />
+                <NavLinkComponent id="profile_link_nav" href={`/profile/${token}`} text="Profile" />
             </NavDropdown.Item>
 
             <NavDropdown.Item as="span">

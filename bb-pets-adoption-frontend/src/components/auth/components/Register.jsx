@@ -49,7 +49,7 @@ const Register = () => {
     }
 
     /***
-     * Check passwords entered match
+     * Check emails entered match
      * Reset re-entered password state
      * @param {input}
      */
@@ -59,7 +59,7 @@ const Register = () => {
             setConfirmEmailMessage("Email addresses do not match!");
             return;
         } else {
-            setPasswordMessage("Match!");
+            setEmailMessage("Match!");
 
         }
     }

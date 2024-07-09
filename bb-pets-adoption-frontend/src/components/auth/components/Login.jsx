@@ -6,6 +6,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { Col, Container, Row, Form } from "react-bootstrap";
 import Heading from "../../common/Heading";
 import ButtonComponent from "../../common/ButtonComponent";
+import { FeedbackContext } from "../../../context/FeedBackContext";
 
 /**
  * Login component handles the login functionality
@@ -20,8 +21,9 @@ import ButtonComponent from "../../common/ButtonComponent";
  */
 const Login = () => {
 
-    // set user name after successful authentication
-    const { setUserName } = useContext(AuthContext);
+    // set user state after successfull login
+    const { login } = useContext(AuthContext);
+    const [setPostActionMessage] = useState(FeedbackContext)
 
     const [credentials, setCredentials] = useState({ email: '', password: '' });
 
@@ -29,7 +31,6 @@ const Login = () => {
     const [passwordMessage, setPasswordMessage] = useState("");
     const [message, setMessage] = useState("");
 
-    const { login, setRegisteredBy } = useContext(AuthContext);
 
     /**
      * Handles form input changes and updates the credentials state
@@ -54,10 +55,10 @@ const Login = () => {
         if (credentials.email !== "") {
             try {
                 // POST request to the /auth/forgot_password endpoint with the user's credentials
-                const response = await instance.post('/auth/forgot_password', credentials.email);
+                const response = await instance.post('/auth/forgot_password', { email: credentials.email });
 
                 // check if response exists
-                if (response.status === 201 && response.data) {
+                if (response.status === 200 && response.data) {
                     // set the message state with the response data
                     setMessage(response.data);
                     // redirect to home page after successful login
@@ -102,10 +103,8 @@ const Login = () => {
 
             // check if response exists
             if (response.status === 201 && response.data) {
-                // set the message state with the response data
-                setMessage(response.data.message);
-                setUserName(response.data.userName);
-                login(response.data.token, response.data.registeredBy);
+                setPostActionMessage("Welcome back " + response.data.userName)
+                login(response.data.token, response.data.registeredBy, response.data.userName);
 
             }
 
