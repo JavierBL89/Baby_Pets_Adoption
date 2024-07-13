@@ -6,9 +6,10 @@ import CardList from "./CardList";
 import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../../../scripts/axiosConfig";
 import TextComponent from "../../../common/TextComponent";
-import ButtonComponent from "../../../common/ButtonComponent";
 import PostActionMessage from "../../../common/PostActionMessage";
 import { FeedbackContext } from "../../../../context/FeedBackContext";
+import { NotificationsContext } from "../../../../context/NotificationsContext";
+import NotificationMessageComponent from "../../../notifications/components/NotificationMessageComponent";
 
 
 /***
@@ -24,6 +25,8 @@ const MyListings = () => {
 
     const { token } = useParams();  // grab token from url params
     const { postActionMessage, setPostActionMessage } = useContext(FeedbackContext);
+    const { listOfDroppAppsNotifications, setListOfDroppAppsNotifications } = useContext(NotificationsContext);
+    const [filteredNotifications, setFilteredNotifications] = useState([]);
 
     const [message, setMessage] = useState("");
     const [listings, setListings] = useState([]);
@@ -52,11 +55,9 @@ const MyListings = () => {
         * 
         * @param {String} objectId - the id of the petList to be removed
         */
-    const fetchListingsData = useCallback(async () => {
+    const fetchData = useCallback(async () => {
 
         setListings([]);   // reset to empty before every render
-
-
         if (!token) {
             console.error("Missing authentication token. GET request could not be initiated");
             setMessage("Missing authentication token. Please login and try again");
@@ -64,15 +65,11 @@ const MyListings = () => {
         }
 
         setLoading(true);
+
         try {
-
             const response = await instance.get(`/pets/my_listings?token=${token}&order=${orderBy}&pageNo=${page}&page=${page}&size=6`);
-
             if (response.status === 200) {
-                console.log(response.data);
-
                 if (response.data && response.data.petList && response.data.petList != null && response.data.petList.length > 0) {
-
                     console.log(response.data.petList);
                     // format Date objects before setting data state
                     const formattedListings = response.data.petList.map(listing => ({
@@ -95,7 +92,6 @@ const MyListings = () => {
         } finally {
             setLoading(false);
         }
-
     }, [token, page, orderBy]);
 
 
@@ -118,7 +114,6 @@ const MyListings = () => {
             setMessage("Operation cannot be processed. Missing authenication token")
             return;
         }
-
         const trimmedToken = token.trim();   // eliminate any possible white spaces
 
         // check id variable is not empty
@@ -126,13 +121,11 @@ const MyListings = () => {
             try {
                 // DELETE request
                 const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
-
                 if (response.status === 200) {
                     setPostActionMessage("Pet listing has been sucessfully removed.") // store post-action message
                     setListings([]);   // reset to empty before every render
-                    fetchListingsData();    // reload page with new data
+                    fetchData();    // reload page with new data
                 } else {
-
                     console.error("Item could not be removed:", response.data);
                     setMessage("A server error occured and pet could not be removed.Please try later or contact admin to inform about the problem.")
                 }
@@ -155,22 +148,48 @@ const MyListings = () => {
      * @param {String} petListingId - the id of the current PetList object(container for post data)
      */
     const handleUpdate = (petObject, petListingId) => {
-
         // serialize listing object into a JSON string to pass it in URL param
         const petObjectString = encodeURIComponent(JSON.stringify(petObject));
         navigate(`/update_pet/${petObjectString}/${petListingId}/${token}`);
     };
 
 
+    /* 
+    * useEffect listens to changes on 'page', 'token', 'fetchListingsData'
+    * to calls the  fetchListingsData()
+    */
+    useEffect(() => {
+        fetchData();
+    }, [page, token, orderBy, fetchData]);
+
+
     /****
-     * useEffect listens to changes on 'page', 'token', 'fetchListingsData'
-     * to calls the  fetchListingsData()
+     * 
+     * It iterates over the list of pet listings and filters out 
+     * the ones having pending notifications where notification type is "drop"
      */
     useEffect(() => {
+        if (listings.length > 0) {
+            setFilteredNotifications(listings.flatMap(petListing => petListing.pendingNotifications.filter(notification => notification.type === "drop")));
+        };
+    }, [listings]);
 
-        fetchListingsData();
 
-    }, [page, token, orderBy, fetchListingsData])
+    /****
+     * useEffect listens to changes on 'filteredNotifications' to then iterate over the list
+     * of notifications and store their messages in another list kept in application state
+     * from NotificationsContex 'listOfDroppAppsNotifications'
+     * 
+     * That list is to notify the user of dropped notifications
+     */
+    useEffect(() => {
+        if (filteredNotifications.length >= 1) {
+            const messageList = filteredNotifications.map(notification => {
+                return notification.message;
+            });
+            setListOfDroppAppsNotifications(messageList);
+        }
+    }, [filteredNotifications, setListOfDroppAppsNotifications]);
 
 
     /****
@@ -181,7 +200,6 @@ const MyListings = () => {
     const loadMoreListings = () => {
         setPage(prevPage => prevPage + 1);
     };
-
 
     return (
 
@@ -195,11 +213,23 @@ const MyListings = () => {
                         )}
                     </Container>
                 </Row>
+                { /*************** Notification warnings  *********************/}
+                <Row >
+                    <Container id="notification_message_holder">
+                        {filteredNotifications.map(notification =>
+                            <NotificationMessageComponent
+                                token={token}
+                                text={notification.message}
+                                notificationId={notification.id}
+                                fetchData={fetchData}
+                            />)
+                        }
+                    </Container>
+                </Row>
 
                 <Row > { /***** CREATE NEW PET BUTTON  *****/}
                     <Col xs={3}>
                         <a id="create_new_pet" href={`/list_new_pet/${token}`} className="btn btn-primary" >List a New Pet</a>
-
                     </Col>
                 </Row>
                 <Row >
@@ -258,9 +288,6 @@ const MyListings = () => {
                                     </Row>
                                 </>
                             }
-
-
-
                         </Row>
 
                     </Col>
@@ -270,13 +297,9 @@ const MyListings = () => {
                         </Button>
                     )}
                 </Row>
-
-
             </Container>
-
         </Container>
     );
-
 };
 
 export default MyListings;

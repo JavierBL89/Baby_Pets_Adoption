@@ -160,8 +160,7 @@ public class AdoptionApplicationController {
     		@RequestParam(value="pageSize",  defaultValue="6", required=false)int pageSize) {
     	
     	Map <String, Object> response = new HashMap<>(); // instantiate a Hashmap to send response message
-    	
-    	
+    		
     	 // handle null value token
    	    if (token == null) {
    	        logger.error("Authorization token is missing");    // set response message
@@ -213,12 +212,10 @@ public class AdoptionApplicationController {
            
 
    	    		}else {  	    			
-   	    			response.put("message", "User could not be found");  // set response message
-   	    			
+   	    			response.put("message", "User could not be found");  // set response message 	    			
    	    			logger.error("User could not be found");
    	    	    	return ResponseEntity.status(404).body(response);
-   	    		}
-   	    		
+   	    		}   	    		
    	    	}catch(Exception e) {
    	    		
 	    	 logger.error("Error while retrieving user data: " + e.getMessage());  
@@ -226,14 +223,11 @@ public class AdoptionApplicationController {
              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);       
    	    	}
    	    	
-   	    }else {
-   	    	
-   	    	logger.error("User could not be authenticated");
-   	    	
+   	    }else {   	    	
+   	    	logger.error("User could not be authenticated");   	    	
             response.put("message", "User could not be authenticated");    // set response message
    	    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-   	    }
-    	
+   	    }  	
     }
 
     
@@ -298,17 +292,14 @@ public class AdoptionApplicationController {
    	    	    	return ResponseEntity.status(404).body(response);
    	    		}
    	    		
-   	    	}catch(Exception e) {
-   	    		
-	    	 logger.error("Error while retrieving user data: " + e.getMessage());  
-             response.put("message", "Error while retrieving user data: " + e.getMessage());    // set response message
-             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);       
+   	    	}catch(Exception e) { 	    		
+	    	     logger.error("Error while retrieving user data: " + e.getMessage());  
+                 response.put("message", "Error while retrieving user data: " + e.getMessage());    // set response message
+                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);       
    	    	}
    	    	
-   	    }else {
-   	    	
-   	    	logger.error("User could not be authenticated");
-   	    	
+   	    }else {   	    	
+   	    	logger.error("User could not be authenticated"); 	    	
             response.put("message", "User could not be authenticated");    // set response message
    	    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
    	    }
@@ -338,14 +329,23 @@ public class AdoptionApplicationController {
    	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization token is missing");
    	    }
    	    
-   	    
    	    // try and catch any errors during application update process
    	    try {
+   	    	
    	        // if user is authenticated proceed to update application
    	 		if (adoptionApplicationServiceImpl.authenticateUserByToken(token)) {
-
+   	 		    Optional<User> foundUser = adoptionApplicationServiceImpl.findUserByToken(token);
+	    		if(foundUser.isPresent()) { 	 
+	    			
+	    			User user = foundUser.get();  	 			
    	 			    // delegate operation to service @params ( String applicationIdString, String status)
-   	 				adoptionApplicationServiceImpl.updateApplicationStatus(applicationIdString, status); 	              					
+   	 				adoptionApplicationServiceImpl.updateApplicationStatus(applicationIdString, user, status);
+   	 				
+	    		}else {  	   	    			
+   	    			logger.error("User could not be found");
+   	    	    	return ResponseEntity.status(404).body("User could not be found");
+   	    		}
+   	    		
    	 		}else { 			
    	 			logger.info("Unauthorized user");
    	 			return ResponseEntity.status(403).body("Unauthorized user");
@@ -356,9 +356,7 @@ public class AdoptionApplicationController {
    	    }
    	    
    	    logger.info("Application successfully updated");
-   	    return ResponseEntity.status(200).body("Application successfully updated");
-    	
- 
+   	    return ResponseEntity.status(200).body("Application successfully updated"); 
     }
 
     

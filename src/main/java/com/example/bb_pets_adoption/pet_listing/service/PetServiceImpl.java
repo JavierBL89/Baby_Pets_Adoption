@@ -211,8 +211,8 @@ public class PetServiceImpl implements PetService{
      *
      * Steps:
      * 1. Initialize a PetList object
-     * 2. Ensure the pet category and save in appropiate repository
-     * 3. Asscociate instances of User and Pet to the new petList instance, then save
+     * 2. Determine the pet category and save in the appropiate repository
+     * 3. Assocciate the User and Pet objects to the new petList instance, then save changes
      * 4. Add the new petList instance into user's petListings list
      *
      *  
@@ -225,7 +225,6 @@ public class PetServiceImpl implements PetService{
 		
 		User user = foundUser.get();        // cast Optional Object into a User instance
 		PetList newPetList = new PetList(); // instantiate a PetList object
-		
 	
 		// try and set pet providerId to the user's id, 
 		// then check pet's category to save in the appropiate collection
@@ -233,15 +232,14 @@ public class PetServiceImpl implements PetService{
 
 			 // check if new pet is ca or dog to store it in cats collection
 			 if(newPet.getCategory().equals("cat")) {
-				 
 				 catRepository.save((Cat) newPet);  // cast Pet into a Cat object
-				 logger.info("" +catRepository.findById(newPet.getId()));
+				 logger.info("Created new cat iwth id " + catRepository.findById(newPet.getId()));
 				 
 			 }// check if new pet is cat or dog to store it in dogs collection
 			 else if(newPet.getCategory().equals("dog")) {
-				 
 				 dogRepository.save((Dog) newPet);  // cast Pet into a Dog object
-				 
+				 logger.info("Created new dog iwth id " + catRepository.findById(newPet.getId()));
+
 			 }else {
 		            throw new Exception("Unknown pet category: " + newPet.getCategory());
 		        }
@@ -262,6 +260,7 @@ public class PetServiceImpl implements PetService{
 			newPetList.setPetId(newPet.getId());   // pets need to be saved before this step to ensure the ID is generated
 			newPetList.setStatus("available");
 			petListRepository.save(newPetList);
+			
 			
 		}catch(Exception error) {
 					
@@ -309,10 +308,8 @@ public class PetServiceImpl implements PetService{
 		    // double check user authentication
 			if(foundUser.isPresent()) {
 							
-			    User user = foundUser.get();  // cast into user instance
-			    
+			    User user = foundUser.get();  // cast into user instance			    
 				logger.info("User found.");
-
 			    return user.getPetList();		
 							 
 			}else {

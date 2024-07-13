@@ -96,6 +96,14 @@ public class AccountManagementServiceImpl implements AccountManagementService{
 
 		return authenticationServiceImpl.authenticate(token);
 	}
+
+
+
+	@Override
+	public boolean getUserByToken(String token) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 }

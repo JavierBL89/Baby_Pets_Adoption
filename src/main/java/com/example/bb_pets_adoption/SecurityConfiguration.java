@@ -100,7 +100,8 @@ public class SecurityConfiguration {
 	                        		"/pets/my_listings", "/auth/reset_password/**", "/oauth2/**", "/login",
 	                        		"/pets/delete_pet", "/pets/update_pet", "/adoption/apply", "/adoption/delete_application",
 	                        		"/adoption/pet/applications/updateStatus", "/adoption/pet/applications", "/adoption/my_applications",
-	                        		"/account_management/update_details", "/account_management/update_email").permitAll()
+	                        		"/account_management/update_details", "/account_management/update_email", "/notifications/pending",
+	                        		"/notifications/markAsViewed").permitAll()
 	                     
 	                        // Secure other endpoints
 	                        .requestMatchers(HttpMethod.POST, "/adoption").authenticated()

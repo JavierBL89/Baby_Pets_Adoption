@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
-import { Container, Row, Col, Stack, Spinner, Button } from "react-bootstrap";
-import Heading from "../../../common/Heading";
+import { Container, Row, Spinner, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../../../scripts/axiosConfig";
 import TextComponent from "../../../common/TextComponent";
-import ButtonComponent from "../../../common/ButtonComponent";
 import MyApplicationCard from "./MyApplicationCard";
-import useFetchById from "../../../hooks/data/fetchById";
 import { FeedbackContext } from "../../../../context/FeedBackContext";
 import PostActionMessage from "../../../common/PostActionMessage";
+import NotificationMessageComponent from "../../../notifications/components/NotificationMessageComponent";
+import useFetchNotifications from "../../../hooks/data/fetchNotifications";
 
 /***
  * Component acts as core of my_listings page.
@@ -89,17 +88,18 @@ const MyApplications = () => {
 
     }, [token, page, orderBy]);
 
+
     /***
+     * Method to handle DELETE appliiation requests
      * 
+     * @param {String} applicationId = the ID o the applciation to be removed
      */
     const handleDrop = async (applicationId) => {
-        console.log("putaa");
-        if (!token) {
 
+        if (!token) {
             setMessage("Operation cannot be processed. Missing authenication token")
             return;
         }
-
         const trimmedToken = token.trim();   // eliminate any possible white spaces
 
         if (applicationId) {
@@ -112,18 +112,15 @@ const MyApplications = () => {
                     fetchApplicationsData();
 
                 } else {
-
                     console.error("Item could not be removed:", response.data);
                     setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
                 }
 
             } catch (error) {
                 console.error('Error deleting item:', error);
-
             }
 
         } else {
-
             setMessage("Item could not be deleted. Logout and try again")
             console.error("Missing object Id to complete operation. Please ensure variable 'objectId' is defined.");
         }
@@ -136,9 +133,7 @@ const MyApplications = () => {
      * to calls the  fetchListingsData()
      */
     useEffect(() => {
-
         fetchApplicationsData();
-
     }, [page, token, orderBy, fetchApplicationsData])
 
 
@@ -152,6 +147,37 @@ const MyApplications = () => {
     };
 
 
+    /**
+     * Method to handle notifications as marked.
+     * It makes a PUT request to update the notifiction status
+     * @param {*} notificationId - the ID of the notification
+     * @param {*} applicationId - the ID of the adoptuion application
+     * @returns 
+     */
+    const handleViewed = async (notificationId, applicationId) => {
+        if (!notificationId || notificationId == null) {
+            return
+        }
+
+        if (!applicationId || applicationId == null) {
+            return
+        }
+
+        try {
+            // PUT request
+            const response = await instance.put(`/notifications/mark_application_asViewed?token=${token}&applicationId=${applicationId}&notificationId=${notificationId}`);
+            if (response.status === 200) {
+                fetchApplicationsData();
+            } else {
+                console.error("Item could not be removed:", response.data);
+                setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
+            }
+
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
+    }
+
     return (
 
         <Container id="my_applications_wrapper">
@@ -162,6 +188,33 @@ const MyApplications = () => {
                         {!loading && postActionMessage && (
                             <PostActionMessage text={postActionMessage} />
                         )}
+                    </Container>
+                </Row>
+                { /*************** Notification warnings  *********************/}
+                <Row >
+                    <Container id="notification_message_holder">
+                        {applications.filter(app => app.pendingNotifications.length > 0)
+                            .map(app =>
+                                app.pendingNotifications.map((notification, index) => {
+                                    let message;
+                                    if (notification.type === "status") {
+                                        message = `Your application with ref: '${app.appTracker} has a new status, '${notification.status}''`;
+                                    } else if (notification.type === "petRemoved") {
+                                        message = notification.message;
+                                    }
+                                    return (
+                                        <NotificationMessageComponent key={index}
+                                            notificationId={notification.id}
+                                            applcationId={app.id}
+                                            onViewed={handleViewed}
+                                            token={token}
+                                            text={message}
+
+                                        />
+                                    )
+                                })
+                            )
+                        }
                     </Container>
                 </Row>
                 <Row >

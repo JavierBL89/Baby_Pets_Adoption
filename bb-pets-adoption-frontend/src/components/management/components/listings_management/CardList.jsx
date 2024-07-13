@@ -4,6 +4,7 @@ import ImageComponent from "../../../common/ImageComponent";
 import TextComponent from "../../../common/TextComponent";
 import { MdOutlineDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import NotificationBadge from "../../../notifications/components/NotificationBadge";
 
 
 /***
@@ -17,7 +18,6 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
     birthDate, id, petId, onDelete, onUpdate, petListing, petCreatedOn, petUpdatedOn }) => {
 
     const [viewApplication, setviewApplication] = useState(false);
-
 
     /**** 
      * Method toggles the view application accordion.
@@ -41,6 +41,9 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
                         <a href={`/pet_applications/${petId}/${token}`} >
                             <small >Applications</small>
                         </a>
+                        {petListing.pendingNotifications.length > 0 &&
+                            <NotificationBadge text={petListing.pendingNotifications.length} />
+                        }
                     </Col>
 
                 </Row>

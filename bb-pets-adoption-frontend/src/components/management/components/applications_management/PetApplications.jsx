@@ -9,6 +9,7 @@ import PetApplicationCard from "./PetApplicationCard";
 import ApplicationStatusTabComponent from "./ApplicationStatusTabComponent";
 import { FeedbackContext } from "../../../../context/FeedBackContext";
 import PostActionMessage from "../../../common/PostActionMessage";
+import NotificationMessageComponent from "../../../notifications/components/NotificationMessageComponent";
 
 /***
  * Component atc as core of my_listings page.
@@ -51,7 +52,7 @@ const PetApplications = () => {
      * It optimizes performance by preventing re-renders.
      * 
      */
-    const fetchApplicationsData = useCallback(async () => {
+    const fetchData = useCallback(async () => {
 
         // ensure token is not empty
         if (!token) {
@@ -69,7 +70,7 @@ const PetApplications = () => {
 
             if (response.status === 200) {
                 console.log(response.data);
-                if (response.data && response.data.applications.length > 0) {
+                if (response.data && response.data.applications.length >= 1) {
 
                     // format Date objects before setting data state
                     const formattedListings = response.data.applications.map(appplication => ({
@@ -116,7 +117,7 @@ const PetApplications = () => {
                 // DELETE request
                 const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
                 if (response.status === 200) {
-                    fetchApplicationsData();    // reload page with new data                 
+                    fetchData();    // reload page with new data                 
                     // Store feedback message in localStorage
                     localStorage.setItem('feedbackMessage', 'Application successfully removed!');
                     navigate(`/my_applications/${token}`);
@@ -150,8 +151,8 @@ const PetApplications = () => {
      * to calls the  fetchListingsData()
      */
     useEffect(() => {
-        fetchApplicationsData();
-    }, [fetchApplicationsData, token, petId, selectedTab])
+        fetchData();
+    }, [fetchData, token, petId, selectedTab])
 
 
     /****
@@ -162,6 +163,7 @@ const PetApplications = () => {
     const loadMoreListings = () => {
         setPage(prevPage => prevPage + 1);
     };
+
 
 
     return (
@@ -178,6 +180,34 @@ const PetApplications = () => {
                 </Row>
 
                 <Row >
+                    { /*************** Notification warnings  *********************/}
+                    <Row >
+                        <Container id="notification_message_holder">
+                            {applications.flatMap(app =>
+                                app.pendingNotifications.map(notification => {
+                                    let message = "";
+                                    if (notification.type === "application") {
+                                        message = `New adoption application. Application ref: '${app.appTracker}'`;
+                                    } else if (notification.type === "drop") {
+                                        message = notification.message;
+                                    }
+
+                                    return (
+                                        message !== null && (
+                                            <NotificationMessageComponent
+                                                key={notification.id} // Use a unique identifier for keys
+                                                notificationId={notification.id}
+                                                applcationId={app.id}
+                                                onViewed={fetchData}
+                                                token={token}
+                                                text={message}
+                                            />
+                                        )
+                                    );
+                                })
+                            )}
+                        </Container>
+                    </Row>
 
                     { /*************** APLICATIONS LIST  *********************/}
                     <Row>
@@ -210,7 +240,7 @@ const PetApplications = () => {
                                             token={token}
                                             comments={application.comments}
                                             petId={application.petId}
-                                            onFetchData={fetchApplicationsData}
+                                            onFetchData={fetchData}
                                             // delete listing button passes the petId
                                             onDelete={() => handleDrop()}
 

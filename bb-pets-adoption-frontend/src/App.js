@@ -34,6 +34,7 @@ import { AuthProvider, AuthContext } from './context/AuthContext';
 import { DataPetProvider } from "./context/DataPetContext";
 import { FeedbackProvider } from "./context/FeedBackContext";
 import ProfileDashBoard from "./components/management/components/account_management/ProfileDashBoard";
+import { NotificationsProvider } from "./context/NotificationsContext";
 
 
 /***
@@ -53,35 +54,37 @@ const PrivateRoute = ({ element: Component, ...rest }) => {
 function App() {
   return (
     <Router>
-      <FeedbackProvider >
-        <AuthProvider>
-          <DataPetProvider>
-            <div className="App">
-              <Header />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/:token" element={<Home />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/auth/reset_password" element={<PasswordReset />} />
-                <Route path="/verify_account" element={<VerifyAccount />} />
-                <Route path="/profile/:token" element={<ProfileDashBoard />} />
-                <Route path="/pet_applications/:petId/:token" element={<PetApplications />} />
-                <Route path="/my_applications/:token" element={<MyApplications />} />
-                <Route path="/pets/:currentPetCategory/view/:petId" element={<PetDetailsView />} />
-                <Route path="/list_new_pet/:token" element={<ListNewPet />} />
-                <Route path="/update_pet/:petObjectString/:petListingId/:token" element={<PetUpdate />} />
-                <Route path="/my_listings/:token" element={<MyListings />} />
+      <NotificationsProvider >
+        <FeedbackProvider >
+          <AuthProvider>
+            <DataPetProvider>
+              <div className="App">
+                <Header />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/:token" element={<Home />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/auth/reset_password" element={<PasswordReset />} />
+                  <Route path="/verify_account" element={<VerifyAccount />} />
+                  <Route path="/profile/:token" element={<ProfileDashBoard />} />
+                  <Route path="/pet_applications/:petId/:token" element={<PetApplications />} />
+                  <Route path="/my_applications/:token" element={<MyApplications />} />
+                  <Route path="/pets/:currentPetCategory/view/:petId" element={<PetDetailsView />} />
+                  <Route path="/list_new_pet/:token" element={<ListNewPet />} />
+                  <Route path="/update_pet/:petObjectString/:petListingId/:token" element={<PetUpdate />} />
+                  <Route path="/my_listings/:token" element={<MyListings />} />
 
-                <Route path="/data_deletion" element={<DataDeletionInstructions />} />
-                <Route path="/privacy_policy" element={<PrivacyPolicy />} />
-                <Route path="/payment_policy" element={<PaymentPolicy />} />
-              </Routes>
-              <Footer />
-            </div>
-          </DataPetProvider>
-        </AuthProvider>
-      </FeedbackProvider>
+                  <Route path="/data_deletion" element={<DataDeletionInstructions />} />
+                  <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+                  <Route path="/payment_policy" element={<PaymentPolicy />} />
+                </Routes>
+                <Footer />
+              </div>
+            </DataPetProvider>
+          </AuthProvider>
+        </FeedbackProvider>
+      </NotificationsProvider >
     </Router>
   );
 }

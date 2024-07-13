@@ -148,18 +148,7 @@ const ViewApplicationComponent = ({ application, status, comments, applicationId
                     <Row id="app_update_status_holder">
                         {/******** Update status ********/}
                         <Row id="app_update_status_row">
-                            <Col xs={3} >
-                                <Form.Group controlId="formStatusPending">
-                                    <Form.Label>Pending</Form.Label>
-                                    <Form.Check
-                                        type="radio"
-                                        name="status"
-                                        checked={formData.status === "Pending"}
-                                        value="Pending"
-                                        onChange={handleChange}
-                                    />
-                                </Form.Group>
-                            </Col>
+
                             <Col xs={3}>
                                 <Form.Group controlId="formStatusView">
                                     <Form.Label>Viewed</Form.Label>

@@ -52,7 +52,8 @@ const ApplicationStatusTabComponent = ({ onTabSelect }) => {
                             return (
                                 <Col xs={6} lg={3}>
                                     <ButtonComponent
-                                        key={statusIndex} text={status}
+                                        key={statusIndex}
+                                        text={status}
                                         id={`tab_${statusIndex}`}
                                         className={`tab_${status}`}
                                         eventKey={`${status}`}

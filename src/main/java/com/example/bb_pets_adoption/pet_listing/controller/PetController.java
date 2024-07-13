@@ -176,7 +176,7 @@ public class PetController {
 
 			// Find user in database
 			// then set values of the newpet Object with the passed parameters
-			// then delegate pet cretion proccess to petServiceImpl
+			// then delegate pet creation proccess to petServiceImpl
 			try {
 				Optional<User> foundUser = petServiceImpl.findUserByToken(token);
 				
@@ -198,10 +198,7 @@ public class PetController {
                     List<String> tagsList = newPet.getTags();
                     tagsList.add(location);     
                     tagsList.add(motherBreed);
-					logger.info("putaa");
-
 				}
-				logger.info(newPet.toString());
 				
 				// Delegate operation to PetServiceImpl (Optional user, Pet newPet )
 				petServiceImpl.savePet(foundUser, newPet);

@@ -2,6 +2,9 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import NavLinkComponent from "./NavLinkComponent";
+import NotificationBadge from "../notifications/components/NotificationBadge";
+import { NotificationsContext } from "../../context/NotificationsContext";
+import useFetchNotifications from "../hooks/data/fetchNotifications";
 
 
 
@@ -19,10 +22,12 @@ import NavLinkComponent from "./NavLinkComponent";
 const NavbarDropDown = () => {
 
     const { isAuthenticated, logout, userName } = useContext(AuthContext);
-
+    const { unviewedListingsNotifications, unviewedAppStatusNotifications } = useContext(NotificationsContext);
 
     const token = localStorage.getItem('token');
 
+    console.log(unviewedListingsNotifications.length);
+    console.log(unviewedAppStatusNotifications.length);
     return (
         <NavDropdown
             id="nav-dropdown-dark-example"
@@ -34,6 +39,7 @@ const NavbarDropDown = () => {
             </NavDropdown.Item>
 
             <NavDropdown.Item as="span">
+                {unviewedListingsNotifications.length > 0 && <NotificationBadge text={unviewedListingsNotifications.length} />}
                 <NavLinkComponent id="myListings_link_nav" href={`/my_listings/${token}`} text="My Listings" />
             </NavDropdown.Item>
 
@@ -42,6 +48,7 @@ const NavbarDropDown = () => {
             </NavDropdown.Item>
 
             <NavDropdown.Item as="span">
+                {unviewedAppStatusNotifications.length > 0 && <NotificationBadge text={unviewedAppStatusNotifications.length} />}
                 <NavLinkComponent id="profile_link_nav" href={`/my_applications/${token}`} text="My Applications" />
             </NavDropdown.Item>
 

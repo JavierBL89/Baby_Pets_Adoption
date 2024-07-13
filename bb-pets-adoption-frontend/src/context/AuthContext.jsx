@@ -58,11 +58,12 @@ const AuthProvider = ({ children }) => {
     * @param {string} token - JWT token received after successful login
     */
     const login = (token, registeredBy, userName) => {
+
         localStorage.setItem('token', token);
         setIsAuthenticated(true);
         setRegisteredBy(registeredBy);
         setUserName(userName);
-        navigate(`/?token=${token}`); // redirect to home page after successful login
+        navigate(`/token=${token}`); // redirect to home page after successful login
     };
 
     /**

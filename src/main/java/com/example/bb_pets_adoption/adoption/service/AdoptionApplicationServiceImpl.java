@@ -28,7 +28,9 @@ import com.example.bb_pets_adoption.pet_listing.model.PetList;
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
-
+import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
+import com.example.bb_pets_adoption.real_time_notifications.Repository.NotificationRepository;
+import com.example.bb_pets_adoption.real_time_notifications.service.NotificationServiceImpl;
 import com.example.bb_pets_adoption.search.controller.SearchController;
 
 
@@ -46,7 +48,8 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	PetListRepository petListRepository;
 	CatRepository catRepository;
 	DogRepository dogRepository;
-	
+	NotificationServiceImpl notificationServiceImpl;
+	NotificationRepository notificationRepository;
 	
 
 	// create an instance of Logger
@@ -59,7 +62,8 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * **/
 	@Autowired
 	public AdoptionApplicationServiceImpl (AdoptionApplicationRepository adoptionApplicationRepository, AuthenticationServiceImpl authenticationServiceImpl,
-			UserRepository userRepository, PetListRepository petListRepository, CatRepository catRepository, DogRepository dogRepository ) {
+			UserRepository userRepository, PetListRepository petListRepository, CatRepository catRepository, DogRepository dogRepository,
+			NotificationServiceImpl notificationServiceImpl, NotificationRepository notificationRepository) {
 		
 		this.adoptionApplicationRepository = adoptionApplicationRepository;
 		this.authenticationServiceImpl  = authenticationServiceImpl;
@@ -67,6 +71,8 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		this.petListRepository = petListRepository;
 		this.dogRepository = dogRepository;
 		this.catRepository = catRepository;
+		this.notificationServiceImpl = notificationServiceImpl;
+		this.notificationRepository = notificationRepository;
 	} 
 	
 
@@ -110,9 +116,11 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
  		}else {
  			throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
  		}		
+ 		logger.info(adoptionApplicationRepository.findAllByPetId(petId, pageable).toString());
 	       return adoptionApplicationRepository.findAllByPetId(petId, pageable);
      }
 
+     
      
  	/**
  	 * Method responsible for retrieving all applications related to a single pet by its ID
@@ -127,6 +135,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		
  	       return adoptionApplicationRepository.findAllByApplicantId(user.getUserId(), pageable);
       }
+      
       
       
       /**
@@ -173,8 +182,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * 
      * **/
 	@Override
-	public Optional<User> findUserByToken(String token) {
-          
+	public Optional<User> findUserByToken(String token) {       
 	          Optional<User> user = userRepository.findByToken(token);
 		return user;
 	}
@@ -196,7 +204,12 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * 3. Set values of this with the current application data (pet, user, comments, etc)
      * 4. Add aplication id into PetList getAdoptionApplication list
      * 5. Save changes
-     * 4. Save adoption application 
+     * 4. Create a new 'adoption application notification'
+     * 
+     * @param {String} petIdString -  the string represenation of the pet ID
+     * @param {String} petCateory - the pet category (i.e Cat, Dog...)
+     * @param {User} user - the curent user
+     * @param {String} comments - any comments on the application
      * @throws Exception - if something goes wrong
      **/
 	@Override
@@ -213,14 +226,13 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		// retreive the pet from db based on its category to the save it within the adoption application
 		Pet pet = this.getPetByCategory(petCategory, petId);
 
-
 		try {
-        // find and update Petlist instance with the new application id added into adoptionApplicationIDs list.
+         // find and update Petlist instance with the new application id added into adoptionApplicationIDs list.
          Optional<PetList> foundPetList = petListRepository.findByPetId(petId);
-        
+ 	     PetList petList = foundPetList.get();  // cast optional into PetList instance 	 
+
          if(foundPetList.isPresent()) {
         	 
-        	    PetList petList = foundPetList.get();  // cast optional into PetList instance 	 
         	    AdoptionApplication application = new AdoptionApplication();  // instantiate an AdoptionApplication object
                 application.setPetId(petId);
                 application.setPet(pet);
@@ -232,26 +244,24 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
                 
                 // save adoption application to generate ID
         	    adoptionApplicationRepository.save(application);
+        	    logger.info("Adoption application successfully saved with applicant ID: " + application.getApplicantId());
         	    
         	    // add the application id to the adoptionApplicationIDs list 
                 petList.getAdoptionApplicationIDs().add(application.getId());
         	    petListRepository.save(petList);  // save changes 	    
         	    logger.info("Adoption application ID was added to adoptionApplicationsIDs list in PetList object with id " + petList.getId());
-        	       	    
-        	    adoptionApplicationRepository.save(application);  // save adoption application
-        	    logger.info("Adoption application successfully saved");
-
-                return application;
-        	 
+        	    
+        	    // create a new notification
+        	    notificationServiceImpl.createAdoptionApplicationNotification(petList, application, user, "New adoption application");       	                   
+                
+        	    return application;       	 
          }else {       	 
         	 throw new Exception("PetList asssociated to pet id " + petId + " was not found.");
          } 
          
-		}catch(Exception e) {
-			
+		}catch(Exception e) {			
 			throw new Exception("Error creating adoption aplication. " + e.getMessage());
-		}
-      
+		}    
 	}
 
 	
@@ -268,12 +278,11 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	 * @param {String} status - the new application status to be set
 	 * **/
 	@Override
-	public AdoptionApplication updateApplicationStatus(String applicationIdString, String status) throws Exception{
+	public void updateApplicationStatus(String applicationIdString, User user, String status) throws Exception{
 		
 		// check if object applicationIdString is null or empty and convert into an ObjectId   
 		ObjectId applicationId;  
-		if(applicationIdString != null) {	
-			
+		if(applicationIdString != null) {				
 			applicationId = new ObjectId(applicationIdString); // convert string IDs into an ObjectId		 
 		}else {
 			throw new Exception ("Invalid pet ID provided. Pet ID is null or empty");
@@ -281,23 +290,26 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		
 		
 		// find the AdoptionApplication, set new status and save
+		AdoptionApplication application;
 		try {
 		    Optional<AdoptionApplication> foundApplication = adoptionApplicationRepository.findById(applicationId);
 
 		    if (foundApplication.isPresent()) {
-	            AdoptionApplication application = foundApplication.get();  // cast optional into AdoptionApplication
+	            application = foundApplication.get();  // cast optional into AdoptionApplication
 	            application.setStatus(status);   // set with new status
-	            
-	            return adoptionApplicationRepository.save(application);  // save changes
-	        }else {
-	        	
+	            // remove the the the pending adoption application notification
+	             application.getPendingNotifications().removeIf(notification -> notification.getReceiverId().equals(user.getUserId()) && !notification.isViewed());
+	             adoptionApplicationRepository.save(application);  // save changes
+	             
+	         	// create a new notification. Pass the the application object, and a message
+		        notificationServiceImpl.createUpdateStatusNotification(application, user, "New status for application with reference " + application.getAppTracker());        
+		    }else {        	
 	        	throw new Exception("Application was not found.");
 	        }
 	        
 		}catch(Exception e) {
 			
 			throw new Exception("Error updating adoption aplication. " + e.getMessage());
-
 		}
 	}
 
@@ -315,19 +327,17 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
      * 7. Delete the AdoptionApplication from the Petlist adoptionApplicationsIDs list
      * 8. Delete the AdoptionApplication instance from database
      * 
-     * @param
-     * @param
+     * @param {User} user - the user applicant who application belongs to
+     * @param {String} applicationIdString - the string representation of the application ID
      * @param
 	 * **/
 	@Override
 	public void deleteApplication(User user , String applicationIdString) throws Exception{
 		
-
 		// check if object petId is null or not a valid hexstring       
 		if(applicationIdString == null || applicationIdString.isEmpty()) {
 			   throw new Exception ("Invalid applicationId provided. Application ID is null or empty");
-		}
-	    
+		}	
 		
 		// convert string IDs into an ObjectId
 		ObjectId applicationId;				
@@ -351,12 +361,25 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		
 		
 		/**
-		 * Find the Petlist object related to the current pet by the petId
+		 *1. Find the Petlist object related to the current pet by the petId
+		 *2. Remove any pending notifications related to the applicant who is dropping the application
+		 *3. Notify the user that application "ID" is been dropped by athe applicant
 		 * */
         PetList petList;
         Optional<PetList> foundPetList = petListRepository.findByPetId(adoptionApplication.getPetId());
             if(foundPetList.isPresent()) {
             	petList = foundPetList.get();  // cast optional into Petlist
+            	//remove any pending notifications
+            	petList.getPendingNotifications().removeIf(notification -> notification.getSenderId().equals(user.getUserId()));
+            	
+            	Notification notification = new Notification();
+            	notification.setSenderId(user.getUserId());
+            	notification.setReceiverId(petList.getUserId());
+            	notification.setType("drop");
+            	notification.setMessage("User " + user.getName() + " has dropped its application");
+            	notificationRepository.save(notification);
+            	// petList.getPendingNotifications().add(notification);  NOTE:we leave this out for now
+            	
             }else {          	 
            	 throw new Exception("PetList asssociated to pet id " + adoptionApplication.getPetId() + " was not found.");
             }          
@@ -443,20 +466,17 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 			
 			// flag to exit loop
 	 		boolean applicationFound = false;
-	 			
+	 		// find and store all aplications found by userId
 	 		List<AdoptionApplication> applications = adoptionApplicationRepository.findByApplicantId(user.getUserId());
 	 		
-	 		//
-	 		for(AdoptionApplication app : applications) {
-	 			
+	 		// iterate over the list and check if any has the same petId as the pet being requested
+	 		for(AdoptionApplication app : applications) {	 			
 	 			if(app.getPetId().equals(petId)) {
 	 				return applicationFound = true;
-	 			}
+	 			}		
+	 		}	 		
 	 		
-	 		}
-	 		
-	 	return applicationFound;
-	 	
+	 	return applicationFound;	 	
 	 }
 
 
@@ -466,7 +486,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	@Override
 	public List<AdoptionApplication> sortList(List<AdoptionApplication> list, String order) throws Exception{
 
-	
+	    // check if list is null or empty
 		if (list == null || list.isEmpty()) {
 	        logger.warn("List is null or empty. Nothing to sort.");
 	        return list;
@@ -537,4 +557,23 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 		    
 		    return pet;
 	    }
+	
+	   
+	/***
+	 * Method to identify the pet category of the current pet which adoption application is meant to be.
+	 * 
+	 * This method dynamically creates the concrete pet class type based on the pet category, 
+	 * and returns a Pet object with the concrete pet reference.
+	 * 
+	 * @params {String} category - the current pet category
+	 * @param {String}  - the current pet id
+	 * @throws Exception - with a descriptive message of a potential error
+	 * **/
+	   public void receiveNewApplication(String petId) {
+	        // New application logic...
+	        // Assume userId is available after receiving the new application
+	     //   ObjectId userId = getUserIdFromPet(petId);
+	       // notificationService.createNotification(userId, "New application received for pet ID: " + petId);
+	    }
+	
 }

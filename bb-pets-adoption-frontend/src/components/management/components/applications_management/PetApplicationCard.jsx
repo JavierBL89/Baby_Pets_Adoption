@@ -96,6 +96,7 @@ const PetApplicationCard = ({ application, id, token, onFetchData }) => {
                         </Row>
                     </Col>
                 </Row>
+                {/************* toggle componenet when user clicks on above button ****** */}
                 {viewApplication ?
                     <Row className="view_app_accordion_wrapper">
                         <ViewApplicationComponent

@@ -54,7 +54,6 @@ public class AccountManagementController {
             @RequestParam(value= "lastName", required = false) String lastName,
             @RequestParam(value= "location", required = false) String location) {
 	    	
-   	        logger.error(token);
 
 	        // handle null value token
 	   	    if (token == null) {

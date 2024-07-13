@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
+import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
 import com.example.bb_pets_adoption.search.controller.SearchController;
 
 import lombok.AllArgsConstructor;
@@ -51,15 +52,19 @@ public class PetList{
     private Pet pet;         // Pet object related to the post
     private ObjectId petId;  // reference to the Pet related to the post
     private List<ObjectId> adoptionApplicationIDs;
+    private List<Notification> pendingNotifications;
     
     private LocalDate createdOn;
     private LocalDate updatedOn;
     
     private String status;   // 'available'(default), 'hidden' , 'unavailable'
-    /// consturictor initializes adoptionApplicationIDs list
+    
+    
+    /// consturictor initializes adoptionApplicationIDs list && pendingNotifications list
     public PetList() {
     	
     	this.adoptionApplicationIDs = new ArrayList<>();
+    	this.pendingNotifications = new ArrayList<>();
     }
     
     

@@ -36,4 +36,9 @@ public interface AccountManagementService {
 	 * 
 	 * **/
 	public boolean authenticateUserByToken(String token);
+	
+	/**
+	 * 
+	 * **/
+	public boolean getUserByToken(String token);
 }

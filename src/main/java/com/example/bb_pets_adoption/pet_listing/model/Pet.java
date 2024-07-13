@@ -47,9 +47,7 @@ public abstract class Pet {
     private String fatherImg;
 	private float price;
 	private  List<String> tags;
-	
-    private List<PetList> posts; // list of posts related to the pet
-    
+	    
     // constructor initialises arrayList
     public Pet() {
     	this.tags = new ArrayList<>();
