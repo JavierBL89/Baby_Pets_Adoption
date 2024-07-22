@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.real_time_notifications.Model;
+package com.example.bb_pets_adoption.notification_service.Model;
 
 import java.time.LocalDateTime;
 

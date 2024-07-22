@@ -4,7 +4,6 @@
 package com.example.bb_pets_adoption.adoption.service;
 
 import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
-import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
 import com.example.bb_pets_adoption.account_management.Model.User;
 
 import org.bson.types.ObjectId;

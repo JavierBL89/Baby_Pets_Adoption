@@ -33,7 +33,7 @@ const PetDetailsView = () => {
     const { postActionMessage } = useContext(FeedbackContext);
 
     const { loading, error, petData } = useFetchById(petId);
-
+    console.log(petData.motherImg);
     return (
         <Container id="pet_view_wrapper" className="">
             <Container id="pet_view_container" className="">
@@ -121,6 +121,10 @@ const PetDetailsView = () => {
                     }
                 </Row>
             </Container>
+            <script>
+                {/* Scroll to the top when the page loads */}
+                window.scrollTo(0, 0);
+            </script>
         </Container>
     );
 

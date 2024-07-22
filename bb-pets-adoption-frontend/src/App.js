@@ -29,6 +29,7 @@ import "./css/petListing.css";
 import "./css/forms.css";
 import "./css/applications.css";
 import "./css/profile.css";
+import "./css/style.css";
 
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { DataPetProvider } from "./context/DataPetContext";

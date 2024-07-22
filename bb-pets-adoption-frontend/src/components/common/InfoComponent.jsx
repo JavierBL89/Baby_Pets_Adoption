@@ -21,49 +21,56 @@ import TextComponent from "./TextComponent";
 *         }
 *  }
 */
-const InfoComponent = ({ sections, title, id }) => {
+const InfoComponent = ({ /* The `sections`, `title`, and `id` are props being passed to the
+`InfoComponent` functional component in React. Here is what each prop is
+used for: */
+    sections, title, id }) => {
 
     return (
-        <Container id={`${id}_wrapper`} className="p-5" >
-            <Heading tagName="h4" id={`${id}_heading`} className="" text={title} />
+        <Container id={`${id}_wrapper`} className="" >
 
-            {
-                sections.map((section, sectionIndex) => {
-                    console.log(section);
-                    return (
-                        <div key={sectionIndex}>
-                            {section.heading && (
-                                <Heading key={`${sectionIndex}-heading`} type="h4" id="" text={section.heading} ></Heading>
-                            )}
-                            {
-                                section.content && (
-                                    <TextComponent key={`${sectionIndex}-content`} type="h4" id="" className="" text={section.content}></TextComponent>
-                                )
-                            }
-                            {
-                                section.section && section.section.map((point, pointIndex) => {
+            <Container id={`${id}_container`} className="" >
+                <Heading tagName="h4" id={`${id}_heading`} className="" text={title} />
 
-                                    return (
-                                        <div key={pointIndex}>
-                                            <Heading key={`${sectionIndex}-subheading`} type="h5" id="" text={point.heading}></Heading>
-                                            <ul>
-                                                {
-                                                    point.bulletPoints.map((bullet, bulletIndex) => {
-                                                        return (<li key={bulletIndex}>{bullet}</li>)
-                                                    })
-                                                }
-                                            </ul>
-                                        </div>
-                                    )
-                                }
-                                )
-                            }
-                        </div >
-                    )
-                })
-            }
+                <Container id={`${id}_holder`} className="info_holder" >
 
-        </Container >
+                    {
+                        sections.map((section, sectionIndex) => {
+                            return (
+                                <div key={sectionIndex}>
+                                    {section.heading && (
+                                        <Heading key={`${sectionIndex}-heading`} tagName="h4" id="" text={section.heading} ></Heading>
+                                    )}
+                                    {
+                                        section.content && (
+                                            <TextComponent key={`${sectionIndex}-content`} type="h4" id="" className="" text={section.content}></TextComponent>
+                                        )
+                                    }
+                                    {
+                                        section.section && section.section.map((point, pointIndex) => {
+
+                                            return (
+                                                <div key={pointIndex}>
+                                                    <Heading key={`${sectionIndex}-subheading`} type="h5" id="" text={point.heading}></Heading>
+                                                    <ul>
+                                                        {
+                                                            point.bulletPoints.map((bullet, bulletIndex) => {
+                                                                return (<li key={bulletIndex}>{bullet}</li>)
+                                                            })
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            )
+                                        }
+                                        )
+                                    }
+                                </div >
+                            )
+                        })
+                    }
+                </Container>
+            </Container >
+        </Container>
     )
 };
 

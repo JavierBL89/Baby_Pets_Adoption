@@ -25,8 +25,13 @@ const Footer = () => {
 
 
     return (
-        <Navbar id="footer_navbar" expand="lg" bg="dark" variant="dark" className="mt-auto">
+        <Navbar id="footer_navbar" expand="lg" className="mt-auto">
+
             <Stack className="mt-5 text-center" >
+                <Container id="footer_bg_holder" >
+                    <img src={process.env.PUBLIC_URL + "/assets/images/FootprintPathBig.png"} alt="background" />
+
+                </Container>
                 {/**  Nav Links **/}
                 <Nav className="m-auto" >
                     <Row className="ms-lg-5">
@@ -47,18 +52,16 @@ const Footer = () => {
                     <Row className="ms-lg-5">
                         <NavLinkComponent id="footer_privacy_link" href="/privacy_policy" text="Privacy Policy" />
                         <NavLinkComponent id="footer_data_deletion_link" href="/data_deletion" text="Data Deletion" />
-
                     </Row>
 
                 </Nav>
-                <Navbar.Text className="text-muted">
+                <Navbar.Brand id="logo_footer" href="/home"></Navbar.Brand>
+                <Navbar.Text className="" id="copyright">
                     {new Date().getFullYear()} BbPets Adoption. All Rights Reserved.
                 </Navbar.Text>
-
-                <Navbar.Brand id="logo_footer" href="/home">BbPets</Navbar.Brand>
             </Stack >
 
-        </Navbar>
+        </Navbar >
     )
 };
 

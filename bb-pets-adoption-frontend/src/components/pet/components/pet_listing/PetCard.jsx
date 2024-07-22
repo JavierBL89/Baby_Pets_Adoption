@@ -62,15 +62,15 @@ const PetCard = ({ img, breed, petId, onView, location, price }) => {
 
                 {isLoaded &&
                     <>  {/********** Card head ************/}
-                        <Row className="petCard_head pt-2">
-                            <Col >
+                        <Row className="petCard_head">
+                            <Col className="pt-3">
                                 <TextComponent text="Mother's pic" />
                             </Col>
-                            <Col className="petCard_price ">
+                            <Col className="petCard_price pt-3" style={{ backgroundColor: "#5A4633" }}>
                                 {price ?
-                                    <TextComponent text={`Selling: ${price}€ e`} />
+                                    <TextComponent text={`For Sale: ${price}€`} className="card_price_holder" />
                                     :
-                                    <TextComponent text={`Free adoption`} />
+                                    <TextComponent text={`Free adoption`} className="card_price_holder" />
                                 }
 
                             </Col>

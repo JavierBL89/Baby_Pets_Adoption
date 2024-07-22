@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.bb_pets_adoption.account_management.Model.User;
 import com.example.bb_pets_adoption.pet_listing.model.Pet;
-import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
+import com.example.bb_pets_adoption.notification_service.Model.Notification;
 
 import lombok.Data;
 

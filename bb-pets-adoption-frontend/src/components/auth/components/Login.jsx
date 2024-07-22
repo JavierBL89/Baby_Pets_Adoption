@@ -167,7 +167,7 @@ const Login = () => {
                             </Row>
                             <Row id="login_action_holder">
                                 <Col >
-                                    <button type="submit" id="login_submit_button" className="btn btn-primary" >LogIn!</button>
+                                    <button type="submit" id="login_submit_button" className="btn" >LogIn!</button>
                                 </Col>
                                 <Col id="forgot_password_holder">
                                     <a href="#nopath" onClick={resetPassword}>Forgot password</a>
@@ -175,9 +175,7 @@ const Login = () => {
                             </Row>
 
                         </Form>
-
                         {message && <p id="login_message">{message}</p>}
-
                         <div>
                             {/*<SocialLogin></SocialLogin>*/}
                         </div>

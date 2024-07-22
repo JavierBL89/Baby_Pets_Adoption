@@ -6,6 +6,7 @@ package com.example.bb_pets_adoption.pet_listing.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,17 @@ public interface DogRepository extends MongoRepository<Dog, ObjectId>{
 	Page<Dog> findByTagsIn(List<String> tags, Pageable pageable);
 	
 	
+	/*
+	 * 
+	 * */
 	Optional<Dog> findDogById(ObjectId petId);
 	
+	
+	
+	/**
+	 * QueryMethod to find all pets which estimated birth date has gone past 40 natural days
+	 * 
+	 * @param {LocalDate} date - current date
+	 * **/
+	List<Pet> findAllByBirthDateBefore(LocalDate date);
 }

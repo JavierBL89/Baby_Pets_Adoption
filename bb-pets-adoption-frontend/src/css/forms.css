@@ -1,95 +1,17 @@
-/********************************* LOGIN */
+/*
+* Primary:
+* Light Beige #F5EDE3
+* Dark Brown  #5A4633
+*
+*Secundary:
+* Soft Beige #DCC5A1
+* Tan #C19A6B
+* Dark Black #050505
+***/
 
-#nav-dropdown-dark-example span,
-{
-
-position: absolute;
-}
-
-
-
-/* #reservations input:-webkit-autofill:focus,
-#login_form input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 50px #ffffff inset; */
-/*your box-shadow*/
-/* -webkit-text-fill-backgorund-color: #FFFFF0;
-    -webkit-text-fill-color: #111111;
-    -webkit-text-fill-font-size: 0.500rem;
-} */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 
-#login_wrapper {
-    min-width: 500px;
-    max-width: 650px;
-    height: 370px;
-    margin: 0px auto;
-    padding-top: 40px;
-    padding-bottom: 20px;
-}
-
-#login_action_holder {
-    margin-top: 30px;
-}
-
-#login_action_holder .col {
-    text-align: center;
-}
-
-#forgot_password_holder {
-    font-size: 14px;
-    padding-top: 15px;
-}
-
-#login_form label {
-    margin-top: 15px;
-}
-
-#login_form input {
-    font-size: 15px;
-    letter-spacing: 0.5px;
-}
-
-#login_submit_button {
-    width: 70%;
-}
-
-#login_message {
-    padding-left: 40px;
-    font-size: 14px;
-    color: #a52a2a;
-    margin-top: 20px;
-}
-
-/****** PET VIEW **/
-#pet_view_wrapper {
-
-    min-width: 900px;
-    max-width: 1000px;
-    min-height: fit-content;
-    margin-top: 40px;
-    margin-bottom: 40px;
-}
-
-#pet_view_wrapper #pet_img_holder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    /* Adjust based on your requirement */
-    width: 100%;
-    /* Ensure it takes up the full width of the container */
-}
-
-#pet_view_wrapper #pet_img_holder img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    /* Ensure the image covers the container */
-    max-width: 100%;
-    /* Responsive width */
-    max-height: 100%;
-    /* Responsive height */
-}
 
 /*********************************** COMMON FORM */
 
@@ -152,6 +74,23 @@ input:-webkit-autofill,
 #login_form #login_email:valid {
     background-color: transparent !important;
 }
+
+
+#login_submit_button {
+    background-color: #5A4633;
+    color: #F5EDE3;
+    border-color: #5A4633;
+    ;
+    letter-spacing: 0.5px;
+    font-weight: light;
+    margin-top: 20px;
+}
+
+#login_submit_button:hover {
+    background-color: #ffffff;
+    color: #5A4633;
+}
+
 
 /*************** REGISTRATION FORM */
 

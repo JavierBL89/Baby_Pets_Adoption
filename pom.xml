@@ -91,7 +91,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+		<!-- Spring Boot Starter for RabbitMQ -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-amqp</artifactId>
+    </dependency>
+
+    <!-- WebSocket for real-time communication -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
 <dependency>
     <groupId>com.amazonaws</groupId>
     <artifactId>aws-java-sdk-s3</artifactId>
@@ -124,10 +134,7 @@
 			<scope>test</scope>
 		</dependency>
 		
-			<dependency>
-              <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter-websocket</artifactId>
-         </dependency>
+
 	</dependencies>
 
 

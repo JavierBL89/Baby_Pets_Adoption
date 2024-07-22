@@ -1,0 +1,815 @@
+/*
+* Primary:
+* Light Beige #F5EDE3
+* Dark Brown  #5A4633
+*
+*Secundary:
+* Soft Beige #DCC5A1
+* Tan #C19A6B
+* Dark Black #050505
+***/
+
+
+html {
+    font-size: 18px
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+p,
+a {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.5px;
+    font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Merriweather", serif;
+    color: #050505;
+    letter-spacing: 0.5px;
+}
+
+
+/****  COMMON  ***/
+.row {
+    padding: 0;
+}
+
+#notifications_space {
+    height: 150px;
+}
+
+#post_action_message_holder,
+#notification_message_holder {
+    width: 80%;
+    min-height: 70px;
+    height: 40px;
+    margin: 40px auto 40px;
+}
+
+
+
+#post_action_message_wrapper #post_action_message_container,
+#notification_message_container {
+    width: 70%;
+    background-color: #6a5b48;
+    padding: 15px 0 5px;
+    text-align: center;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+}
+
+#notification_message_container h6 {
+    color: #ffffff;
+}
+
+.form-control:focus {
+    border-color: #C19A6B;
+    /* Change to your desired border color */
+    box-shadow: 0 0 5px #C19A6B;
+    /* Change to your desired shadow */
+    outline: none;
+    /* Remove the default outline */
+}
+
+.form-label {
+    color: #050505;
+    opacity: 0.7;
+}
+
+
+/********************* HEADER */
+#header_navbar {
+    background-color: #F5EDE3;
+    border-bottom: solid 2px #DCC5A1;
+}
+
+#logo_nav_holder {
+    background-image: url("/public/assets/images/Logo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 200px;
+    height: 80px;
+    aspect-ratio: 16/9;
+    /* Adjust aspect ratio as needed */
+}
+
+#header_navbar .navbar-nav a {
+    font-size: 20px;
+    margin-right: 20px;
+    letter-spacing: 1px;
+    border-bottom: solid 2px transparent;
+}
+
+#header_navbar .navbar-nav a:hover {
+    margin-right: 20px;
+    letter-spacing: 1px;
+    border-bottom: solid 2px #050505;
+}
+
+/* Custom CSS to hide the dropdown arrow */
+.navbar-nav .dropstart #signIn_button::after {
+    display: none !important;
+}
+
+#header_navbar #signIn_button {
+    background-color: #050505;
+    color: #F5EDE3;
+    border-radius: 10px;
+    font-weight: bold;
+    border: none;
+}
+
+#header_navbar #signIn_button:hover {
+    color: #050505;
+    background-color: #F5EDE3;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#header_navbar div[aria-labelledby="signIn_button"] {
+    border-color: #6a5b48;
+}
+
+#sign_in_holder {
+    width: 60%;
+    min-height: 70px;
+    height: 40px;
+    margin: 40px auto 100px;
+    background-color: #6a5b48;
+    border-radius: 10px;
+}
+
+#sign_in_messsage {
+    padding: 20px 0 30px;
+    height: 40px;
+    color: #F5EDE3;
+    letter-spacing: 0.8px;
+}
+
+
+/***** HEADER DROPDOWN*/
+#header_navbar .dropdown-menu span a {
+    color: #050505;
+    border-bottom: solid 1px transparent;
+    text-align: center;
+}
+
+#header_navbar .dropdown-menu span a:hover {
+    border-bottom: solid 1px #050505;
+}
+
+
+/****** HEADER LOGIN FORM */
+#login_wrapper {
+    min-width: 500px;
+    max-width: 650px;
+    height: 370px;
+    margin: 0px auto;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+#login_action_holder {
+    margin-top: 30px;
+}
+
+#login_action_holder .col {
+    text-align: center;
+}
+
+#forgot_password_holder {
+    font-size: 14px;
+    padding-top: 15px;
+}
+
+#header_navbar .navbar-nav #forgot_password_holder a {
+    font-size: 17px;
+    position: relative;
+    top: 25px;
+}
+
+#login_form label {
+    margin-top: 15px;
+}
+
+#login_form input {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+#login_submit_button {
+    width: 70%;
+}
+
+#login_message {
+    padding-left: 40px;
+    font-size: 14px;
+    color: #a52a2a;
+    margin-top: 20px;
+}
+
+
+/******* FOOTER   ****/
+#footer_navbar {
+    position: relative;
+    margin-top: 100%;
+    padding-top: 80px;
+    background-color: #6a5b48;
+    height: fit-content;
+    padding-top: 100px;
+}
+
+#footer_bg_holder img {
+    margin: 0 auto 50px;
+}
+
+#footer_navbar a {
+    color: #F5EDE3;
+    letter-spacing: 0.8px;
+    font-size: 21px;
+    border: solid 1px #6a5b48;
+}
+
+#footer_navbar a:hover {
+    border: solid 1px #F5EDE3;
+}
+
+#logo_footer {
+    margin: 60px auto;
+    background-image: url("/public/assets/images/Logo\ Light.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 200px;
+    height: 170px;
+    aspect-ratio: 16/9;
+    /* Adjust aspect ratio as needed */
+}
+
+
+#footer_navbar #copyright {
+    color: #F5EDE3;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+}
+
+/*********************************** COMMON FORM */
+
+/***** Override autofill default style behavoir ****/
+/**
+* Took the code lines from the below link
+/* https://stackoverflow.com/questions/2338102/override-browser-form-filling-and-input-highlighting-with-html-css 
+*/
+input:-webkit-autofill,
+#login_form input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 50px #ffffff inset;
+    /* Change the color to your own background color */
+    -webkit-text-fill-color: #000000;
+    -webkit-text-fill-backgorund-color: #FFFFF0;
+    -webkit-text-fill-font-size: 0.513rem;
+}
+
+
+
+
+/************************************ PET CATEGORIES */
+#categories_wrapper {
+    margin-bottom: 350px;
+}
+
+
+#categories_wrapper #categories_holder {
+    width: 50%;
+}
+
+#hero_holder {
+    margin: 0 auto;
+    width: 800px;
+}
+
+#categories_wrapper img {
+    width: 800px;
+    height: auto;
+    position: absolute;
+    z-index: -1;
+}
+
+#category_Puppies {
+    background-image: url("/public/assets/images/dog_face.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* margin-bottom: 17px; */
+    width: 193px;
+    height: 193px;
+    margin-top: 50px;
+}
+
+#category_Kitties {
+    background-image: url("/public/assets/images/cat_face.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 193px;
+    height: 193px;
+    margin-top: 50px;
+
+}
+
+#categories_wrapper .category_tittle {
+    font-weight: bold;
+    color: #6a5b48;
+
+}
+
+
+
+/*************** ADOPTION INFORMATION SECTION */
+
+#adoption_info_wrapper {
+    margin: 200px auto;
+}
+
+#adoption_info_wrapper #adoption_info_container {
+    width: 80%;
+}
+
+#adoption_info_wrapper #adoption_info_holder {
+    border: solid 1px #C19A6B;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#adoption_info_wrapper #adoption_info_holder p,
+#adoption_info_wrapper #adoption_info_holder ul {
+    font-size: 21px;
+}
+
+#adoption_info_wrapper #adoption_info_holder ul {
+    padding-left: 0;
+}
+
+#adoption_info_wrapper p,
+#adoption_info_wrapper ul {
+
+    color: #050505;
+    opacity: 0.8;
+    letter-spacing: 0.4px;
+}
+
+#adoption_info_wrapper ul li {
+    list-style-type: none;
+}
+
+/* Custom CSS to change bullet point color */
+#adoption_info_wrapper .bullet-point::before {
+    content: '• ';
+    color: #6a5b48;
+    /* Change this to your desired bullet point color */
+    font-weight: bold;
+}
+
+
+#adoption_info_wrapper h4 {
+    color: #6a5b48;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+#adoption_info_wrapper #adoption_info_heading {
+    color: #6a5b48;
+    padding-bottom: 40px;
+    font-size: 2rem;
+    text-align: center;
+    font-weight: light;
+}
+
+#adoption_info_wrapper strong {
+    color: #6a5b48;
+
+}
+
+
+@media (max-width: 1200px) {}
+
+@media (min-width: 992px) {}
+
+/************************************************* (min-width: 768px) and (max-width: 990px) ****/
+
+@media (min-width: 768px) and (max-width: 990px) {
+
+
+    /****  COMMON  ***/
+
+
+    #post_action_message_holder,
+    #notification_message_holder {
+        min-height: 40px;
+    }
+
+    #post_action_message_wrapper #post_action_message_container,
+    #notification_message_container {
+        width: 80%;
+        padding: 15px 0 5px;
+    }
+
+    /********************* HEADER */
+    #logo_nav_holder {
+        background-image: url("/public/assets/images/Logo.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 180px;
+        height: 75px;
+        aspect-ratio: 16/9;
+        /* Adjust aspect ratio as needed */
+
+    }
+
+    #header_navbar .navbar-nav a {
+        text-align: center;
+        font-size: 20px;
+        margin-right: 20px;
+        margin: 0 auto;
+        width: 20%;
+        letter-spacing: 1px;
+
+    }
+
+    #header_navbar .navbar-nav a:hover {
+        text-align: center;
+        font-size: 20px;
+        margin-right: 20px;
+        margin: 0 auto;
+        width: 20%;
+        border-bottom: solid 2px #050505;
+    }
+
+
+
+    #header_navbar #signIn_button {
+        text-align: center;
+        font-size: 20px;
+        color: #050505;
+        border-bottom: solid 2px transparent;
+        background-color: transparent;
+        border-radius: 0;
+        font-weight: bold;
+    }
+
+    #header_navbar #signIn_button:hover {
+
+        background-color: transparent;
+        border-bottom: solid 2px #050505;
+        border-radius: 0;
+
+    }
+
+    /****** HEADER LOGIN FORM */
+    #login_wrapper {
+        min-width: 500px;
+        max-width: 650px;
+        height: 370px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+
+    #header_navbar div[aria-labelledby="signIn_button"] {
+        position: absolute;
+        right: 0;
+        top: 60px;
+        margin: 0 auto;
+        border-color: #6a5b48;
+        width: 100%
+    }
+
+
+    #login_form input {
+        font-size: 15px;
+        width: 70%;
+    }
+
+
+
+
+    /************************************ PET CATEGORIES */
+    #categories_wrapper {
+        margin-bottom: 350px;
+    }
+
+
+    #categories_wrapper #categories_holder {
+        width: 80%;
+    }
+
+    #hero_holder {
+        margin: 0 auto;
+        width: 700px;
+    }
+
+    #categories_wrapper img {
+        width: 700px;
+        height: auto;
+        position: absolute;
+        z-index: -1;
+    }
+
+    #category_Puppies {
+        background-image: url("/public/assets/images/dog_face.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        /* margin-bottom: 17px; */
+        width: 183px;
+        height: 183px;
+    }
+
+    #category_Kitties {
+        background-image: url("/public/assets/images/cat_face.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 183px;
+        height: 183px;
+    }
+
+
+
+
+    /*************** ADOPTION INFORMATION SECTION */
+
+    #adoption_info_wrapper {
+        margin-top: 100px;
+        margin-bottom: 100px;
+    }
+
+    #adoption_info_wrapper #adoption_info_container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+
+
+
+    /******* FOOTER   ****/
+    #footer_navbar {
+        position: relative;
+        margin-top: 100%;
+        background-image: none;
+        height: fit-content;
+        padding-top: 80px;
+    }
+
+    #footer_bg_holder img {
+        margin: 0 auto 50px;
+    }
+
+    #footer_navbar a {
+        color: #F5EDE3;
+        letter-spacing: 0.8px;
+        font-size: 21px;
+        border: solid 1px #6a5b48;
+    }
+
+    #footer_navbar a:hover {
+        border: solid 1px #F5EDE3;
+    }
+
+    #logo_footer {
+        margin: 50px auto 50px;
+        background-image: url("/public/assets/images/Logo\ Light.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 200px;
+        height: 170px;
+        aspect-ratio: 16/9;
+        /* Adjust aspect ratio as needed */
+    }
+
+
+    #footer_navbar #copyright {
+        color: #F5EDE3;
+        letter-spacing: 0.5px;
+        font-size: 15px;
+    }
+}
+
+
+/*********************************     @media (min-width: 356px) and (max-width: 575px)  *******/
+@media (min-width: 356px) and (max-width: 575px) {
+
+
+    /****  COMMON  ***/
+
+
+    #post_action_message_holder,
+    #notification_message_holder {
+        min-height: 40px;
+    }
+
+    #post_action_message_wrapper #post_action_message_container,
+    #notification_message_container {
+        width: 95%;
+        padding: 15px 0 5px;
+    }
+
+    /********************* HEADER */
+    #logo_nav_holder {
+        background-image: url("/public/assets/images/Logo.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 170px;
+        height: 65px;
+        aspect-ratio: 16/9;
+        /* Adjust aspect ratio as needed */
+
+    }
+
+    #header_navbar .navbar-nav a {
+        text-align: center;
+        font-size: 20px;
+        margin-right: 20px;
+        margin: 0 auto;
+        width: 20%;
+        letter-spacing: 1px;
+    }
+
+    #header_navbar .navbar-nav a:hover {
+        text-align: center;
+        font-size: 20px;
+        margin-right: 20px;
+        margin: 0 auto;
+        width: 20%;
+        border-bottom: solid 2px #050505;
+    }
+
+
+
+    #header_navbar #signIn_button {
+        text-align: center;
+        font-size: 20px;
+        color: #050505;
+        border-bottom: solid 2px transparent;
+        background-color: transparent;
+        border-radius: 0;
+        font-weight: bold;
+    }
+
+    #header_navbar #signIn_button:hover {
+
+        background-color: transparent;
+        border-bottom: solid 2px #050505;
+        border-radius: 0;
+
+    }
+
+
+    /****** HEADER LOGIN FORM */
+    #login_wrapper {
+        width: 95%;
+        height: 350px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+
+    #header_navbar div[aria-labelledby="signIn_button"] {
+        position: absolute;
+        right: 15px;
+        top: 60px;
+        margin: 0 auto;
+        border-color: #6a5b48;
+        width: 95%
+    }
+
+    #sign_in_holder {
+        width: 95%;
+    }
+
+
+    #login_form input {
+        font-size: 15px;
+        width: 70%;
+    }
+
+    #login_message {
+        padding-left: 40px;
+        font-size: 14px;
+        color: #a52a2a;
+        margin-top: 20px;
+    }
+
+
+    /************************************ PET CATEGORIES */
+    #categories_wrapper {
+        margin-bottom: 250px;
+    }
+
+
+    #categories_wrapper #categories_holder {
+        width: 85%;
+    }
+
+    #hero_holder {
+        margin: 20px auto 0;
+        width: 700px;
+    }
+
+    #categories_wrapper img {
+        width: 97%;
+        height: auto;
+        position: absolute;
+        z-index: -1;
+    }
+
+    #categories_wrapper #category_Puppies {
+        background-image: url("/public/assets/images/dog_face.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-top: 0;
+        width: 128px;
+        height: 128px;
+    }
+
+    #categories_wrapper #category_Kitties {
+        width: 80%;
+        height: 80%;
+        background-image: url("/public/assets/images/cat_face.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-top: 0;
+        width: 128px;
+        height: 128px;
+    }
+
+    #categories_wrapper .category_tittle {
+        font-size: 17px;
+    }
+
+
+    /*************** ADOPTION INFORMATION SECTION */
+
+    #adoption_info_wrapper {
+        margin-top: 80px;
+        margin-bottom: 80px;
+    }
+
+    #adoption_info_wrapper #adoption_info_heading {
+        font-size: 1.6rem;
+    }
+
+    #adoption_info_wrapper #adoption_info_container {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    #adoption_info_wrapper .info_holder {
+        padding: 20px;
+        font-size: 20px;
+
+    }
+
+    #adoption_info_wrapper h4 {
+        font-size: 22px;
+    }
+
+
+    /******* FOOTER   ****/
+    #footer_navbar a {
+        font-size: 20px;
+    }
+
+    #footer_navbar a:hover {
+        border: solid 1px #F5EDE3;
+    }
+
+    #logo_footer {
+        margin: 50px auto 50px;
+        background-image: url("/public/assets/images/Logo\ Light.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 200px;
+        height: 160px;
+        aspect-ratio: 16/9;
+        /* Adjust aspect ratio as needed */
+    }
+
+
+}

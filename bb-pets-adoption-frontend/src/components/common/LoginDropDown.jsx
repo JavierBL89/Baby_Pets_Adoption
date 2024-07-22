@@ -5,13 +5,13 @@ import Login from "../auth/components/Login";
 
 
 
-const LogInDropDown = () => {
+const LogInDropDown = ({ id }) => {
 
     return (
 
         <Nav >
             <NavDropdown
-                id="nav-dropdown-dark-example"
+                id={id}
                 title="SignIn"
                 menuVariant="light"
                 className="btn-group dropstart"

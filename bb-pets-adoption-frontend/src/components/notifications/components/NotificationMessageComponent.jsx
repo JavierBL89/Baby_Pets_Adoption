@@ -17,38 +17,11 @@ import instance from "../../../scripts/axiosConfig";
  * @param {*} onViewed - a fucntion from parent component to pass up data when clicked 
  * @returns The `NotificationMessageComponent` functional component is being returned
  */
-const NotificationMessageComponent = ({ text, token, notificationId, onFetchData }) => {
+const NotificationMessageComponent = ({ text, token, notificationId, onViewed }) => {
 
     const { notificationsMessage } = useContext(NotificationsContext);
     const [message, setMessage] = useState("")
 
-    /**
-        * Method to handle notifications as marked.
-        * It makes a PUT request to update the notifiction status
-        * @param {*} notificationId - the ID of the notification
-        * @param {*} applicationId - the ID of the adoptuion application
-        * @returns 
-        */
-    const handleViewed = async (notificationId) => {
-
-        if (!notificationId || notificationId == null) {
-            return
-        }
-
-        try {
-            // PUT request
-            const response = await instance.put(`/notifications/markAsViewed?token=${token}&notificationId=${notificationId}`);
-            if (response.status === 200) {
-                onFetchData();
-            } else {
-                console.error("Item could not be removed:", response.data);
-                setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
-            }
-
-        } catch (error) {
-            console.error('Error deleting item:', error);
-        }
-    }
 
     /**
      * useEffect listens to when new message is set in 'notificationMessage'
@@ -74,11 +47,12 @@ const NotificationMessageComponent = ({ text, token, notificationId, onFetchData
                 < Container id="notification_message_holder" >
                     <Container id="notification_message_container">
                         <Heading tagName="h6" className="notification_message" text={text} />
-                        <FaCheck onClick={() => handleViewed(notificationId)} />
+                        <FaCheck onClick={() => onViewed(notificationId)} />
                     </Container>
                 </Container >
 
             }
+
         </>
     )
 };

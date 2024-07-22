@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.real_time_notifications.service;
+package com.example.bb_pets_adoption.notification_service.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,8 @@ import com.example.bb_pets_adoption.auth.service.AuthenticationServiceImpl;
 import com.example.bb_pets_adoption.pet_listing.controller.PetController;
 import com.example.bb_pets_adoption.pet_listing.model.PetList;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
-import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
-import com.example.bb_pets_adoption.real_time_notifications.Repository.NotificationRepository;
+import com.example.bb_pets_adoption.notification_service.Model.Notification;
+import com.example.bb_pets_adoption.notification_service.Repository.NotificationRepository;
 
 /**
  * 
@@ -35,7 +36,8 @@ public class NotificationServiceImpl implements NotificationService{
 	private PetListRepository petListRepository;
 	private NotificationRepository notificationRepository;
 	private AuthenticationServiceImpl authenticationServiceImpl;
-	
+    private RabbitTemplate rabbitTemplate;
+
 	// create an instance of Logger
 	private static final Logger logger = LoggerFactory.getLogger(PetController.class);
 				
@@ -44,11 +46,12 @@ public class NotificationServiceImpl implements NotificationService{
 	@Autowired	
 	public NotificationServiceImpl(AdoptionApplicationRepository adoptionApplicationRepository,
 			PetListRepository petListRepository, NotificationRepository notificationRepository, 
-			AuthenticationServiceImpl authenticationServiceImpl) {
+			AuthenticationServiceImpl authenticationServiceImpl, RabbitTemplate rabbitTemplate) {
 		this.adoptionApplicationRepository =  adoptionApplicationRepository;
 		this.petListRepository =  petListRepository;
 		this.notificationRepository =  notificationRepository;
 		this.authenticationServiceImpl =  authenticationServiceImpl;
+		this.rabbitTemplate = rabbitTemplate;
 	}
 	
 	
@@ -203,35 +206,31 @@ public class NotificationServiceImpl implements NotificationService{
 		}else {
 			throw new Exception("Notification ID cannot be emoty or null");
 		}
-        
-		// remove notification from petListing pending notifications if exists
-		boolean removed = removeNotificationFromPetListing(notificationId);
-		// if not
-		if(!removed) {
-			// remove notification from adoption application pending notifications if exists
-            removed = removeNotificationFromAdoptionApplication(notificationId);
-		}
 		
-		if (!removed) {
-            throw new Exception("Notification not found in any entity");
-        }else {
-        	
-        	// find and set the notification as viewed
-    		try { 
-                Notification notification = notificationRepository.findById(notificationId).orElse(null);
-                if (notification != null) {
-                    notification.setViewed(true);
-                    notificationRepository.save(notification);
-                    
-                    // remove from db
-                    notificationRepository.deleteById(notificationId);
-               }else {
+		 // find and set the notification as viewed
+		Notification notification;
+    	try { 
+             notification = notificationRepository.findById(notificationId).orElse(null);
+             if (notification != null) {
+                notification.setViewed(true);
+                notificationRepository.save(notification);   
+              }else {
        			throw new Exception("Notification object was found as null");
-               }
-    		}catch(Exception e) {		
-    			throw new Exception("Error occured while trying to mark the notification as viewed." + e.getMessage());
-    		}
-        }
+             }
+       }catch(Exception e) {		
+    		throw new Exception("Error occured while trying to mark the notification as viewed." + e.getMessage());
+    	}
+
+		// remove notification from petListing pending notifications if exists
+        removeNotificationFromPetListing(notificationId);
+		
+		// remove notification from adoption application pending notifications if exists
+        removeNotificationFromAdoptionApplication(notificationId);
+
+        // remove from db
+        notificationRepository.deleteById(notificationId);
+        logger.info("Notifiction successfully removed");
+         
     }
 
 	
@@ -250,9 +249,15 @@ public class NotificationServiceImpl implements NotificationService{
 		 
 	        List<PetList> petLists = petListRepository.findAll();
 	        for (PetList petList : petLists) {
-	            boolean removed = petList.getPendingNotifications().removeIf(notification -> notification.getId().equals(notificationId));
+	        		        	
+	            boolean removed = petList.getPendingNotifications().removeIf(notification -> 
+                notification.getId().equals(notificationId) &&
+                !(notification.getType().equals("drop") && !notification.isViewed())
+            );
 	            if (removed) {
 	                petListRepository.save(petList);
+	                logger.info("Notifications removed from petListing: " );
+	                logger.info("Remaining notifications in petListing: " + petList.getPendingNotifications().size());
 	                return true;
 	            }
 	        }
@@ -272,16 +277,21 @@ public class NotificationServiceImpl implements NotificationService{
     * @param {ObjectId} notificationId -the  notification ID to be removed
 	* */
 	 public boolean removeNotificationFromAdoptionApplication(ObjectId notificationId) {
-		 
-	        List<AdoptionApplication> applications = adoptionApplicationRepository.findAll();
-	        for (AdoptionApplication application : applications) {
-	            boolean removed = application.getPendingNotifications().removeIf(notification -> notification.getId().equals(notificationId));
-	            if (removed) {
-	                adoptionApplicationRepository.save(application);
-	                return true;
-	            }
-	        }
-	        return false;
+
+		 List<AdoptionApplication> applications = adoptionApplicationRepository.findAll();
+		    for (AdoptionApplication application : applications) {
+		        boolean removed = application.getPendingNotifications().removeIf(notification -> 
+                notification.getId().equals(notificationId) &&
+                !(notification.getType().equals("drop") && !notification.isViewed())
+            );
+		        if (removed) {
+		            adoptionApplicationRepository.save(application);
+		            logger.info("Notification removed from adoption application: " );
+		            logger.info("Remaining notifications in adoption application: " + application.getPendingNotifications().size());
+		            return true;
+		        }
+		    }
+		    return false;
 	    }
 	 
 	
@@ -380,7 +390,7 @@ public class NotificationServiceImpl implements NotificationService{
         
         // Remove notification from the notifications repository
         deleteNotificationById(notificationIdString);   	
-   
     }
+	
 	
 }

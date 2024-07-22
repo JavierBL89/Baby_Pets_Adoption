@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge } from "react-bootstrap";
+import { Badge, Container } from "react-bootstrap";
 
 
 
@@ -14,7 +14,7 @@ import { Badge } from "react-bootstrap";
 const PetTag = ({ title, onClick }) => {
 
     return (
-        <Badge onClick={() => onClick(title)} bg="secondary">{title}</Badge>
+        <Container className="badge_tag" onClick={() => onClick(title)}>{title}</Container>
     );
 };
 

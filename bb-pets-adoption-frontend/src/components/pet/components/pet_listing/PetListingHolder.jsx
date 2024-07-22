@@ -16,11 +16,11 @@ const PetListingHolder = () => {
 
 
     return (
-        <Container className="m-auto" id="pet_listing_wrapper">
-            <Container className="m-auto" id="pet_listing_container">
-                <Row className="p-0">
+        <Container className="" id="pet_listing_wrapper">
+            <Container className="" id="pet_listing_container">
+                <Row className="">
                     {petsData && petsData.map((pet, index) => (
-                        <Col key={index} xs={6} md={3} lg={4} className="p-0">
+                        <Col key={index} xs={6} md={5} lg={4} className="p-1 mb-2">
                             <PetCard
                                 petId={pet.id}
                                 location={pet.location}

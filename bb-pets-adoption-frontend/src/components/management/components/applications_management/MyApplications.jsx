@@ -154,18 +154,15 @@ const MyApplications = () => {
      * @param {*} applicationId - the ID of the adoptuion application
      * @returns 
      */
-    const handleViewed = async (notificationId, applicationId) => {
+    const handleViewed = async (notificationId) => {
         if (!notificationId || notificationId == null) {
             return
         }
 
-        if (!applicationId || applicationId == null) {
-            return
-        }
 
         try {
             // PUT request
-            const response = await instance.put(`/notifications/mark_application_asViewed?token=${token}&applicationId=${applicationId}&notificationId=${notificationId}`);
+            const response = await instance.put(`/notifications/markAsViewed?token=${token}&notificationId=${notificationId}`);
             if (response.status === 200) {
                 fetchApplicationsData();
             } else {
@@ -198,7 +195,7 @@ const MyApplications = () => {
                                 app.pendingNotifications.map((notification, index) => {
                                     let message;
                                     if (notification.type === "status") {
-                                        message = `Your application with ref: '${app.appTracker} has a new status, '${notification.status}''`;
+                                        message = `Your application with ref: '${app.appTracker} has a new status, '${app.status}''`;
                                     } else if (notification.type === "petRemoved") {
                                         message = notification.message;
                                     }
@@ -209,6 +206,7 @@ const MyApplications = () => {
                                             onViewed={handleViewed}
                                             token={token}
                                             text={message}
+                                            status={notification.status}
 
                                         />
                                     )

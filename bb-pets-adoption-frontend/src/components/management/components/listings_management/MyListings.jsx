@@ -55,7 +55,7 @@ const MyListings = () => {
         * 
         * @param {String} objectId - the id of the petList to be removed
         */
-    const fetchData = useCallback(async () => {
+    const fetchListingsData = useCallback(async () => {
 
         setListings([]);   // reset to empty before every render
         if (!token) {
@@ -124,7 +124,7 @@ const MyListings = () => {
                 if (response.status === 200) {
                     setPostActionMessage("Pet listing has been sucessfully removed.") // store post-action message
                     setListings([]);   // reset to empty before every render
-                    fetchData();    // reload page with new data
+                    fetchListingsData();    // reload page with new data
                 } else {
                     console.error("Item could not be removed:", response.data);
                     setMessage("A server error occured and pet could not be removed.Please try later or contact admin to inform about the problem.")
@@ -154,13 +154,41 @@ const MyListings = () => {
     };
 
 
+    /**
+    * Method to handle notifications as marked.
+    * It makes a PUT request to update the notifiction status
+    * @param {*} notificationId - the ID of the notification
+    * @param {*} applicationId - the ID of the adoptuion application
+    * @returns 
+    */
+    const handleViewed = async (notificationId) => {
+
+        if (!notificationId || notificationId == null) {
+            return
+        }
+        console.log(token);
+        console.log(notificationId);
+        try {
+            // PUT request
+            const response = await instance.put(`/notifications/markAsViewed?token=${token}&notificationId=${notificationId}`);
+            if (response.status === 200) {
+                fetchListingsData();
+            } else {
+                console.error("Item could not be removed:", response.data);
+                setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
+            }
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
+    }
+
     /* 
     * useEffect listens to changes on 'page', 'token', 'fetchListingsData'
     * to calls the  fetchListingsData()
     */
     useEffect(() => {
-        fetchData();
-    }, [page, token, orderBy, fetchData]);
+        fetchListingsData();
+    }, [page, token, orderBy, fetchListingsData]);
 
 
     /****
@@ -221,7 +249,7 @@ const MyListings = () => {
                                 token={token}
                                 text={notification.message}
                                 notificationId={notification.id}
-                                fetchData={fetchData}
+                                onViewed={handleViewed}
                             />)
                         }
                     </Container>

@@ -23,11 +23,11 @@ const WelcomeComponent = () => {
     return (
         <Container >
             <Container >
-                <Row >
+                <Row id="notifications_space">
                     {!isAuthenticated ?
                         (
-                            <Container>
-                                <Heading tagName="h6" id="sign_in_messsage" text="Sign in to access adoption services" />
+                            <Container id="sign_in_holder">
+                                <Heading tagName="h6" id="sign_in_messsage" text="Sign in to access adoption services !" />
                             </Container>
                         )
                         : notificationsMessage ?

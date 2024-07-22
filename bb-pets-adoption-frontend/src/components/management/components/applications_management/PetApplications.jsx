@@ -52,7 +52,7 @@ const PetApplications = () => {
      * It optimizes performance by preventing re-renders.
      * 
      */
-    const fetchData = useCallback(async () => {
+    const fetchApplicationsData = useCallback(async () => {
 
         // ensure token is not empty
         if (!token) {
@@ -117,7 +117,7 @@ const PetApplications = () => {
                 // DELETE request
                 const response = await instance.delete(`/pets/delete_pet?token=${trimmedToken}&petListId=${objectId}`);
                 if (response.status === 200) {
-                    fetchData();    // reload page with new data                 
+                    fetchApplicationsData();    // reload page with new data                 
                     // Store feedback message in localStorage
                     localStorage.setItem('feedbackMessage', 'Application successfully removed!');
                     navigate(`/my_applications/${token}`);
@@ -137,6 +137,34 @@ const PetApplications = () => {
 
     };
 
+    /**
+    * Method to handle notifications as marked.
+    * It makes a PUT request to update the notifiction status
+    * @param {*} notificationId - the ID of the notification
+    * @param {*} applicationId - the ID of the adoptuion application
+    * @returns 
+    */
+    const handleViewed = async (notificationId) => {
+
+        if (!notificationId || notificationId == null) {
+            return
+        }
+        console.log(token);
+        console.log(notificationId);
+        try {
+            // PUT request
+            const response = await instance.put(`/notifications/markAsViewed?token=${token}&notificationId=${notificationId}`);
+            if (response.status === 200) {
+                fetchApplicationsData();
+            } else {
+                console.error("Item could not be removed:", response.data);
+                setMessage("A server error occured and pe could not be removed.Please try later or contact admin to inform about the problem.")
+            }
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
+    }
+
     /***
      * Method sets the state with the selected status tab name
      * 
@@ -151,8 +179,8 @@ const PetApplications = () => {
      * to calls the  fetchListingsData()
      */
     useEffect(() => {
-        fetchData();
-    }, [fetchData, token, petId, selectedTab])
+        fetchApplicationsData();
+    }, [fetchApplicationsData, token, petId, selectedTab])
 
 
     /****
@@ -198,7 +226,7 @@ const PetApplications = () => {
                                                 key={notification.id} // Use a unique identifier for keys
                                                 notificationId={notification.id}
                                                 applcationId={app.id}
-                                                onViewed={fetchData}
+                                                onViewed={handleViewed}
                                                 token={token}
                                                 text={message}
                                             />
@@ -240,7 +268,7 @@ const PetApplications = () => {
                                             token={token}
                                             comments={application.comments}
                                             petId={application.petId}
-                                            onFetchData={fetchData}
+                                            onFetchData={() => fetchApplicationsData()}
                                             // delete listing button passes the petId
                                             onDelete={() => handleDrop()}
 

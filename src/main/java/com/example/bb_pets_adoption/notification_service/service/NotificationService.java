@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.real_time_notifications.service;
+package com.example.bb_pets_adoption.notification_service.service;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.bb_pets_adoption.account_management.Model.User;
 import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
 import com.example.bb_pets_adoption.pet_listing.model.PetList;
-import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
+import com.example.bb_pets_adoption.notification_service.Model.Notification;
 
 /**
  * Service class to define the operations for real time notifications

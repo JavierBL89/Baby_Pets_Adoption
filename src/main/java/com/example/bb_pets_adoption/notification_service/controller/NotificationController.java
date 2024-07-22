@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.bb_pets_adoption.real_time_notifications.controller;
+package com.example.bb_pets_adoption.notification_service.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,8 +26,8 @@ import com.example.bb_pets_adoption.account_management.Repository.UserRepository
 import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
 import com.example.bb_pets_adoption.pet_listing.controller.PetController;
 import com.example.bb_pets_adoption.pet_listing.model.PetList;
-import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
-import com.example.bb_pets_adoption.real_time_notifications.service.NotificationServiceImpl;
+import com.example.bb_pets_adoption.notification_service.Model.Notification;
+import com.example.bb_pets_adoption.notification_service.service.NotificationServiceImpl;
 
 /**
  * 
@@ -41,7 +38,6 @@ public class NotificationController {
 
 	
 	// vars
-	private SimpMessagingTemplate messageTemplate;
 	NotificationServiceImpl notificationServiceImpl;
 	private UserRepository userRepository;
 	
@@ -51,10 +47,9 @@ public class NotificationController {
 	
 	// Constructor for dependency injection
 	@Autowired
-	public NotificationController(SimpMessagingTemplate messageTemplate, NotificationServiceImpl notificationServiceImpl,
+	public NotificationController(NotificationServiceImpl notificationServiceImpl,
 			UserRepository userRepository) {
 		
-		this.messageTemplate = messageTemplate;
 		this.notificationServiceImpl = notificationServiceImpl;
 		this.userRepository = userRepository;
 	}
@@ -74,13 +69,15 @@ public class NotificationController {
 			 @RequestParam(value="token" ,required=false) String token,
 			 @RequestParam(value="notificationId" ,required=false) String notificationIdString
 			 ) {
+
 		 
 		 // handle null value token
 		 if (token == null) {
 		      logger.error("Authorization token is missing");
 		      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization token is missing");
 		 }
-		        
+
+		 
 		// if user is authenticated proceed to create a a new pet and assocciate this with the user pet listings
 	    if (notificationServiceImpl.authenticateUserByToken(token)) {				   
 		     try {
@@ -149,29 +146,5 @@ public class NotificationController {
            return ResponseEntity.status(403).body("Unauthorized");
 	    }
 	 }
-	 
-	 
-	/**
-	 * 
-	 * **/
-	@MessageMapping("/notify")
-	@SendTo("/topic/notifications")
-	public String sendNotification(String message) {
-		return message;
-	}
-	
-	
-	/***
-	 * 
-	 * **/
-	public void sendApplicationStatusUpdate(String message) {
-		messageTemplate.convertAndSend("/topic/notifications", message);	
-	}
-	
-	/***
-	 * 
-	 * **/
-	public void newApplication(String message) {
-		messageTemplate.convertAndSend("/topic/notifications", message);	
-	}
+
 }

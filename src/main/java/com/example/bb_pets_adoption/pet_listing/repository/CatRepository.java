@@ -6,12 +6,12 @@ package com.example.bb_pets_adoption.pet_listing.repository;
 import org.springframework.stereotype.Repository;
 
 import com.example.bb_pets_adoption.pet_listing.model.Cat;
-import com.example.bb_pets_adoption.pet_listing.model.Dog;
 import com.example.bb_pets_adoption.pet_listing.model.Pet;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,4 +60,11 @@ public interface CatRepository extends MongoRepository<Cat, ObjectId> {
 	 * **/
 	Optional<Cat> findCatById(ObjectId petId);
 
+	
+	/**
+	 * QueryMethod to find all pets which estimated birth date has gone past 40 natural days
+	 * 
+	 * @param {LocalDate} date - current date
+	 * **/
+	List<Pet> findAllByBirthDateBefore(LocalDate date);
 }

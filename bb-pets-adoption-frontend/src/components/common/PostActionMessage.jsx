@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import NavLinkComponent from "./NavLinkComponent";
 import NavbarDropDown from "./NavbarDropdown";
-import LogInDropDown from "./LoginDropDown";
+import LogInDropDown from "./LogInDropDown";
 import Heading from "./Heading";
 import { FeedbackContext } from "../../context/FeedBackContext";
 

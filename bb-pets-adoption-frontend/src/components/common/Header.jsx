@@ -3,7 +3,8 @@ import { AuthContext } from "../../context/AuthContext";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import NavLinkComponent from "./NavLinkComponent";
 import NavbarDropDown from "./NavbarDropdown";
-import LogInDropDown from "./LoginDropDown";
+import LogInDropDown from "./LogInDropDown";
+import ImageComponent from "./ImageComponent";
 
 
 
@@ -25,9 +26,11 @@ const Header = () => {
 
 
     return (
-        <Navbar id="header_navbar" collapseOnSelect sticky="top" expand="lg" className="bg-body-tertiary">
+        <Navbar id="header_navbar" collapseOnSelect sticky="top" expand="lg" className="">
             <Container>
-                <Navbar.Brand id="logo_nav" href="/">BbPets</Navbar.Brand>
+                <Navbar.Brand id="logo_nav" href="/">
+                    <Container id="logo_nav_holder" />
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ms-auto">
@@ -36,11 +39,11 @@ const Header = () => {
                         { // condition to display different links
                             !isAuthenticated ? (
                                 <>
-                                    <LogInDropDown />
+                                    <LogInDropDown id="signIn_button" />
                                 </>
 
                             ) : (
-                                <NavbarDropDown />
+                                <NavbarDropDown id="account_dropdown" />
 
                             )
                         }

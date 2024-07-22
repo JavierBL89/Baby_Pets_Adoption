@@ -28,9 +28,9 @@ import com.example.bb_pets_adoption.pet_listing.model.PetList;
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
-import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
-import com.example.bb_pets_adoption.real_time_notifications.Repository.NotificationRepository;
-import com.example.bb_pets_adoption.real_time_notifications.service.NotificationServiceImpl;
+import com.example.bb_pets_adoption.notification_service.Model.Notification;
+import com.example.bb_pets_adoption.notification_service.Repository.NotificationRepository;
+import com.example.bb_pets_adoption.notification_service.service.NotificationServiceImpl;
 import com.example.bb_pets_adoption.search.controller.SearchController;
 
 
@@ -251,9 +251,8 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
         	    petListRepository.save(petList);  // save changes 	    
         	    logger.info("Adoption application ID was added to adoptionApplicationsIDs list in PetList object with id " + petList.getId());
         	    
-        	    // create a new notification
-        	    notificationServiceImpl.createAdoptionApplicationNotification(petList, application, user, "New adoption application");       	                   
-                
+        	    // create a new notification in db
+        	    notificationServiceImpl.createAdoptionApplicationNotification(petList, application, user, "New adoption application");       	                                  
         	    return application;       	 
          }else {       	 
         	 throw new Exception("PetList asssociated to pet id " + petId + " was not found.");
@@ -301,7 +300,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
 	             application.getPendingNotifications().removeIf(notification -> notification.getReceiverId().equals(user.getUserId()) && !notification.isViewed());
 	             adoptionApplicationRepository.save(application);  // save changes
 	             
-	         	// create a new notification. Pass the the application object, and a message
+	         	// create a new notification in db. Pass the the application object, and a message
 		        notificationServiceImpl.createUpdateStatusNotification(application, user, "New status for application with reference " + application.getAppTracker());        
 		    }else {        	
 	        	throw new Exception("Application was not found.");
@@ -379,8 +378,7 @@ public class AdoptionApplicationServiceImpl implements AdoptionApplicationServic
             	notification.setMessage("User " + user.getName() + " has dropped its application");
             	notificationRepository.save(notification);
             	// petList.getPendingNotifications().add(notification);  NOTE:we leave this out for now
-            	
-            }else {          	 
+          }else {          	 
            	 throw new Exception("PetList asssociated to pet id " + adoptionApplication.getPetId() + " was not found.");
             }          
 		

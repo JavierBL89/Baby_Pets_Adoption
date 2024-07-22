@@ -1,17 +1,224 @@
-:root {
-    /* Color Palette */
-    --beaver: #9E7F66;
-    --cod-grey: #111111;
-    --mirage: #17192B;
-    --elbony-clay: #242B37;
-    --shuttle-gray: #5C6779;
-    --white: #ffffff;
-    --black: #000000;
+/*
+* Primary:
+* Light Beige #F5EDE3
+* Dark Brown  #5A4633
+*
+*Secundary:
+* Soft Beige #DCC5A1
+* Tan #C19A6B
+* Dark Black #050505
+***/
 
-    /* Font Families */
-    --font-league-spartan: 'League Spartan', sans-serif;
-    --font-sanchez: 'Sanchez', serif;
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* Remove padding from all containers */
+.container,
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
 }
+
+/* Remove margin from all rows */
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Remove padding from all columns */
+[class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/************ FILTERED SEARCH */
+#pet_tags_wrapper {
+    margin-top: 20px;
+}
+
+#pet_tags_container ul {
+    width: 50%;
+    justify-content: space-evenly;
+    margin: 0 auto;
+}
+
+#pet_tags_container ul .nav-item button {
+    font-family: "Roboto";
+    color: #5A4633;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+#pet_tags_container ul .nav-item button:hover,
+#pet_tags_container ul .nav-item button:focus {
+    background-color: #F5EDE3;
+}
+
+
+#pet_tags_container .tab-content .tab-pane {
+    text-align: center;
+    height: 50px;
+}
+
+#pet_tags_container {
+    width: 80%;
+    background-color: #C19A6B;
+    height: 220px;
+    border-radius: 10px;
+    padding-top: 10px;
+}
+
+#pet_tags_container .badge_tag {
+    background-color: #5A4633;
+    color: #F5EDE3;
+    width: 75%;
+    border-radius: 15px;
+    padding: 4px;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#pet_tags_container #selected_tags_holder {
+    margin-top: 120px;
+    width: 80%;
+    margin: 120px auto 10px;
+}
+
+#selected_tags_holder svg {
+    color: #5A4633;
+    cursor: pointer;
+}
+
+#selected_tags_holder p {
+    font-style: italic;
+    font-family: "Roboto";
+    font-weight: 500;
+    font-size: 15px;
+    color: #5A4633;
+}
+
+
+#selected_tags_holder #search_button {
+
+    width: 120%;
+    background-color: #ffffff;
+    border: none;
+    border-left: solid 1px #5A4633;
+    font-family: "Roboto";
+    font-weight: 700;
+    color: #5A4633;
+    padding: 15px;
+    letter-spacing: 0.8px;
+}
+
+
+/************ PET LISTNGS  */
+
+
+#pet_listing_wrapper {
+    margin: 160px auto;
+}
+
+
+#load_more_button {
+    margin: 0 auto;
+    width: fit-content;
+    background-color: transparent;
+    border: none;
+    border-bottom: solid 1px #5A4633;
+    color: #5A4633;
+    cursor: pointer;
+    font-family: "Roboto";
+    font-weight: 300;
+    font-size: 20px;
+    letter-spacing: 0.8px;
+}
+
+#pet_listing_wrapper .pet_card_wrapper {
+    margin: 0;
+    padding: 0;
+    margin: 0 auto;
+    height: fit-content;
+    border-radius: 10px;
+    border: solid 1px #C19A6B;
+    background-color: #F5EDE3;
+}
+
+#pet_listing_wrapper #pet_listing_container>.row {
+    justify-content: space-evenly;
+    margin: 0 auto;
+}
+
+#pet_listing_wrapper .pet_card_wrapper .card_price_holder {
+    color: #F5EDE3;
+}
+
+#pet_listing_wrapper .pet_card_wrapper p {
+    font-style: italic;
+    font-family: "Roboto";
+    color: #5A4633;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+
+#pet_listing_wrapper .pet_card_wrapper,
+#pet_listing_wrapper .pet_card_wrapper .pet_card_container .row {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+
+}
+
+#pet_listing_wrapper .pet_card_wrapper .pet_card_container .petCard_price {
+    text-align: center;
+}
+
+
+#pet_listing_wrapper .pet_card_detail_holder {
+    text-align: center;
+}
+
+#pet_listing_wrapper .view_pet_button {
+    width: 100%;
+    font-family: "Roboto";
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    background-color: #C19A6B;
+    color: #ffffff;
+    border: solid 1px transparent;
+    padding: 10px;
+}
+
+
+#pet_listing_wrapper .view_pet_button:hover {
+    background-color: #5A4633;
+    color: #ffffff;
+}
+
+
+#pet_listing_wrapper {
+    width: 1000px;
+}
+
+
+.pet_card_wrapper {
+    height: 400px;
+    background-color: aquamarine;
+}
+
+
+.pet_card_wrapper .img_holder {
+    min-height: 250px;
+    max-height: 250px;
+    padding: 0;
+}
+
+.pet_card_wrapper .img_holder img {
+    width: 100%;
+}
+
+
 
 /* 
 #reservations-main-wraper button[type="submit"]:focus {
@@ -46,59 +253,10 @@ input[type="checkbox"]:checked {
 } */
 
 
-/***** remove arrow on dropdown element ****/
-/**
-* Took the code lines from the below link
-/* https://stackoverflow.com/questions/16603979/how-to-remove-the-default-arrow-icon-from-a-dropdown-list-select-element 
-*/
-form .form-input-wraper select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
 
 body {
     padding: 0;
     margin: 0;
-}
-
-/* @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Lora:wght@500;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Sanchez:ital@0;1&display=swap'); */
-
-
-/****  COMMON  ***/
-.row {
-    padding: 0;
-}
-
-#post_action_message_holder,
-#notification_message_holder {
-    width: 100%;
-    min-height: 70px;
-    height: fit-content;
-    margin: 10px auto 40px;
-}
-
-
-
-#post_action_message_wrapper #post_action_message_container,
-#notification_message_container {
-    width: 90%;
-    background-color: #e8d6bf;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    letter-spacing: 0.5px;
-    color: #6a5b48;
-}
-
-#sign_in_messsage {
-    text-align: center;
-}
-
-/******* FOOTER   ****/
-#footer_navbar {
-    position: relative;
-    margin-top: 100%;
 }
 
 
@@ -116,48 +274,6 @@ body {
 } */
 
 
-#login_wrapper {
-    min-width: 500px;
-    max-width: 650px;
-    height: 370px;
-    margin: 0px auto;
-    padding-top: 40px;
-    padding-bottom: 20px;
-}
-
-#login_action_holder {
-    margin-top: 30px;
-}
-
-#login_action_holder .col {
-    text-align: center;
-}
-
-#forgot_password_holder {
-    font-size: 14px;
-    padding-top: 15px;
-}
-
-#login_form label {
-    margin-top: 15px;
-}
-
-#login_form input {
-    font-size: 15px;
-    letter-spacing: 0.5px;
-}
-
-#login_submit_button {
-    width: 70%;
-}
-
-#login_message {
-    padding-left: 40px;
-    font-size: 14px;
-    color: #a52a2a;
-    margin-top: 20px;
-}
-
 /*************************************** PET VIEW **/
 #pet_view_wrapper {
 
@@ -167,6 +283,19 @@ body {
     margin-top: 40px;
     margin-bottom: 40px;
 }
+
+
+
+/****** PET VIEW **/
+#pet_view_wrapper {
+
+    min-width: 900px;
+    max-width: 1000px;
+    min-height: fit-content;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
 
 #pet_view_wrapper #pet_img_holder {
     display: flex;
@@ -188,7 +317,6 @@ body {
     max-height: 100%;
     /* Responsive height */
 }
-
 
 
 
@@ -699,62 +827,8 @@ input:-webkit-autofill,
 }
 
 
-/************************************** ALL LISTINGS*/
-
-#pet_listing_wrapper .pet_card_wrapper {
-    margin: 0;
-    padding: 0;
-    margin: 0 auto;
-    height: fit-content;
-    border-radius: 10px;
-}
-
-#pet_listing_wrapper .pet_card_wrapper,
-#pet_listing_wrapper .pet_card_wrapper .pet_card_container .row {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-
-}
-
-#pet_listing_wrapper .pet_card_wrapper .pet_card_container .petCard_price {
-    text-align: center;
-}
 
 
-#pet_listing_wrapper .pet_card_detail_holder {
-    text-align: center;
-}
-
-#pet_listing_wrapper .view_pet_button {
-    width: 100%;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    background-color: #9E7F66;
-    color: #ffffff;
-    padding: 10px;
-
-}
-
-#pet_listing_wrapper {
-    width: 1000px;
-}
-
-
-.pet_card_wrapper {
-    height: 400px;
-    background-color: aquamarine;
-}
-
-.pet_card_wrapper .img_holder {
-    min-height: 250px;
-    max-height: 250px;
-    padding: 0;
-}
-
-.pet_card_wrapper .img_holder img {
-    width: 100%;
-}
 
 #update_pet_failed_message_holder,
 #create_pet_failed_message_holder {
@@ -775,47 +849,202 @@ input:-webkit-autofill,
     letter-spacing: 0.5px;
 }
 
-/* 
-.container {
-    width: calc(var(--base-width) - 2rem);
-    height: calc(var(--base-height) - 2rem);
-    font-size: calc(var(--base-font-size) + 0.5vw);
-    box-sizing: border-box;
-}
+/************************************************* (min-width: 768px) and (max-width: 990px) ****/
 
-img {
-    width: 100%;
-    height: auto;
-}
+@media (min-width: 768px) and (max-width: 990px) {
 
-@media (max-width: 1200px) {
-    :root {
-        --base-width: 90%;
-        --base-height: 90%;
-        --base-font-size: 15px;
+
+    /************ FILTERED SEARCH */
+    #pet_tags_wrapper {
+        margin-top: 20px;
+    }
+
+    #pet_tags_container ul {
+        width: 100%;
+    }
+
+    #pet_tags_container {
+        width: 100%;
+        height: 220px;
+    }
+
+    #badge_tag_holder .tag_column {
+        padding: 0;
+        margin-bottom: 5px;
+    }
+
+    #badge_tag_holder {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    #pet_tags_container .badge_tag {
+        width: 80%;
+        letter-spacing: 0.8px;
+    }
+
+    #pet_tags_container #selected_tags_holder {
+        margin-top: 120px;
+        width: 90%;
+        margin: 120px auto 10px;
+    }
+
+    #selected_tags_holder #search_button {
+        width: 110%;
+    }
+
+
+    /************ PET LISTNGS  */
+    #pet_listing_wrapper {
+        width: 900px;
+        margin: 150px auto;
+        padding: 0;
+    }
+
+    #pet_listing_wrapper #pet_listing_container {
+        margin: 0 auto;
+        padding: 0;
+        width: inherit;
+    }
+
+
+    .pet_card_wrapper {
+        height: 400px;
+        background-color: aquamarine;
+    }
+
+    .pet_card_wrapper .img_holder {
+        min-height: 250px;
+        max-height: 250px;
+        padding: 0;
+    }
+
+    .pet_card_wrapper .img_holder img {
+        width: 100%;
     }
 }
 
-@media (max-width: 992px) {
-    :root {
-        --base-width: 80%;
-        --base-height: 80%;
-        --base-font-size: 14px;
+/*********************************     @media (min-width: 356px) and (max-width: 575px)  *******/
+@media (min-width: 356px) and (max-width: 575px) {
+
+    /************ FILTERED SEARCH */
+
+    #pet_tags_container ul {
+        width: 100%;
+
+    }
+
+    #pet_tags_container {
+        width: 80%;
+        background-color: #C19A6B;
+        height: 220px;
+        border-radius: 10px;
+        padding-top: 10px;
+    }
+
+    #badge_tag_holder .tag_column {
+        padding: 0;
+        margin-bottom: 5px;
+    }
+
+    #pet_tags_container .badge_tag {
+        background-color: #5A4633;
+        color: #F5EDE3;
+        width: 75%;
+        border-radius: 15px;
+        padding: 4px;
+        letter-spacing: 0.5px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    #pet_tags_container #selected_tags_holder {
+        margin-top: 120px;
+        width: 95%;
+        margin: 120px auto 10px;
+    }
+
+    #selected_tags_holder svg {
+        color: #5A4633;
+        cursor: pointer;
+    }
+
+    #selected_tags_holder p {
+        font-style: italic;
+        font-family: "Roboto";
+        font-weight: 500;
+        font-size: 15px;
+        color: #5A4633;
+    }
+
+
+    #selected_tags_holder #search_button {
+
+        width: 10%;
+        background-color: #ffffff;
+        border: none;
+        border-left: solid 1px #5A4633;
+        font-family: "Roboto";
+        font-weight: 700;
+        color: #5A4633;
+        padding: 15px;
+        letter-spacing: 0.8px;
+    }
+
+
+    /************ PET LISTNGS  */
+
+
+    #pet_listing_wrapper {
+        margin: 220px auto;
+        width: 95%;
+    }
+
+
+    #pet_listing_wrapper .pet_card_wrapper {
+        padding: 0;
+        margin: 0 auto 20px;
+        height: fit-content;
+        border-radius: 10px;
+        border: solid 1px #C19A6B;
+        background-color: #F5EDE3;
+    }
+
+    #pet_listing_wrapper #pet_listing_container>.row {
+        justify-content: space-evenly;
+        margin: 0 auto;
+    }
+
+    #pet_listing_wrapper .pet_card_wrapper .card_price_holder {
+        color: #F5EDE3;
+    }
+
+    #pet_listing_wrapper .pet_card_wrapper p {
+        font-style: italic;
+        font-family: "Roboto";
+        color: #5A4633;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+    }
+
+
+    #pet_listing_wrapper .view_pet_button {
+        letter-spacing: 0.8px;
+    }
+
+
+    #pet_listing_wrapper .view_pet_button:hover {
+        background-color: #5A4633;
+        color: #ffffff;
+    }
+
+    .pet_card_wrapper .img_holder {
+        min-height: 150px;
+        max-height: 150px;
+        padding: 0;
+    }
+
+    .pet_card_wrapper .img_holder img {
+        width: 100%;
     }
 }
-
-@media (max-width: 768px) {
-    :root {
-        --base-width: 70%;
-        --base-height: 70%;
-        --base-font-size: 13px;
-    }
-}
-
-@media (max-width: 576px) {
-    :root {
-        --base-width: 60%;
-        --base-height: 60%;
-        --base-font-size: 12px;
-    }
-} */

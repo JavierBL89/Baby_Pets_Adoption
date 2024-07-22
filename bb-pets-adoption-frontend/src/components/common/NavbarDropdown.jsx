@@ -19,7 +19,7 @@ import useFetchNotifications from "../hooks/data/fetchNotifications";
 *
 * @returns the header navigation var
 */
-const NavbarDropDown = () => {
+const NavbarDropDown = ({ id }) => {
 
     const { isAuthenticated, logout, userName } = useContext(AuthContext);
     const { unviewedListingsNotifications, unviewedAppStatusNotifications } = useContext(NotificationsContext);
@@ -30,9 +30,10 @@ const NavbarDropDown = () => {
     console.log(unviewedAppStatusNotifications.length);
     return (
         <NavDropdown
-            id="nav-dropdown-dark-example"
+            id={id}
             title={userName ? userName : "Account"}
             menuVariant="light"
+            className="dropstart"
         >
             <NavDropdown.Item as="span">
                 <NavLinkComponent id="profile_link_nav" href={`/profile/${token}`} text="Profile" />
@@ -41,10 +42,6 @@ const NavbarDropDown = () => {
             <NavDropdown.Item as="span">
                 {unviewedListingsNotifications.length > 0 && <NotificationBadge text={unviewedListingsNotifications.length} />}
                 <NavLinkComponent id="myListings_link_nav" href={`/my_listings/${token}`} text="My Listings" />
-            </NavDropdown.Item>
-
-            <NavDropdown.Item as="span">
-                <NavLinkComponent id="profile_link_nav" href={`/notifications/${token}`} text="Notifications" />
             </NavDropdown.Item>
 
             <NavDropdown.Item as="span">

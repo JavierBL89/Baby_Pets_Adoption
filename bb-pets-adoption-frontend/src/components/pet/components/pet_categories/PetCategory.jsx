@@ -1,6 +1,7 @@
 import React, { useContext, useLocation, useNavigate } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../../../context/AuthContext";
+import ImageComponent from "../../../common/ImageComponent";
 
 
 
@@ -21,9 +22,18 @@ const PetCategory = ({ onClick, title }) => {
 
     return (
 
-        <Container onClick={() => onClick(title)} title={title} className="pt-5 pb-5 mb-5">
-            <h2 style={{ cursor: 'pointer' }}>{title}</h2>
+        <Container >
+            <Container onClick={() => onClick(title)}
+                title={title}
+                id={`category_${title}`}
+                className="pt-5 pb-5"
+                style={{ cursor: 'pointer' }}
+            >
+            </Container>
+            <h6 className="category_tittle">{title}</h6>
+
         </Container>
+
 
 
     )

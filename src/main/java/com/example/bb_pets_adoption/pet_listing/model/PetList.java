@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
 import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
-import com.example.bb_pets_adoption.real_time_notifications.Model.Notification;
+import com.example.bb_pets_adoption.notification_service.Model.Notification;
 import com.example.bb_pets_adoption.search.controller.SearchController;
 
 import lombok.AllArgsConstructor;

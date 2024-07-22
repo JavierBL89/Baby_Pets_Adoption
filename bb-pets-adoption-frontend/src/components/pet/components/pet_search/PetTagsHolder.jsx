@@ -4,6 +4,8 @@ import { Container, Row, Col, Tab, Tabs, Button } from "react-bootstrap";
 import PetTag from "./PetTag";
 import { DataPetContext } from "../../../../context/DataPetContext";
 import { IoIosRemoveCircle } from "react-icons/io";
+import TextComponent from "../../../common/TextComponent";
+import ButtonComponent from "../../../common/ButtonComponent";
 
 
 /***
@@ -37,7 +39,9 @@ import { IoIosRemoveCircle } from "react-icons/io";
 const PetTagsHolder = () => {
 
     const [selectedTags, setSelectedTags] = useState([]);
+    const [tagsMessage, setTagsMessage] = useState("");
     const { setTagsList, resetPetsData } = useContext(DataPetContext);
+    const { disabled, setDisabled } = useState(false);
 
 
     /***
@@ -50,8 +54,13 @@ const PetTagsHolder = () => {
      */
     const handleClick = (title) => {
 
+        if (selectedTags.length > 4) {
+            setTagsMessage("You have reached the maximu of tags.");
+
+            return;
+        }
         // check if new tag is already in the list
-        if (selectedTags.includes(title)) {
+        if (selectedTags.includes(title.toLowerCase())) {
             return;
         } else {
             setSelectedTags((prevTags) => [...prevTags, title.toLowerCase()]);
@@ -81,7 +90,9 @@ const PetTagsHolder = () => {
      * @params tag - the tag to be removed
      */
     const handleRemoveTag = (tag) => {
-        console.log(tag)
+        if (selectedTags.length === 5) {
+            setTagsMessage("");
+        }
         setSelectedTags(selectedTags.filter((t) => t !== tag));
     }
 
@@ -89,8 +100,38 @@ const PetTagsHolder = () => {
 
         <Container id="pet_tags_wrapper">
             <Container id="pet_tags_container">
-                <Row>
-                    <Col xs={10}>
+                <Row flex>
+                    <Tabs
+                        defaultActiveKey="profile"
+                        id="uncontrolled-tab-example"
+                        className="mb-3"
+                    >
+                        {
+
+                            petTagsData.map((category, tagIndex) => {
+                                return (
+                                    <Tab key={tagIndex} eventKey={`${category.name}`} title={`${category.name}`}>
+
+                                        <Row className=" " id="badge_tag_holder">
+                                            {
+                                                category.items && category.items.map((item, itemIndex) => {
+                                                    return (
+                                                        <Col key={itemIndex} xs={4} id={`subtag_${itemIndex}`} className="tag_column">
+                                                            <PetTag disabled={disabled}
+                                                                onClick={handleClick} title={item} />
+                                                        </Col>
+                                                    )
+                                                })
+                                            }
+                                        </Row>
+                                    </Tab>)
+                            })
+                        }
+
+                    </Tabs>
+                </Row>
+                <Row id="selected_tags_holder">
+                    <Col xs={9}>
                         <Row className="d-flex flex-row">
                             {
                                 selectedTags && selectedTags.length > 0 ? (
@@ -105,36 +146,17 @@ const PetTagsHolder = () => {
                             }
                         </Row>
                     </Col>
-                    <Col xs={2}>
-                        <Button onClick={handleSearch}> Search </Button>
+                    <Col xs={3}>
+                        {
+                            selectedTags && selectedTags.length > 0 &&
+                            <ButtonComponent id="search_button" onClick={handleSearch} text="Find Pets" />
+                        }
                     </Col>
                 </Row>
-
                 <Row>
-                    <Tabs
-                        defaultActiveKey="profile"
-                        id="uncontrolled-tab-example"
-                        className="mb-3"
-                    >
-                        {
-
-                            petTagsData.map((category, tagIndex) => {
-                                return (
-                                    <Tab key={tagIndex} eventKey={`${category.name}`} title={`${category.name}`}>
-                                        {
-                                            category.items && category.items.map((item, itemIndex) => {
-                                                return (
-                                                    <Col key={itemIndex} xs={4} id={`subtag_${itemIndex}`} className="p-0">
-                                                        <PetTag onClick={handleClick} title={item} />
-                                                    </Col>
-                                                )
-                                            })
-                                        }
-                                    </Tab>)
-                            })
-                        }
-
-                    </Tabs>
+                    {tagsMessage && tagsMessage.length > 0 &&
+                        <TextComponent className="text-center" text={tagsMessage} />
+                    }
                 </Row>
             </Container>
 

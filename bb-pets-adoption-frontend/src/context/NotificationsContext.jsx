@@ -22,6 +22,7 @@ const NotificationsProvider = ({ children }) => {
     const [unviewedAppStatusNotifications, setUnviewedAppStatusNotifications] = useState([]);
     const [listOfDroppAppsNotifications, setListOfDroppAppsNotifications] = useState([]);
     const [notificationsMessage, setNotificationsMessage] = useState();
+    const [realTimeMessages, setRealTimeMessage] = useState([]);
     const [notificationsCounter, setNotificationsCounter] = useState(0);
 
     const location = useLocation();
@@ -45,7 +46,8 @@ const NotificationsProvider = ({ children }) => {
             notificationsMessage, setNotificationsMessage,
             unviewedListingsNotifications, setUnviewedListingsNotifications,
             unviewedAppStatusNotifications, setUnviewedAppStatusNotifications,
-            listOfDroppAppsNotifications, setListOfDroppAppsNotifications
+            listOfDroppAppsNotifications, setListOfDroppAppsNotifications,
+            realTimeMessages, setRealTimeMessage
         }}>
             {children}
         </NotificationsContext.Provider>
