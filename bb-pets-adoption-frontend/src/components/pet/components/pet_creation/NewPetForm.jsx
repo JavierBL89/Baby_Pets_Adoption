@@ -232,7 +232,7 @@ const FormComponent = () => {
 
                             <Col xs={12} lg={6} className="mt-0">
                                 <Row >
-                                    <Col className="mt-0">
+                                    <Col className="mt-0 ps-0">
                                         {/******** { pet's location } ********/}
                                         <Form.Group controlId="formLocation">
                                             <Form.Label>location</Form.Label>
@@ -251,7 +251,7 @@ const FormComponent = () => {
                         </Row>
                         <Row >
                             {/******** { Offer Type }********/}
-                            <Col xs={6}>
+                            <Col xs={8} md={6}>
                                 <Row id="pet_offerType_row">
                                     <Col xs={6}>
                                         <Form.Group controlId="formOfferTypeAdoption">
@@ -279,7 +279,7 @@ const FormComponent = () => {
                             </Col>
                             {/* conditional rendering */}
                             {isForSale &&
-                                <Col xs={6}>
+                                <Col xs={4} md={6}>
                                     <Row >
                                         <Col className="mt-0">
                                             {/******** { pet's price } ********/}
@@ -384,7 +384,7 @@ const FormComponent = () => {
                 </Container>
 
                 <Row>
-                    <button id="list_pet_submit_button" className="btn btn-primary" type="submit">submit</button>
+                    <button id="list_pet_submit_button" className="btn btn-primary" type="submit">Submit</button>
 
                 </Row>
 

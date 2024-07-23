@@ -34,7 +34,10 @@ const PetAdoptionComponent = ({ petId, userName }) => {
         <Container id="pet_adoption_wrapper">
             <Container id="pet_adoption_container">
                 <Row >
+                    <Container id="bg_house_pet_view" >
+                        <img src={process.env.PUBLIC_URL + "/assets/images/house_and_foot_prints.png"} alt="background" />
 
+                    </Container>
                     <Heading id="adoption_form_title" tagName="h4" text="Adoption Applications" />
                 </Row>
                 <Row >

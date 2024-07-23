@@ -39,7 +39,7 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
 
                     <Col className="view_pet_applications_link">
                         <a href={`/pet_applications/${petId}/${token}`} >
-                            <small >Applications</small>
+                            <small >See applications</small>
                         </a>
                         {petListing.pendingNotifications.length > 0 &&
                             <NotificationBadge text={petListing.pendingNotifications.length} />
@@ -49,24 +49,24 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
                 </Row>
                 <Row className="myPetCard_body">
                     {/******* Mother's Image *******/}
-                    <Col xs={4} className="myPetCard_img_holder">
+                    <Col xs={12} md={4} className="myPetCard_img_holder">
                         <ImageComponent src={motherImage} className={""} alt={""} />
                     </Col>
 
                     {/******* Birth and Status details *******/}
-                    <Col xs={8} className="pt-1">
+                    <Col xs={12} md={8} className="pt-1">
                         <span hidden ></span>
                         <Row className="myPetCard_details_row">
                             <Col >
                                 <Row>
-                                    <Col xs={6}> <small >Birth date:</small></Col>
-                                    <Col xs={6}> <TextComponent text={`${birthDate[1]}/${birthDate[0]}`} /></Col>
+                                    <Col xs={12} md={6}> <small >Birth date:</small></Col>
+                                    <Col xs={12} md={6}> <TextComponent text={`${birthDate[1]}/${birthDate[0]}`} /></Col>
                                 </Row>
                             </Col>
                             <Col >
                                 <Row>
-                                    <Col xs={4}><small >Status:</small></Col>
-                                    <Col xs={8}> <TextComponent text="Status Here" /></Col>
+                                    <Col xs={12} md={4}><small >Status:</small></Col>
+                                    <Col xs={12} md={8}> <TextComponent text="Available" /></Col>
                                 </Row>
                             </Col>
                         </Row>
@@ -75,9 +75,9 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
                             {/******* Action buttons *******/}
                             <Col >
                                 <Row>
-                                    <Col xs={6}> <small >Created on:</small></Col>
+                                    <Col xs={12} md={6}> <small >Created on:</small></Col>
 
-                                    <Col xs={6}> <small >{petCreatedOn}</small></Col>
+                                    <Col xs={12} md={6}> <TextComponent text={petCreatedOn} /></Col>
                                 </Row>
 
                             </Col>
@@ -85,13 +85,13 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
                             <Col >
                                 {price ?
                                     <Row>
-                                        <Col xs={4}> <small >Price:</small></Col>
-                                        <Col xs={8}> <TextComponent text={price.toString() + "€"} /></Col>
+                                        <Col xs={12} md={4}> <small >Price:</small></Col>
+                                        <Col xs={12} md={8}> <TextComponent text={price.toString() + "€"} /></Col>
                                     </Row>
                                     :
                                     <Row>
 
-                                        <Col xs={8}> <TextComponent text={"Free adoption"} /></Col>
+                                        <Col xs={12} md={8}> <TextComponent text={"Free adoption"} /></Col>
                                     </Row>
                                 }
 
@@ -103,8 +103,8 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
                             {/******* Updated On *******/}
                             <Col >
                                 <Row>
-                                    <Col xs={7}> <small >Updated on:</small></Col>
-                                    <Col xs={5}> <small >{petUpdatedOn ? petUpdatedOn : "N/S"}</small></Col>
+                                    <Col xs={12} md={7}> <small >Updated on:</small></Col>
+                                    <Col xs={12} md={5}> <TextComponent text={petUpdatedOn ? petUpdatedOn : "N/S"} /></Col>
                                 </Row>
                             </Col>
                             {/******* Action buttons *******/}

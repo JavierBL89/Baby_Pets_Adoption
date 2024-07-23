@@ -149,6 +149,7 @@ h6 {
 }
 
 #sign_in_messsage {
+    text-align: center;
     padding: 20px 0 30px;
     height: 40px;
     color: #F5EDE3;
@@ -437,6 +438,7 @@ input:-webkit-autofill,
     }
 
     #header_navbar .navbar-nav a {
+        text-align: center;
         text-align: center;
         font-size: 20px;
         margin-right: 20px;

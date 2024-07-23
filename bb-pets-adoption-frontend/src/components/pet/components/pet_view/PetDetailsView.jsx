@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { AuthContext } from "../../../../context/AuthContext";
@@ -11,7 +11,6 @@ import useFetchById from "../../../hooks/data/fetchById";
 import PetAdoptionComponent from "../pet_adoption/PetAdoptionComponent";
 import { FeedbackContext } from "../../../../context/FeedBackContext";
 import PostActionMessage from "../../../common/PostActionMessage";
-
 
 /****
  * 
@@ -33,98 +32,98 @@ const PetDetailsView = () => {
     const { postActionMessage } = useContext(FeedbackContext);
 
     const { loading, error, petData } = useFetchById(petId);
-    console.log(petData.motherImg);
+
+
+
     return (
         <Container id="pet_view_wrapper" className="">
             <Container id="pet_view_container" className="">
-                { /*************** Post-action Feedback message  *********************/}
-                <Row >
-                    <Container id="post_action_message_holder">
+                {/* Post-action Feedback message */}
+                <Row>
+                    <Col>
                         {!loading && postActionMessage && (
                             <PostActionMessage text={postActionMessage} />
                         )}
-                    </Container>
+                    </Col>
                 </Row>
                 {loading && <p>Loading...</p>}
                 {error && <p>Error: {error}</p>}
-                {petData &&
+                {petData && (
                     <Row id="pet_view_info" className="">
-                        {/********** Pets's Mother Image ******** */}
+                        {/* Pets's Mother Image */}
                         <Col id="pet_img_holder" className="pet_view_img_holder">
                             <ImageComponent src={petData.motherImg} alt={petData.breed} className="" />
                         </Col>
 
-                        <Col id="pet_details_holder">
-                            <Row >
-                                {/********** Pets's Breed ******** */}
+                        {/* Pet Details */}
+                        <Col id="pet_details_holder" xs={12} md={6}>
+                            <Row>
+                                {/* Pets's Breed */}
                                 <Row className="pet_details_row">
                                     <Col>
-                                        <small >Mother Breed:</small>
+                                        <small>Mother Breed:</small>
                                         <TextComponent className="pet_detail_text" text={petData.motherBreed} />
                                     </Col>
                                     <Col>
-                                        <small >Father Breed:</small>
-                                        <TextComponent className="pet_detail_text" text={petData.fatherBreed ? petData.fatherBreed : "No specified"} />
+                                        <small>Father Breed:</small>
+                                        <TextComponent className="pet_detail_text" text={petData.fatherBreed ? petData.fatherBreed : "Not specified"} />
                                     </Col>
-
                                 </Row>
 
-                                {/********** Pets's Birth and Location ******** */}
+                                {/* Pets's Birth and Location */}
                                 <Row className="pet_details_row">
                                     <Col>
-                                        <small >Estimated Birth Date:</small>
+                                        <small>Birth Date:</small>
                                         <TextComponent className="pet_detail_text" text={`${petData.birthDate[1]}/${petData.birthDate[0]}`} />
                                     </Col>
                                     <Col>
-                                        <small >Location:</small>
+                                        <small>Location:</small>
                                         <TextComponent className="pet_detail_text" text={petData.location} />
                                     </Col>
-
                                 </Row>
 
-                                {/********** Pets's Price and Owner's Name ******** */}
+                                {/* Pets's Price and Owner's Name */}
                                 <Row className="pet_details_row">
                                     <Col>
-                                        <small >Price:</small>
-
+                                        <small>Price:</small>
                                         <TextComponent className="pet_detail_text" text={petData.price ? petData.price : "Free Adoption"} />
                                     </Col>
                                     <Col>
-                                        <small >Owner's Name</small>
+                                        <small>Owner's Name:</small>
                                         <TextComponent className="pet_detail_text" text={petData.ownerName} />
                                     </Col>
                                 </Row>
                             </Row>
                         </Col>
-                        {/********** Comments ******** */}
-                        <Row id="pet_details_comment_wrapper">
-                            <Row className="m-0" id="pet_details_comment_container">
-                                <small className="mt-2">Comments</small>
-                                <Row id="pet_details_comments_holder">
-                                    <TextComponent id="pet_comments_text"
-                                        text={
-                                            petData.description ? petData.description : "No comments"} />
-                                </Row>
+
+                        {/* Comments */}
+                        <Col xs={12}>
+                            <Row id="pet_details_comment_wrapper">
+                                <Col>
+                                    <small className="mt-2 ms-2">Comments</small>
+                                    <Row id="pet_details_comments_holder">
+                                        <Col>
+                                            <TextComponent
+                                                id="pet_comments_text"
+                                                text={petData.description ? petData.description : "No comments"}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Col>
                             </Row>
-                        </Row>
+                        </Col>
                     </Row>
-                }
+                )}
 
-                <Row >
-                    {/********* Conditional rendering based on user authentication ***********/}
-                    {
-                        isAuthenticated ?
-                            <PetAdoptionComponent petId={petId} userName={userName} currentPetCategory={currentPetCategory} />
-                            :
-
-                            <PostActionMessage text={"Only subscribed users have access to adoption services !"} />
-                    }
+                <Row>
+                    {/* Conditional rendering based on user authentication */}
+                    {isAuthenticated ? (
+                        <PetAdoptionComponent petId={petId} userName={userName} currentPetCategory={currentPetCategory} />
+                    ) : (
+                        <PostActionMessage text={"Only subscribed users have access to adoption services!"} />
+                    )}
                 </Row>
             </Container>
-            <script>
-                {/* Scroll to the top when the page loads */}
-                window.scrollTo(0, 0);
-            </script>
         </Container>
     );
 

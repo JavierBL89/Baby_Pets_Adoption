@@ -144,7 +144,7 @@ const PetAdoptionForm = ({ petId, userName }) => {
 
                     <Heading
                         tagName="h6"
-                        id="before_application_text"
+                        id="compliment_text"
                         text="Such a beautiful decision from you!"
                     />
 

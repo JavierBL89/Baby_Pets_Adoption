@@ -32,9 +32,6 @@ input:-webkit-autofill,
 
 #create_pet_wrapper,
 #register_form_wrapper {
-
-    min-width: 700px;
-    max-width: 990px;
     min-height: fit-content;
     margin-top: 100px;
     margin-bottom: 100px;
@@ -55,13 +52,19 @@ input:-webkit-autofill,
 }
 
 
+#list_pet_form label {
+    color: #5A4633;
+    font-family: "Roboto";
+    letter-spacing: 0.8px;
+    font-weight: 500;
+}
+
 #create_pet_container .parents_info_holder,
 #register_form_wrapper #register_form_container {
 
     padding: 15px;
-    border: 1px solid;
+    border: 1px solid #C19A6B;
     border-radius: 10px;
-    border-color: grey;
     margin-bottom: 10px;
 }
 
@@ -114,14 +117,6 @@ input:-webkit-autofill,
 
 /***************** PET CREATION ******/
 
-
-
-#form_textarea {
-    /* padding-left: 15px;
-    padding-right: 15px; */
-}
-
-
 #list_pet_form div {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -134,19 +129,22 @@ input:-webkit-autofill,
 }
 
 #list_pet_form ::placeholder {
+    font-family: "Roboto";
     font-size: 12px;
     font-style: italic;
+    color: #5A4633;
+    opacity: 0.8;
+    letter-spacing: 0.8;
+    font-weight: 300;
 }
 
 #list_pet_form .form-check-input {
-
     height: 25px;
     width: 25px;
     margin-left: 15px;
 }
 
 #create_pet_wrapper .parents_info_wraper {
-
     margin-top: 40px;
     padding: 10px;
 }
@@ -166,73 +164,123 @@ input:-webkit-autofill,
     margin: 0;
 }
 
-/* #pet_category_holder div {
-
-    padding: 0;
-} */
 
 #create_pet_wrapper h6 {
-
-    font-size: 17px;
+    font-size: 22px;
     margin-left: 15px;
     margin-bottom: 0;
+    font-family: "Roboto";
+    color: #5A4633;
+    letter-spacing: 0.8px;
 }
 
 #create_pet_wrapper button[type="submit"] {
-
     width: 93%;
-    margin: 0 auto;
+    margin: 40px auto auto;
+    background-color: #5A4633;
+    color: #F5EDE3;
+    font-family: "Roboto";
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    border: none;
+}
+
+#create_pet_wrapper input[type="file"] {
+    font-family: "Roboto";
+    font-size: 14px;
+    font-style: italic;
+    color: #5A4633;
+    opacity: 0.8;
+    letter-spacing: 0.8;
+    font-weight: 300;
+    height: fit-content;
+}
+
+#create_pet_wrapper input[type="radio"]:focus,
+#create_pet_wrapper input[type="radio"]:checked {
+    background-color: #C19A6B;
+    box-shadow: none;
+    border-color: #C19A6B;
 }
 
 #create_pet_wrapper textarea {
-
     font-size: 13px;
     height: 80px;
     width: 90%;
     margin-bottom: 30px;
 }
 
-/* 
-.container {
-    width: calc(var(--base-width) - 2rem);
-    height: calc(var(--base-height) - 2rem);
-    font-size: calc(var(--base-font-size) + 0.5vw);
-    box-sizing: border-box;
-}
+@media (min-width: 768px) and (max-width: 992px) {
 
-img {
-    width: 100%;
-    height: auto;
-}
+    #create_pet_wrapper,
+    #register_form_wrapper,
+    #update_pet_wrapper {
+        width: 100%;
+        min-height: fit-content;
+        margin-top: 100px;
+        margin-bottom: 100px;
+    }
 
-@media (max-width: 1200px) {
-    :root {
-        --base-width: 90%;
-        --base-height: 90%;
-        --base-font-size: 15px;
+    #create_pet_container,
+    #register_form_container,
+    #register_form_wrapper>.row {
+        margin: 0 auto;
+        width: 90%;
     }
 }
 
-@media (max-width: 992px) {
-    :root {
-        --base-width: 80%;
-        --base-height: 80%;
-        --base-font-size: 14px;
+@media (min-width: 578px) and (max-width: 768px) {
+
+
+    #create_pet_container,
+    #register_form_container,
+    #register_form_wrapper>.row {
+        margin: 0 auto;
+        width: 100%;
     }
 }
 
-@media (max-width: 768px) {
-    :root {
-        --base-width: 70%;
-        --base-height: 70%;
-        --base-font-size: 13px;
-    }
-}
+@media (min-width: 350px) and (max-width: 576px) {
 
-@media (max-width: 576px) {
-    :root {
-        --base-width: 60%;
-        --base-height: 60%;
-        --base-font-size: 12px;
+    /***************** PET CREATION ******/
+    #create_pet_wrapper {
+        width: 100%;
     }
-} */
+
+
+    #create_pet_container,
+    #register_form_container,
+    #register_form_wrapper>.row {
+        margin: 0 auto;
+        width: 95%;
+    }
+
+
+    #pet_offerType_row>div {
+        margin: 0;
+    }
+
+    #list_pet_form input {
+        height: 50px;
+        font-size: 14px;
+        width: 95%;
+    }
+
+
+
+    #create_pet_wrapper button[type="submit"] {
+        width: 90%;
+    }
+
+    #create_pet_wrapper #form_textarea .form-label {
+        font-size: 13px;
+    }
+
+    #create_pet_wrapper textarea {
+        font-size: 13px;
+        height: 80px;
+        width: 98%;
+        margin: 20px auto 30px;
+    }
+
+}

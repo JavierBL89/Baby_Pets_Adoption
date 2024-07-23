@@ -36,6 +36,7 @@ import { DataPetProvider } from "./context/DataPetContext";
 import { FeedbackProvider } from "./context/FeedBackContext";
 import ProfileDashBoard from "./components/management/components/account_management/ProfileDashBoard";
 import { NotificationsProvider } from "./context/NotificationsContext";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 
 /***
@@ -55,6 +56,8 @@ const PrivateRoute = ({ element: Component, ...rest }) => {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
+
       <NotificationsProvider >
         <FeedbackProvider >
           <AuthProvider>

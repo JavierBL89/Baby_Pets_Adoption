@@ -26,6 +26,7 @@ const MyListings = () => {
     const { token } = useParams();  // grab token from url params
     const { postActionMessage, setPostActionMessage } = useContext(FeedbackContext);
     const { listOfDroppAppsNotifications, setListOfDroppAppsNotifications } = useContext(NotificationsContext);
+
     const [filteredNotifications, setFilteredNotifications] = useState([]);
 
     const [message, setMessage] = useState("");
@@ -254,30 +255,17 @@ const MyListings = () => {
                         }
                     </Container>
                 </Row>
-
-                <Row > { /***** CREATE NEW PET BUTTON  *****/}
-                    <Col xs={3}>
-                        <a id="create_new_pet" href={`/list_new_pet/${token}`} className="btn btn-primary" >List a New Pet</a>
-                    </Col>
-                </Row>
                 <Row >
+
                     { /**************** FILTER LISTINGS  ***********/}
-                    <Col xs={3} id="my_listings_period_holder">
-                        <Row >
-                            <Heading tagName="h6" id="my_listings_period_title" text="From" />
-                        </Row>
-                        <Row>
-                            <Stack>
-                                {
-                                    /*******     LOGIC HERE    */
-                                    <TimeStampComponent />
-                                }
-                            </Stack>
+                    <Col xs={7} sm={5} md={4} id="my_listings_period_holder">
+                        <Row > { /***** CREATE NEW PET BUTTON  *****/}
+                            <a id="create_new_pet" href={`/list_new_pet/${token}`} className="btn btn-primary" >List a New Pet</a>
                         </Row>
                     </Col>
 
                     { /******************************* PET LISTINGS  ******************************/}
-                    <Col xs={9}>
+                    <Col xs={12} xl={9}>
 
                         <Row id="my_listings_list_holder">
                             { /*************** LOADING SPINNER  *********************/}
