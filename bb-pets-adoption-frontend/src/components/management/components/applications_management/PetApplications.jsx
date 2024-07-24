@@ -198,45 +198,40 @@ const PetApplications = () => {
 
         <Container id="pet_applications_wrapper">
             <Container id="pet_applications_container">
-                { /*************** Post-action Feedback message  *********************/}
-                <Row >
-                    <Container id="post_action_message_holder">
-                        {!loading && postActionMessage && (
-                            <PostActionMessage text={postActionMessage} />
-                        )}
-                    </Container>
-                </Row>
-
                 <Row >
                     { /*************** Notification warnings  *********************/}
-                    <Row >
-                        <Container id="notification_message_holder">
-                            {applications.flatMap(app =>
-                                app.pendingNotifications.map(notification => {
-                                    let message = "";
-                                    if (notification.type === "application") {
-                                        message = `New adoption application. Application ref: '${app.appTracker}'`;
-                                    } else if (notification.type === "drop") {
-                                        message = notification.message;
-                                    }
-
-                                    return (
-                                        message !== null && (
-                                            <NotificationMessageComponent
-                                                key={notification.id} // Use a unique identifier for keys
-                                                notificationId={notification.id}
-                                                applcationId={app.id}
-                                                onViewed={handleViewed}
-                                                token={token}
-                                                text={message}
-                                            />
-                                        )
-                                    );
-                                })
+                    <Row id="notification_message_holder">
+                        {applications.flatMap(app =>
+                            app.pendingNotifications.map(notification => {
+                                let message = "";
+                                if (notification.type === "application") {
+                                    message = `New adoption application. Application ref: '${app.appTracker}'`;
+                                } else if (notification.type === "drop") {
+                                    message = notification.message;
+                                }
+                                return (
+                                    message !== null && (
+                                        <NotificationMessageComponent
+                                            key={notification.id} // Use a unique identifier for keys
+                                            notificationId={notification.id}
+                                            applcationId={app.id}
+                                            onViewed={handleViewed}
+                                            token={token}
+                                            text={message}
+                                        />
+                                    )
+                                );
+                            })
+                        )}
+                    </Row>
+                    { /*************** Post-action Feedback message  *********************/}
+                    <Row>
+                        <Container id="post_action_message_holder">
+                            {!loading && postActionMessage && (
+                                <PostActionMessage text={postActionMessage} />
                             )}
                         </Container>
                     </Row>
-
                     { /*************** APLICATIONS LIST  *********************/}
                     <Row>
                         < ApplicationStatusTabComponent onTabSelect={handleTabSelection} />

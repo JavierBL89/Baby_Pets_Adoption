@@ -13,10 +13,9 @@ import ViewApplicationComponent from "./ViewApplicationComponent";
  * 
  * 
  */
-const PetApplicationCard = ({ application, id, token, onFetchData }) => {
+const PetApplicationCard = ({ application, id, token, onFetchData, onDelete }) => {
 
     const [viewApplication, setviewApplication] = useState(false);
-
 
     /**** 
      * Method toggles the view application accordion.
@@ -29,6 +28,18 @@ const PetApplicationCard = ({ application, id, token, onFetchData }) => {
         setviewApplication(!viewApplication);
     }
 
+    const formattedDate = formatDate(application); // This will give you "2024-8-23"
+
+    /****
+     * Method to format date since javascript month list is 0 indexed
+     */
+    function formatDate(application) {
+        let date = application.applicationDate;
+        let m = parseInt(date.slice(0, 1))
+        let rest = date.slice(1, date.length);
+        return m + rest;
+    }
+
 
     return (
 
@@ -37,63 +48,58 @@ const PetApplicationCard = ({ application, id, token, onFetchData }) => {
                 <Row >
 
                     {/******* Application details *******/}
-                    <Col xs={10}>
+                    <Col xs={12} md={10}>
                         <Row className="application_details_row ">
                             {/******* Applicant Name *******/}
                             <Col xs={6} >
                                 <Row>
-                                    <Col xs={4}> <small > Name:</small></Col>
-                                </Row>
-                                <Row>
-                                    <Col xs={7} > <TextComponent text={application.applicant.name} /></Col>
+                                    <Col xs={12} lg={4}> <small > Name:</small></Col>
+
+                                    <Col xs={12} lg={8} > <TextComponent text={application.applicant.name} /></Col>
                                 </Row>
 
                             </Col>
                             {/******* Location *******/}
                             <Col xs={6}>
                                 <Row>
-                                    <Col xs={4}> <small >Email address</small></Col>
-                                    <Col xs={6}>  <TextComponent text={application.applicant.email} /></Col>
+                                    <Col xs={12} lg={4}> <small >Email address</small></Col>
+                                    <Col xs={12} lg={8}>  <TextComponent text={application.applicant.email} /></Col>
                                 </Row>
                             </Col>
                         </Row>
                         <Row className="application_details_row ">
                             <Col >
                                 <Row >
-                                    <Col xs={4}> <small >Applied On:</small></Col>
-                                    <Col xs={4}>
-                                        <TextComponent text={`${application.applicationDate[2]} / ${application.applicationDate[1]} / ${application.applicationDate[0]}`} />
+                                    <Col xs={12} lg={4}> <small >Applied On:</small></Col>
+                                    <Col xs={12} lg={8}>
+                                        <TextComponent text={formattedDate} />
                                     </Col>
                                 </Row>
                             </Col>
                             <Col >
                                 <Row>
-                                    <Col xs={4}><small >Status:</small></Col>
-                                    <Col xs={8}> <TextComponent text={application.status} /></Col>
+                                    <Col xs={12} lg={4}><small >Status:</small></Col>
+                                    <Col xs={12} lg={8}> <TextComponent text={application.status} /></Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    <Col xs={12} md={2}>
+                        <Row>
+                            <Col xs={6} md={12}>
+                                <Row className="action-buttons-holder">
+                                    <ButtonComponent onClick={() => onDelete(application.id)} text="Drop" id="drop_button" className="btn" />
+                                </Row>
+                            </Col>
+                            <Col xs={6} md={12}>
+                                { /***** Adoption Accordion *****/}
+                                <Row className="action-buttons-holder">
+                                    <ButtonComponent onClick={() => viewToggle()} text="View" id="view_button" className="btn" />
                                 </Row>
                             </Col>
                         </Row>
 
-                        <Row >
-                            {/* <Col xs={6}>
-                                <Row >
-                                    <Col xs={6}> <small >Price</small></Col>
-
-                                    <Col xs={6}> {price ? <small >{price}€</small> : <small >"Free Adoption"</small>}</Col>
-                                </Row>
-                            </Col> */}
-                        </Row>
-                    </Col>
-
-                    <Col xs={2}>
-                        <Row className="action-buttons-holder">
-                            <ButtonComponent text="Drop" id="drop_button" className="btn" />
-                        </Row>
-                        <div id="separator"></div>
-                        { /***** Adoption Accordion *****/}
-                        <Row className="action-buttons-holder">
-                            <ButtonComponent onClick={() => viewToggle()} text="View" id="view_button" className="btn" />
-                        </Row>
                     </Col>
                 </Row>
                 {/************* toggle componenet when user clicks on above button ****** */}

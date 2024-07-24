@@ -1,0 +1,618 @@
+/*
+* Primary:
+* Light Beige #F5EDE3
+* Dark Brown  #5A4633
+*
+*Secundary:
+* Soft Beige #DCC5A1
+* Tan #C19A6B
+* Dark Black #050505
+***/
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+/************ FONTS */
+html {
+    font-size: 18px
+}
+
+p,
+a {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.8px;
+    font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Merriweather", serif;
+    letter-spacing: 0.8px;
+}
+
+#update_status_heading,
+#post_action_message_holder h6,
+#notification_message_container h6,
+#reg_heading {
+    font-family: "Merriweather", serif;
+    letter-spacing: 0.8px;
+}
+
+#list_pet_form label,
+#reg_form input,
+#reg_form input::placeholder,
+#reg_form input::placeholder,
+#drop_button,
+#view_button,
+#pet_applications_wrapper .pet_application_wrapper .pet_application_container p,
+#pet_applications_wrapper #statuses_tap_wrapper #statuses_tap_container button,
+#pet_applications_wrapper #view_app_update_status_submit_button {
+    font-family: "Roboto";
+    letter-spacing: 0.8px;
+}
+
+
+/* Remove padding from all containers */
+.container,
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Remove margin from all rows */
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Remove padding from all columns */
+[class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/****  NOTIFICATIONS  ***/
+.row {
+    padding: 0;
+}
+
+#notifications_space {
+    margin-top: 50px;
+}
+
+
+#post_action_message_holder,
+#notification_message_holder {
+    width: 90%;
+    min-height: 70px;
+    margin: 40px auto 40px;
+}
+
+#post_action_message_wrapper #post_action_message_container,
+#notification_message_container {
+    width: 70%;
+    background-color: #6a5b48;
+    padding: 15px 0 5px;
+    text-align: center;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    margin-bottom: 50px;
+
+}
+
+#header_navbar .dropdown-item {
+    position: relative;
+    margin: 0 auto;
+}
+
+#notification_badge_container {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: #5A4633;
+}
+
+#notification_badge_wrapper {
+    position: absolute;
+    bottom: 20px;
+    left: 190px;
+    width: 0px;
+}
+
+#notification_badge_wrapper p {
+    padding-top: 3px;
+    padding-left: 2px;
+    color: #F5EDE3;
+    font-weight: 700;
+}
+
+#notification_badge_wrapper {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 0px;
+}
+
+#notification_badge_wrapper p {
+    padding-top: 3px;
+    padding-left: 2px;
+    color: #F5EDE3;
+    font-weight: 700;
+}
+
+#notification_message_container svg {
+    color: #F5EDE3;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+#post_action_message_holder h6,
+#notification_message_container h6 {
+    color: #ffffff;
+    font-family: "Roboto";
+    font-weight: 300;
+    letter-spacing: 0.8px;
+}
+
+.form-control:focus {
+    border-color: #C19A6B;
+    /* Change to your desired border color */
+    box-shadow: 0 0 5px #C19A6B;
+    /* Change to your desired shadow */
+    outline: none;
+    /* Remove the default outline */
+}
+
+
+/********************* HEADER */
+#header_navbar {
+    background-color: #F5EDE3;
+    border-bottom: solid 2px #DCC5A1;
+}
+
+#logo_nav_holder {
+    background-image: url("/public/assets/images/Logo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 200px;
+    height: 80px;
+    aspect-ratio: 16/9;
+    /* Adjust aspect ratio as needed */
+}
+
+#header_navbar .navbar-nav a {
+    font-size: 20px;
+    margin-right: 20px;
+    letter-spacing: 1px;
+    border-bottom: solid 2px transparent;
+}
+
+
+#header_navbar .navbar-nav a:hover {
+    letter-spacing: 1px;
+    border-bottom: solid 2px #050505;
+}
+
+#header_navbar .dropdown-menu {
+    text-align: center;
+    width: 250px;
+}
+
+#header_navbar .dropdown-menu a {
+    margin: 0 auto;
+    text-align: center
+}
+
+/* Custom CSS to hide the dropdown arrow */
+.navbar-nav .dropstart #signIn_button::after {
+    display: none !important;
+}
+
+#header_navbar #signIn_button {
+    background-color: #050505;
+    color: #F5EDE3;
+    border-radius: 10px;
+    font-weight: bold;
+    border: none;
+}
+
+#header_navbar #signIn_button:hover {
+    color: #050505;
+    background-color: #F5EDE3;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#header_navbar div[aria-labelledby="signIn_button"] {
+    border-color: #6a5b48;
+}
+
+#sign_in_holder {
+    width: 60%;
+    min-height: 60px;
+    height: 40px;
+    margin: 40px auto 100px;
+    background-color: #6a5b48;
+    border-radius: 10px;
+}
+
+#sign_in_messsage {
+    text-align: center;
+    padding: 20px 0 30px;
+    height: 40px;
+    color: #F5EDE3;
+    letter-spacing: 0.8px;
+}
+
+
+/***** HEADER DROPDOWN*/
+#header_navbar .dropdown-menu span a {
+    color: #050505;
+    border-bottom: solid 1px transparent;
+    text-align: center;
+}
+
+#header_navbar .dropdown-menu span a:hover {
+    border-bottom: solid 1px #050505;
+}
+
+
+/****** HEADER LOGIN FORM */
+#login_wrapper {
+    min-width: 500px;
+    max-width: 650px;
+    height: 370px;
+    margin: 0px auto;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+#login_action_holder {
+    margin-top: 30px;
+}
+
+#login_action_holder .col {
+    text-align: center;
+}
+
+#forgot_password_holder {
+    font-size: 14px;
+}
+
+#header_navbar .navbar-nav #forgot_password_holder a {
+    font-size: 17px;
+}
+
+#header_navbar .navbar-nav #forgot_password_holder #signUp {
+    color: #5A4633;
+    font-weight: 600px;
+    margin-bottom: 10px;
+}
+
+#login_form label {
+    margin-top: 15px;
+}
+
+#login_form input {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+#login_submit_button {
+    width: 70%;
+}
+
+#login_message {
+    padding-left: 40px;
+    font-size: 14px;
+    color: #a52a2a;
+    margin-top: 20px;
+}
+
+
+/******* FOOTER   ****/
+#footer_navbar {
+    position: relative;
+    margin-top: 100%;
+    padding-top: 80px;
+    background-color: #6a5b48;
+    height: fit-content;
+    padding-top: 100px;
+}
+
+#footer_bg_holder img {
+    margin: 0 auto 50px;
+}
+
+#footer_navbar a {
+    color: #F5EDE3;
+    letter-spacing: 0.8px;
+    font-size: 21px;
+    border: solid 1px #6a5b48;
+}
+
+#footer_navbar a:hover {
+    border: solid 1px #F5EDE3;
+}
+
+#logo_footer {
+    margin: 60px auto;
+    background-image: url("/public/assets/images/Logo\ Light.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 200px;
+    height: 170px;
+    aspect-ratio: 16/9;
+    /* Adjust aspect ratio as needed */
+}
+
+#footer_navbar #copyright {
+    color: #F5EDE3;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+}
+
+
+
+/*******************************************   (min-width: 768px) and (max-width: 992px) ********/
+@media (min-width: 768px) and (max-width: 992px) {
+
+    #header_navbar .navbar-nav a {
+        margin-right: 0px;
+
+    }
+
+    #notification_badge_wrapper {
+        position: absolute;
+        bottom: 20px;
+        left: 220px;
+        width: 0px;
+    }
+
+    #notification_badge_wrapper p {
+        padding-top: 3px;
+        padding-left: 2px;
+        color: #F5EDE3;
+        font-weight: 700;
+    }
+
+    /***************** HEADER */
+    #header_navbar .dropdown-menu {
+        text-align: center
+    }
+
+    #header_navbar .dropdown-menu a {
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+    }
+
+    #header_navbar .dropdown-menu {
+        text-align: center;
+        width: 100%;
+    }
+
+    #home_link_nav,
+    #account_dropdown {
+        text-align: end;
+    }
+
+
+    /******* FOOTER   ****/
+    #footer_navbar {
+        position: relative;
+        margin-top: 100%;
+        background-image: none;
+        height: fit-content;
+        padding-top: 80px;
+    }
+
+    #footer_bg_holder img {
+        margin: 0 auto 50px;
+    }
+
+    #footer_navbar a {
+        color: #F5EDE3;
+        letter-spacing: 0.8px;
+        font-size: 21px;
+        border: solid 1px #6a5b48;
+    }
+
+    #footer_navbar a:hover {
+        border: solid 1px #F5EDE3;
+    }
+
+    #logo_footer {
+        margin: 50px auto 50px;
+        background-image: url("/public/assets/images/Logo\ Light.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 200px;
+        height: 170px;
+        aspect-ratio: 16/9;
+        /* Adjust aspect ratio as needed */
+    }
+
+
+    #footer_navbar #copyright {
+        color: #F5EDE3;
+        letter-spacing: 0.5px;
+        font-size: 15px;
+    }
+
+}
+
+@media (min-width: 350px) and (max-width: 576px) {
+
+
+    #post_action_message_wrapper #post_action_message_container,
+    #notification_message_container {
+        width: 90%;
+        margin-bottom: 30px;
+    }
+
+
+    #notification_badge_wrapper {
+        position: absolute;
+        bottom: 20px;
+        left: 220px;
+        width: 0px;
+    }
+
+    #notification_badge_wrapper p {
+        padding-top: 3px;
+        padding-left: 2px;
+        color: #F5EDE3;
+        font-weight: 700;
+    }
+
+
+    /********************* HEADER */
+    #logo_nav_holder {
+        background-image: url("/public/assets/images/Logo.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 170px;
+        height: 65px;
+        aspect-ratio: 16/9;
+        /* Adjust aspect ratio as needed */
+
+    }
+
+    #header_navbar .navbar-nav a {
+        text-align: center;
+        font-size: 20px;
+        margin-right: 20px;
+        margin: 0 auto;
+        width: 20%;
+        letter-spacing: 1px;
+    }
+
+    #header_navbar .navbar-nav a:hover {
+        text-align: center;
+        font-size: 20px;
+        margin-right: 20px;
+        margin: 0 auto;
+        width: 20%;
+        border-bottom: solid 2px #050505;
+    }
+
+    #header_navbar .dropdown-menu {
+        text-align: center;
+        width: 100%;
+    }
+
+    #header_navbar .dropdown-menu a {
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+    }
+
+    #header_navbar #signIn_button {
+        text-align: center;
+        font-size: 20px;
+        color: #050505;
+        border-bottom: solid 2px transparent;
+        background-color: transparent;
+        border-radius: 0;
+        font-weight: bold;
+    }
+
+    #header_navbar #signIn_button:hover {
+
+        background-color: transparent;
+        border-bottom: solid 2px #050505;
+        border-radius: 0;
+
+    }
+
+
+    /****** HEADER LOGIN FORM */
+    #login_wrapper {
+        width: 95%;
+        height: 350px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+
+    #header_navbar div[aria-labelledby="signIn_button"] {
+        position: absolute;
+        right: 15px;
+        top: 60px;
+        margin: 0 auto;
+        border-color: #5A4633;
+        width: 95%
+    }
+
+    #sign_in_holder {
+        width: 95%;
+    }
+
+
+    #login_form input {
+        font-size: 15px;
+        width: 70%;
+    }
+
+    #login_message {
+        padding-left: 40px;
+        font-size: 14px;
+        color: #a52a2a;
+        margin-top: 20px;
+    }
+
+
+    #header_navbar .navbar-nav a {
+        margin-right: 0px;
+
+    }
+
+    #header_navbar .dropdown-menu {
+        text-align: center
+    }
+
+    #header_navbar .dropdown-menu a {
+        margin: 0 auto;
+        text-align: center
+    }
+
+
+    #sign_in_holder {
+        width: 90%;
+
+    }
+
+    /******* FOOTER   ****/
+    #footer_navbar a {
+        font-size: 20px;
+    }
+
+    #footer_navbar a:hover {
+        border: solid 1px #F5EDE3;
+    }
+
+    #logo_footer {
+        margin: 50px auto 50px;
+        background-image: url("/public/assets/images/Logo\ Light.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 200px;
+        height: 160px;
+        aspect-ratio: 16/9;
+        /* Adjust aspect ratio as needed */
+    }
+}

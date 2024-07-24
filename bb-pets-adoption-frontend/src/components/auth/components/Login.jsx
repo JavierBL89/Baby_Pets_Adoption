@@ -170,7 +170,11 @@ const Login = () => {
                                     <button type="submit" id="login_submit_button" className="btn" >LogIn!</button>
                                 </Col>
                                 <Col id="forgot_password_holder">
+                                    <Row className="p-0 m-0">
+                                        <a id="signUp" href="/register">SignUp</a>
+                                    </Row>
                                     <a href="#nopath" onClick={resetPassword}>Forgot password</a>
+
                                 </Col>
                             </Row>
 

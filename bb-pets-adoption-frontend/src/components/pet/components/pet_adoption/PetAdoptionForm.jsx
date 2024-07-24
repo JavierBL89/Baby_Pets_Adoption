@@ -85,7 +85,6 @@ const PetAdoptionForm = ({ petId, userName }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(currentPetCategory);
         const formDataToSend = new FormData();
         formDataToSend.append('location', formData.location);
         formDataToSend.append('comment', formData.comment);
@@ -111,9 +110,8 @@ const PetAdoptionForm = ({ petId, userName }) => {
                     setPostActionMessage("Form successfully submitted! You should see a new application in your Applications section.");
                     localStorage.setItem('feedbackMessage', "Form successfully submitted! You should see a new application in your Applications section.");
                     window.location.reload();
-                    // navigate(`/pets/${currentPetCategory}/view/${petId}`);
-
                 }
+
                 else {
                     console.error("Form submission failed:", response.data);
                     setMessage("Form could not be submited. A server error occured. Please try again or contact admin to inform about the problem. ")
@@ -210,7 +208,7 @@ const PetAdoptionForm = ({ petId, userName }) => {
 
                     {/******** Submit Button ********/}
                     <Row>
-                        <ButtonComponent id="adoption_application_submit_button" className="btn btn-primary" type="submit" text="Submit" />
+                        <button id="adoption_application_submit_button" className="btn btn-primary" type="submit">Submit</button>
                     </Row>
                 </Form>
             </Container>

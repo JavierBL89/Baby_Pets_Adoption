@@ -35,7 +35,7 @@ const NotificationMessageComponent = ({ text, token, notificationId, onViewed })
     return (
         <>  {/*********** diplays a message if 'notificationsMessage' data is found ******** */}
             {notificationsMessage &&
-                < Container id="notification_message_holder" >
+                < Container >
                     <Container id="notification_message_container">
                         <Heading tagName="h6" className="notification_message" text={message} />
                     </Container>
@@ -44,8 +44,8 @@ const NotificationMessageComponent = ({ text, token, notificationId, onViewed })
             }
             {/*********** diplays a message if 'text' data is passed ******** */}
             {text &&
-                < Container id="notification_message_holder" >
-                    <Container id="notification_message_container">
+                < Container  >
+                    <Container id="notification_message_container" className="d-flex justify-content-around">
                         <Heading tagName="h6" className="notification_message" text={text} />
                         <FaCheck onClick={() => onViewed(notificationId)} />
                     </Container>

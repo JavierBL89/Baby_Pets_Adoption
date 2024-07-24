@@ -50,7 +50,7 @@ const ApplicationStatusTabComponent = ({ onTabSelect }) => {
                     {
                         statusesList.map((status, statusIndex) => {
                             return (
-                                <Col xs={6} lg={3}>
+                                <Col xs={6} lg={3} >
                                     <ButtonComponent
                                         key={statusIndex}
                                         text={status}

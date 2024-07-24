@@ -9,11 +9,7 @@
 * Dark Black #050505
 ***/
 
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
-
-
-/*********************************** COMMON FORM */
+/*********************************************** COMMON FORM STUFF*/
 
 /***** Override autofill default style behavoir ****/
 /**
@@ -29,6 +25,14 @@ input:-webkit-autofill,
     -webkit-text-fill-font-size: 0.513rem;
 }
 
+.form-control:focus {
+    border-color: #C19A6B;
+    /* Change to your desired border color */
+    box-shadow: 0 0 5px #C19A6B;
+    /* Change to your desired shadow */
+    outline: none;
+    /* Remove the default outline */
+}
 
 #create_pet_wrapper,
 #register_form_wrapper {
@@ -51,17 +55,17 @@ input:-webkit-autofill,
     margin-left: 15px;
 }
 
+#reg_form label {
+    color: #C19A6B;
+}
 
 #list_pet_form label {
     color: #5A4633;
-    font-family: "Roboto";
-    letter-spacing: 0.8px;
     font-weight: 500;
 }
 
 #create_pet_container .parents_info_holder,
 #register_form_wrapper #register_form_container {
-
     padding: 15px;
     border: 1px solid #C19A6B;
     border-radius: 10px;
@@ -78,28 +82,33 @@ input:-webkit-autofill,
     background-color: transparent !important;
 }
 
-
+#reg_submit_button,
 #login_submit_button {
-    background-color: #5A4633;
-    color: #F5EDE3;
     border-color: #5A4633;
-    ;
     letter-spacing: 0.5px;
     font-weight: light;
     margin-top: 20px;
 }
 
+#reg_submit_button:hover,
 #login_submit_button:hover {
     background-color: #ffffff;
     color: #5A4633;
 }
 
+#reg_submit_button,
+#login_submit_button {
+    background-color: #5A4633;
+    color: #F5EDE3;
+}
 
-/*************** REGISTRATION FORM */
-
+/******************************************* REGISTRATION FORM */
+#reg_heading {
+    font-weight: 700;
+    color: #5A4633;
+}
 
 #register_form_wrapper .reg_form_details_holder {
-
     margin-top: 7px;
     margin-bottom: 7x;
 
@@ -107,15 +116,23 @@ input:-webkit-autofill,
 
 #reg_form input {
     font-size: 14px;
+    font-weight: 300;
+    color: #5A4633;
+}
+
+#reg_form input::placeholder {
+    font-weight: 300;
+    color: #5A4633;
+    font-style: italic;
+    opacity: 0.8;
 }
 
 #register_form_wrapper button[type="submit"] {
-
     width: 43%;
     margin: 30px auto;
 }
 
-/***************** PET CREATION ******/
+/**************************************** PET CREATION FORM******/
 
 #list_pet_form div {
     margin-top: 10px;
@@ -128,13 +145,12 @@ input:-webkit-autofill,
     width: 70%;
 }
 
+#reg_form input::placeholder,
 #list_pet_form ::placeholder {
-    font-family: "Roboto";
     font-size: 12px;
     font-style: italic;
     color: #5A4633;
     opacity: 0.8;
-    letter-spacing: 0.8;
     font-weight: 300;
 }
 
@@ -149,7 +165,6 @@ input:-webkit-autofill,
     padding: 10px;
 }
 
-
 .parents_info_holder #pet_category_holder #pet_category_row {
     margin: 0;
 }
@@ -158,20 +173,16 @@ input:-webkit-autofill,
     margin: 0;
 }
 
-
 .parents_info_holder #pet_birth_date_holder,
 .parents_info_holder #pet_birth_date_holder .row {
     margin: 0;
 }
 
-
 #create_pet_wrapper h6 {
     font-size: 22px;
     margin-left: 15px;
     margin-bottom: 0;
-    font-family: "Roboto";
     color: #5A4633;
-    letter-spacing: 0.8px;
 }
 
 #create_pet_wrapper button[type="submit"] {
@@ -179,28 +190,26 @@ input:-webkit-autofill,
     margin: 40px auto auto;
     background-color: #5A4633;
     color: #F5EDE3;
-    font-family: "Roboto";
     font-weight: 700;
-    letter-spacing: 0.8px;
     border: none;
 }
 
 #create_pet_wrapper input[type="file"] {
-    font-family: "Roboto";
     font-size: 14px;
     font-style: italic;
     color: #5A4633;
     opacity: 0.8;
-    letter-spacing: 0.8;
     font-weight: 300;
     height: fit-content;
 }
 
+#app_update_status_row input[type="radio"]:focus,
+#app_update_status_row input[type="radio"]:checked,
 #create_pet_wrapper input[type="radio"]:focus,
 #create_pet_wrapper input[type="radio"]:checked {
-    background-color: #C19A6B;
+    background-color: #5A4633;
     box-shadow: none;
-    border-color: #C19A6B;
+    border-color: #5A4633;
 }
 
 #create_pet_wrapper textarea {
@@ -210,6 +219,7 @@ input:-webkit-autofill,
     margin-bottom: 30px;
 }
 
+/*******************************************   (min-width: 768px) and (max-width: 992px) ********/
 @media (min-width: 768px) and (max-width: 992px) {
 
     #create_pet_wrapper,
@@ -227,10 +237,11 @@ input:-webkit-autofill,
         margin: 0 auto;
         width: 90%;
     }
+
 }
 
+/*******************************************  (min-width: 578px) and (max-width: 768px) ********/
 @media (min-width: 578px) and (max-width: 768px) {
-
 
     #create_pet_container,
     #register_form_container,
@@ -238,15 +249,29 @@ input:-webkit-autofill,
         margin: 0 auto;
         width: 100%;
     }
+
+    #reg_form input {
+        width: 100%;
+    }
 }
+
+/*******************************************  (min-width: 350px) and (max-width: 576px) ********/
 
 @media (min-width: 350px) and (max-width: 576px) {
 
-    /***************** PET CREATION ******/
-    #create_pet_wrapper {
+    /***************** REGISTER FORM******/
+    #reg_form input {
         width: 100%;
     }
 
+    #register_form_holder .row .col {
+        padding: 5px;
+    }
+
+    /***************** PET CREATION FORM******/
+    #create_pet_wrapper {
+        width: 100%;
+    }
 
     #create_pet_container,
     #register_form_container,
@@ -265,8 +290,6 @@ input:-webkit-autofill,
         font-size: 14px;
         width: 95%;
     }
-
-
 
     #create_pet_wrapper button[type="submit"] {
         width: 90%;

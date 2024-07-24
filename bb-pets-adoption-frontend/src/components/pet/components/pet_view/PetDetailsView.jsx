@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { AuthContext } from "../../../../context/AuthContext";
@@ -33,13 +33,15 @@ const PetDetailsView = () => {
 
     const { loading, error, petData } = useFetchById(petId);
 
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [petData]);
 
     return (
         <Container id="pet_view_wrapper" className="">
             <Container id="pet_view_container" className="">
                 {/* Post-action Feedback message */}
-                <Row>
+                <Row id="post_action_message_holder">
                     <Col>
                         {!loading && postActionMessage && (
                             <PostActionMessage text={postActionMessage} />

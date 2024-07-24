@@ -40,13 +40,13 @@ const NavbarDropDown = ({ id }) => {
             </NavDropdown.Item>
 
             <NavDropdown.Item as="span">
-                {unviewedListingsNotifications.length > 0 && <NotificationBadge text={unviewedListingsNotifications.length} />}
                 <NavLinkComponent id="myListings_link_nav" href={`/my_listings/${token}`} text="My Listings" />
+                {unviewedListingsNotifications.length > 0 && <NotificationBadge text={unviewedListingsNotifications.length} />}
             </NavDropdown.Item>
 
             <NavDropdown.Item as="span">
-                {unviewedAppStatusNotifications.length > 0 && <NotificationBadge text={unviewedAppStatusNotifications.length} />}
                 <NavLinkComponent id="profile_link_nav" href={`/my_applications/${token}`} text="My Applications" />
+                {unviewedAppStatusNotifications.length > 0 && <NotificationBadge text={unviewedAppStatusNotifications.length} />}
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
