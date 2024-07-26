@@ -25,6 +25,7 @@ const DashBoardTabComponent = ({ onTabSelect }) => {
 
     const [tabOptions] = useState(["My details", "Email address"]);
 
+
     /***
     * Method handles status selection.
     * 

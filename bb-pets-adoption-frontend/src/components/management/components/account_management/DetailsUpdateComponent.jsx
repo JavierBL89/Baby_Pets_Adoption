@@ -29,9 +29,21 @@ const DetailsUpdateComponent = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [location, setLocation] = useState("");
-
+    const navigate = useNavigate();
     var token = localStorage.getItem('token');  // grab current token from locat storage
 
+
+    const [warningElement, setwarningElement] = useState(false);
+
+    /**** 
+     * Method toggles the view application accordion.
+     * 
+     * Sets the state to the oposite of the current state is
+     * false to true | true to false
+    */
+    const viewToggle = () => {
+        setwarningElement(!warningElement);
+    }
 
     /***
      * Method handles form submission.
@@ -81,6 +93,38 @@ const DetailsUpdateComponent = () => {
         }
 
     };
+
+    /****
+     * 
+     */
+    const handleUserProfileDelete = async () => {
+
+        if (token) {
+
+            setMessage(false);
+
+            try {
+
+                // POST request with headers set to accept and handle multipart files on server side
+                const response = await instance.delete(`/account_management/delete_user?token=${token}`);
+
+                if (response.status === 200) {
+                    navigate("/")
+                }
+                else {
+                    console.error("Form submission failed:", response.data);
+                    setMessage("Form could not be submited. A server error occured. Please try again or contact admin to inform about the problem. ")
+                    setMessage(true)
+                }
+            } catch (error) {
+                console.error('Something went wrong! Error submitting form:', error.message);
+            }
+        } else {
+            setMessage("Authentication needed. Form could not be submited!")
+        }
+
+    }
+
 
     return (
         <Container id="personal_details_update_wrapper">
@@ -143,6 +187,25 @@ const DetailsUpdateComponent = () => {
                         <button id="personal_details_update_submit_button" className="btn btn-primary" type="submit">Submit</button>
                     </Row>
                 </Form>
+
+
+                <Heading
+                    tagName="h6"
+                    id="delete_profile_heading"
+                    text="Delete Profile"
+                />
+                <Row>
+                    <TextComponent onClick={() => viewToggle()} id="delete_user_button" text="Delete profile" />
+                    {warningElement ?
+                        <Row className="delete_user_accordion_wrapper">
+                            <TextComponent className="delete_user_warning_text" text="Are you sure you want to delete your profile and related data?, It will not be recoverable." />
+                            <TextComponent onClick={() => handleUserProfileDelete(token)} text="Delete" className="btn delete_profile_confirm_button" />
+
+                        </Row>
+                        :
+                        null
+                    }
+                </Row>
             </Container >
 
         </Container >

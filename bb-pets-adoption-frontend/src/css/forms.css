@@ -114,7 +114,8 @@ input:-webkit-autofill,
 
 }
 
-#reg_form input {
+#reg_form input,
+#personal_details_update_wrapper form input {
     font-size: 14px;
     font-weight: 300;
     color: #5A4633;
@@ -132,6 +133,62 @@ input:-webkit-autofill,
     margin: 30px auto;
 }
 
+
+/*** LOGIN PAGE*/
+#login_page_wrapper {
+    width: 1400px;
+    height: 600px;
+}
+
+#login_page_container {
+    margin: 100px auto;
+    width: 70%;
+    height: fit-content;
+    padding: 40px;
+    border: solid 1px #C19A6B;
+    border-radius: 10px;
+}
+
+#login_form label {
+    color: #C19A6B;
+}
+
+#login_form input {
+    width: 70%;
+    font-family: "Roboto";
+    font-weight: 400;
+    color: #5A4633;
+    letter-spacing: 0.8px;
+}
+
+#login_page_wrapper #login_page_action_holder {
+    margin-top: 50px;
+}
+
+#login_page_wrapper #forgot_password_holder {
+    margin-top: 10px;
+}
+
+#login_page_action_holder {
+    text-align: center;
+}
+
+#login_page_submit_button {
+    background-color: #5A4633;
+    color: #F5EDE3;
+    font-family: "Roboto";
+    font-weight: 700;
+    letter-spacing: 0.8;
+    border: solid 1px #5A4633;
+    width: 80%;
+}
+
+#login_page_submit_button:hover {
+    background-color: #F5EDE3;
+    color: #5A4633;
+    border: solid 1px #5A4633;
+}
+
 /**************************************** PET CREATION FORM******/
 
 #list_pet_form div {
@@ -139,12 +196,14 @@ input:-webkit-autofill,
     margin-bottom: 10px;
 }
 
+
 #list_pet_form input {
     height: 50px;
     font-size: 14px;
     width: 70%;
 }
 
+#personal_details_update_wrapper form input::placeholder,
 #reg_form input::placeholder,
 #list_pet_form ::placeholder {
     font-size: 12px;
@@ -219,6 +278,124 @@ input:-webkit-autofill,
     margin-bottom: 30px;
 }
 
+/************************ PROFILE MANAGEMENT PAGE */
+
+#statuses_tap_container button {
+    border: none;
+    font-family: "Merriweather", "serif";
+    letter-spacing: 0.8;
+    padding: 10px;
+
+}
+
+#profile_dashboard_wrapper {
+    max-width: 1100px;
+    min-height: 300px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    padding: 0;
+}
+
+#profile_dashboard_wrapper #profile_dashboard_container {
+    width: 85%;
+    min-height: fit-content;
+    margin: 0 auto;
+}
+
+
+#profile_dashboard_spinner_holder {
+    height: inherit;
+    width: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+#profile_dashboard_spinner_holder .spinner-border {
+    height: 80px;
+    width: 80px;
+    color: #9E7F66;
+    margin: 0 auto;
+    position: relative;
+    top: 40%;
+}
+
+/**** PERSONAL DETAILS UPDATE */
+#email_update_wrapper,
+#personal_details_update_wrapper {
+    padding: 40px;
+    background-color: #F5EDE3;
+    border: solid 1px #5A4633;
+}
+
+#email_update_wrapper h6,
+#personal_details_update_wrapper h6 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #5A4633;
+
+}
+
+#email_update_wrapper form label,
+#personal_details_update_wrapper form label {
+    color: #C19A6B;
+    font-size: 16px;
+}
+
+#email_update_wrapper form input,
+#personal_details_update_wrapper form input {
+    margin-bottom: 20px;
+    width: 60%;
+}
+
+#update_email_submit_button,
+#personal_details_update_submit_button {
+    margin: 30px auto;
+    width: 60%;
+    background-color: #5A4633;
+    border: solid 1px #5A4633;
+    font-weight: 700;
+}
+
+#update_email_submit_button:hover,
+#personal_details_update_submit_button:hover {
+    background-color: #F5EDE3;
+    border: solid 1px #5A4633;
+    color: #5A4633;
+    font-weight: 700;
+}
+
+
+#delete_user_button {
+    color: #453220;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#delete_profile_heading {
+    margin-top: 40px;
+}
+
+#profile_dashboard_wrapper .delete_user_accordion_wrapper {
+    padding: 20px;
+    background-color: #C19A6B;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#profile_dashboard_wrapper .delete_user_accordion_wrapper p {
+    color: #5A4633;
+    font-weight: 700;
+    text-align: center;
+}
+
+#profile_dashboard_wrapper .delete_profile_confirm_button {
+    margin: 0 auto;
+    width: 30%;
+    background-color: #F5EDE3;
+    color: #060504;
+}
+
 /*******************************************   (min-width: 768px) and (max-width: 992px) ********/
 @media (min-width: 768px) and (max-width: 992px) {
 
@@ -238,6 +415,42 @@ input:-webkit-autofill,
         width: 90%;
     }
 
+    /*** LOGIN PAGE*/
+    #login_page_container {
+        width: 80%;
+        padding: 40px;
+    }
+
+    #login_form label {
+        color: #C19A6B;
+    }
+
+    #login_form input {
+        width: 80%;
+    }
+
+    /************************ PROFILE MANAGEMENT PAGE */
+
+    #profile_dashboard_wrapper {
+        width: 100%;
+    }
+
+    /**** PERSONAL DETAILS UPDATE */
+    #email_update_wrapper,
+    #personal_details_update_wrapper {
+        padding: 40px;
+        background-color: #F5EDE3;
+        border: solid 1px #5A4633;
+    }
+
+    #email_update_wrapper h6,
+    #personal_details_update_wrapper h6 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+
+
+
 }
 
 /*******************************************  (min-width: 578px) and (max-width: 768px) ********/
@@ -252,6 +465,24 @@ input:-webkit-autofill,
 
     #reg_form input {
         width: 100%;
+    }
+
+    /*** LOGIN PAGE*/
+    #login_page_container {
+        width: 90%;
+        padding: 40px;
+    }
+
+    #login_form input {
+        width: 90%;
+    }
+
+    #login_page_action_holder {
+        text-align: center;
+    }
+
+    #login_page_submit_button {
+        width: 60%;
     }
 }
 
@@ -304,6 +535,89 @@ input:-webkit-autofill,
         height: 80px;
         width: 98%;
         margin: 20px auto 30px;
+    }
+
+
+    /************************ PROFILE MANAGEMENT PAGE */
+    #profile_dashboard_wrapper {
+        width: 100%;
+    }
+
+    /**** PERSONAL DETAILS UPDATE */
+    #email_update_wrapper,
+    #personal_details_update_wrapper {
+        padding: 40px;
+        background-color: #F5EDE3;
+        border: solid 1px #5A4633;
+    }
+
+    #email_update_wrapper h6,
+    #personal_details_update_wrapper h6 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    #email_update_wrapper label,
+    #personal_details_update_wrapper form label {
+        color: #C19A6B;
+        font-size: 14px;
+    }
+
+    #email_update_wrapper form input,
+    #personal_details_update_wrapper form input {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    #update_email_submit_button,
+    #personal_details_update_submit_button {
+        width: 90%;
+    }
+
+    #update_email_submit_button:hover,
+    #personal_details_update_submit_button:hover {
+        background-color: #F5EDE3;
+        border: solid 1px #5A4633;
+        color: #5A4633;
+        font-weight: 700;
+    }
+
+    #reg_form input {
+        width: 100%;
+    }
+
+    /*** LOGIN PAGE*/
+    #login_page_wrapper {
+        width: 100%;
+    }
+
+    #login_page_container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    #login_page_wrapper #login_form input {
+        width: 100%;
+    }
+
+    #login_page_wrapper #login_submit_button {
+        width: 100%;
+    }
+
+    #login_page_wrapper #forgot_password_holder a {
+        font-size: 14px;
+    }
+
+    #login_page_action_holder {
+        text-align: center;
+    }
+
+    #login_page_submit_button {
+        width: 60%;
+    }
+
+    #login_page_wrapper #login_form {
+        margin-left: 0px;
     }
 
 }

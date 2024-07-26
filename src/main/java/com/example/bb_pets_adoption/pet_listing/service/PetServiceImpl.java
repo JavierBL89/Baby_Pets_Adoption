@@ -320,7 +320,7 @@ public class PetServiceImpl implements PetService{
 	
 	/**
 	* Method responsible for removing a PetList instance from database
-	*  and initiate a cascading deletion for all items related to the PetList instance such as the Pet object.
+	* and initiate a cascading deletion for all items related to the PetList instance such as the Pet object.
 	*  
 	* Steps:
 	* 1. Cast string id into Object id fro database operations

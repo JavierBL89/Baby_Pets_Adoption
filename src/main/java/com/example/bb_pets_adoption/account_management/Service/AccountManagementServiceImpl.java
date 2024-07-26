@@ -3,6 +3,8 @@
  */
 package com.example.bb_pets_adoption.account_management.Service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.bb_pets_adoption.account_management.Model.User;
 import com.example.bb_pets_adoption.account_management.Repository.UserRepository;
+import com.example.bb_pets_adoption.adoption.model.AdoptionApplication;
+import com.example.bb_pets_adoption.adoption.repository.AdoptionApplicationRepository;
 import com.example.bb_pets_adoption.auth.service.AuthenticationServiceImpl;
 import com.example.bb_pets_adoption.pet_listing.controller.PetController;
+import com.example.bb_pets_adoption.pet_listing.repository.CatRepository;
+import com.example.bb_pets_adoption.pet_listing.repository.DogRepository;
+import com.example.bb_pets_adoption.pet_listing.repository.PetListRepository;
 
 /**
  * 
@@ -23,6 +30,10 @@ public class AccountManagementServiceImpl implements AccountManagementService{
     // vars
 	AuthenticationServiceImpl authenticationServiceImpl;
 	UserRepository userRepository;
+	PetListRepository petListRepository;
+	CatRepository catRepository;
+	DogRepository dogRepository;
+	AdoptionApplicationRepository adoptionApplicationRepository;
 	
 	// create an instance of Logger
 	private static final Logger logger = LoggerFactory.getLogger(PetController.class);
@@ -33,9 +44,14 @@ public class AccountManagementServiceImpl implements AccountManagementService{
 	 * 
 	 * **/
 	@Autowired
-	public AccountManagementServiceImpl(AuthenticationServiceImpl authenticationServiceImpl, UserRepository userRepository) {
+	public AccountManagementServiceImpl(AuthenticationServiceImpl authenticationServiceImpl, UserRepository userRepository,
+			PetListRepository petListRepository, CatRepository catRepository, DogRepository dogRepository, AdoptionApplicationRepository adoptionApplicationRepository) {
 		this.authenticationServiceImpl = authenticationServiceImpl;
 		this.userRepository = userRepository;
+		this.catRepository = catRepository;
+		this.dogRepository = dogRepository;
+	    this.petListRepository = petListRepository;
+	    this.adoptionApplicationRepository = adoptionApplicationRepository;
 	}
 	
 	
@@ -78,10 +94,8 @@ public class AccountManagementServiceImpl implements AccountManagementService{
 	       }catch(Exception e) {
 	    	   
 	    	   logger.error("An error ocured and user email address could not be updated" + e.getMessage());
-	    	   throw new Exception("An error ocured and user email address could not be updated. " + e.getMessage());
-	    	   
-	       }
-		
+	    	   throw new Exception("An error ocured and user email address could not be updated. " + e.getMessage());    	   
+	       }		
 	}
 
 	/**
@@ -104,6 +118,40 @@ public class AccountManagementServiceImpl implements AccountManagementService{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
+
+	/**
+	 * Method delete user from db
+	 * 
+	 * @param {User} user - the user object to be deleted
+	 * */
+	@Override
+	public void deleteUser(User user) throws Exception{
+		
+		if(user == null) {
+			throw new Exception("User cannot be null");
+		}
+		
+		
+        try {
+        	
+        	//find any adoption application related to user
+            List<AdoptionApplication> apps = adoptionApplicationRepository.findByApplicantId(user.getUserId());
+            // remove any adoptio application related to user
+            adoptionApplicationRepository.deleteAll(apps);
+            
+            // remove any petListing and finally the user
+			user.cascadeDelete(petListRepository, catRepository, dogRepository);
+			userRepository.delete(user);
+			
+		}catch(Exception e) {			
+			throw new Exception("User could not be deleted" + e.getMessage());
+		}
+	
+	}
+	
 	
 
 }

@@ -32,13 +32,24 @@ public interface AccountManagementService {
 	 * */
 	public void updateEmailAddress(User user, String email) throws Exception;
 	
+
 	/**
+	 * Method to authenticate user by token
 	 * 
-	 * **/
+	 * @param {String} token - the current session token authentication
+	 * */
 	public boolean authenticateUserByToken(String token);
 	
 	/**
 	 * 
 	 * **/
 	public boolean getUserByToken(String token);
+	
+	
+	/**
+	 * Method delete user from db
+	 * 
+	 * @param {User} user - the user object to be deleted
+	 * */
+	public void deleteUser(User user)  throws Exception;
 }

@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 
 import VerifyAccount from "./components/auth/components/VerifyAccount";
-import Login from './components/auth/components/Login';
+import LoginPage from './components/auth/components/LoginPage';
+import LoginHeader from './components/auth/components/LoginHeader';
 import PasswordReset from './components/auth/components/PasswordReset';
 import Register from "./components/auth/components/Register";
 
@@ -28,7 +29,6 @@ import PetUpdate from "../src/components/pet/components/pet_update/PetUpdate";
 import "./css/petListing.css";
 import "./css/forms.css";
 import "./css/applications.css";
-import "./css/profile.css";
 import "./css/style.css";
 import "./css/common.css";
 
@@ -69,7 +69,8 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/:token" element={<Home />} />
                   <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/loginHeader" element={<LoginHeader />} />
                   <Route path="/auth/reset_password" element={<PasswordReset />} />
                   <Route path="/verify_account" element={<VerifyAccount />} />
                   <Route path="/profile/:token" element={<ProfileDashBoard />} />

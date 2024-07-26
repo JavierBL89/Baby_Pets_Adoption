@@ -42,10 +42,16 @@ const ProfileDashBoard = () => {
     const handleTabSelection = (tabName) => {
         switch (tabName) {
             case "My details":
-                setMyDetails(true);
+                if (emailChange) {
+                    setEmailChange(!emailChange);
+                }
+                setMyDetails(!myDetails);
                 break;
             case "Email address":
-                setEmailChange(true);
+                if (myDetails) {
+                    setMyDetails(!myDetails);
+                }
+                setEmailChange(!emailChange);
                 break;
 
             default:
@@ -75,7 +81,7 @@ const ProfileDashBoard = () => {
 
 
                 { /*************** dashboard options component  *********************/}
-                < Row >
+                <Row>
                     <DashBoardTabComponent onTabSelect={handleTabSelection} />
                 </Row>
                 <Row>

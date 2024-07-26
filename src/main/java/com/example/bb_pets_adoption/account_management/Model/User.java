@@ -52,7 +52,7 @@ public class User{
 
 
     /**
-     * Method to removed all objects associated to the user when the user deletes thir account
+     * Method to removed all objects associated to the user when the user deletes their account
      * 
      * @param catRepository - the Cat repository
      * @param dogRepository - the Dog repository

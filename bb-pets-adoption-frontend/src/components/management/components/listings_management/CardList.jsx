@@ -26,7 +26,6 @@ const CardList = ({ motherImage, motherBreed, createdOn, price, token,
      * false to true | true to false
     */
     const viewToggle = () => {
-
         setviewApplication(!viewApplication);
     }
 

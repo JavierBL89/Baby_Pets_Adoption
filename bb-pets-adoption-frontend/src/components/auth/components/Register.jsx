@@ -120,7 +120,6 @@ const Register = () => {
             </Row>
             <Container id="register_form_container">
 
-
                 <Row id="register_form_holder">
                     <Row >{message && <p>{message}</p>}</Row>
                     <Form onSubmit={handleSubmit} id="reg_form">
@@ -194,7 +193,7 @@ const Register = () => {
                                 <Form.Group controlId="reg_password">
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control
-                                        type="passsword"
+                                        type="password"
                                         name="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}

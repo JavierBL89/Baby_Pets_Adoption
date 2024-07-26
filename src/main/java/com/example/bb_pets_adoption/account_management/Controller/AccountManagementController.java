@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -132,5 +133,55 @@ public class AccountManagementController {
 	   	    
 	   	    logger.info("Email address successfully updated");
 	   	    return ResponseEntity.status(200).body("Email address successfully updated");
+	   	    
 	    }
+
+	    
+  
+	    /***
+	     * Endpoint receives a PUT request for user data update
+	     * 
+	     * 
+	     * **/
+	    @DeleteMapping("/delete_user")
+	    public ResponseEntity<?> deleteUser(    
+	    	@RequestParam(value= "token", required = false) String token) {
+	    	
+	        // handle null value token
+	   	    if (token == null) {
+	   	        logger.error("Authorization token is missing");
+	   	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization token is missing");
+	   	    }
+	   	    
+	   	  // try and catch any errors during application update process
+	   	    try {
+	   	        // if user is authenticated proceed to update application
+	   	 		if (accountManagementServiceImpl.authenticateUserByToken(token)) {
+                     Optional<User> foundUser = userRepository.findByToken(token);
+                     
+                     if(foundUser.isPresent()){
+                        User user = foundUser.get();                       
+                 	    // delete user @params (User user, String email)
+   	   	 		        accountManagementServiceImpl.deleteUser(user);    	 		
+   	   	 		        
+                     }else {          	 
+                    	 logger.info("User not found");
+     	   	 			return ResponseEntity.status(404).body("User not found");
+                     }                                   
+	   	 		 
+	   	 		}else { 			
+	   	 			logger.info("Unauthorized user");
+	   	 			return ResponseEntity.status(403).body("Unauthorized user");
+	   	 		}   	 		
+	   	    } catch (Exception e) {
+	   	        logger.error("Error deleting profile", e);
+	   	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating email address: " + e.getMessage());
+	   	    }
+	   	    
+	   	    logger.info("Profile successfully deleted");
+	   	    return ResponseEntity.status(200).body("Profile successfully deleted");
+	   	    
+	    }
+
+	   	 		
 }

@@ -24,7 +24,6 @@ const PetApplicationCard = ({ application, id, token, onFetchData, onDelete }) =
      * false to true | true to false
     */
     const viewToggle = () => {
-
         setviewApplication(!viewApplication);
     }
 
