@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Second stage: Create the runtime image
-FROM adoptopenjdk:19-jdk-hotspot
+FROM openjdk:19-jdk-hotspot
 
 # Set the working directory
 WORKDIR /app
