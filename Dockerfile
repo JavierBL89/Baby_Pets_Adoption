@@ -5,7 +5,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the project’s JAR file into the container at /app
-COPY target/my-spring-boot-app-0.0.1-SNAPSHOT.jar /app/my-spring-boot-app.jar
+COPY target/bb-pets-adoption-0.0.1-SNAPSHOT.jar /app/bb-pets-adoption-0.0.1-SNAPSHOT.jar
 
 # Run the JAR file
 ENTRYPOINT ["java", "-jar", "bb-pets-adoption-0.0.1-SNAPSHOT.jar"]
