@@ -1,12 +1,28 @@
-# Use an official Maven image to build the app
-FROM maven:3.8.1-openjdk-19 AS build
+# First stage: Use a JDK 19 image and install Maven
+FROM openjdk:19-slim AS build
+
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl -fsSL https://repos.apache.org/repos/keys/apache-maven-3.8.6-asc | apt-key add - && \
+    echo "deb http://apache.org/repos/asf/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz" > /etc/apt/sources.list.d/maven.list && \
+    apt-get update && \
+    apt-get install -y maven
+
+# Set the working directory
 WORKDIR /app
+
+# Copy the project files
 COPY pom.xml .
 COPY src ./src
+
+# Build the project
 RUN mvn clean package -DskipTests
 
-# Use an official Java runtime as a parent image
-FROM openjdk:19-jre-slim
+# Second stage: Create the runtime image
+FROM openjdk:19-slim
+
+# Set the working directory
 WORKDIR /app
 
 # Copy the JAR file from the build stage
