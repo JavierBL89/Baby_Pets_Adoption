@@ -1,13 +1,5 @@
 # First stage: Use a JDK 19 image and install Maven
-FROM openjdk:19-slim AS build
-
-# Install Maven
-RUN apt-get update && \
-    apt-get install -y curl gnupg && \
-    curl -fsSL https://repos.apache.org/repos/keys/apache-maven-3.8.6-asc | apt-key add - && \
-    echo "deb http://apache.org/repos/asf/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz" > /etc/apt/sources.list.d/maven.list && \
-    apt-get update && \
-    apt-get install -y maven
+FROM maven:3.8.6-openjdk-18 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -20,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Second stage: Create the runtime image
-FROM openjdk:19-slim
+FROM adoptopenjdk:19-jdk-hotspot
 
 # Set the working directory
 WORKDIR /app
