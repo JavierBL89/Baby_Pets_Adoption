@@ -26,7 +26,6 @@ WORKDIR /app
 
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/bb-pets-adoption-0.0.1-SNAPSHOT.jar /app/bb-pets-adoption-0.0.1-SNAPSHOT.jar
-COPY --from=build /app/src/main/resources/application-secret.properties /app/src/main/resources/application-secret.properties
 
 # Run the JAR file
 ENTRYPOINT ["java", "-jar", "bb-pets-adoption-0.0.1-SNAPSHOT.jar"]
