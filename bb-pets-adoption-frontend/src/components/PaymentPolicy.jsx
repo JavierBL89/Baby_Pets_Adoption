@@ -1,7 +1,8 @@
 import React from "react";
 import Heading from "./common/Heading";
 import InfoComponent from "./common/InfoComponent";
-import { Stack } from "react-bootstrap";
+import { Container, Stack } from "react-bootstrap";
+import TextComponent from "./common/TextComponent";
 
 
 /**
@@ -86,20 +87,17 @@ const PaymentPolicy = () => {
 
 
     return (
-        <div>
-            <Stack>
 
+        <Container id="payment_policy_wrapper">
+            <Container id="payment_policy_container">
                 <InfoComponent sections={dataSections} id="payment_policy_heading" title="Payment Policy"></InfoComponent>
-                <div>
+                <Container>
                     <p>Thank you for using BbPets Adoption. We appreciate your cooperation in maintaining a trustworthy and effective pet adoption platform.</p>
                     <p>We will process your request within 30 days and confirm the deletion via email.</p>
 
-                </div>
-                <Heading tagName="h6" id="" className="adoption_team_title" text="BbPets Adoption Team" />
-
-            </Stack>
-
-        </div>
+                </Container>
+            </Container>
+        </Container>
     )
 };
 

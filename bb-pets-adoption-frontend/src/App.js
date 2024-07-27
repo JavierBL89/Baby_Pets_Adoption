@@ -38,6 +38,9 @@ import { FeedbackProvider } from "./context/FeedBackContext";
 import ProfileDashBoard from "./components/management/components/account_management/ProfileDashBoard";
 import { NotificationsProvider } from "./context/NotificationsContext";
 import ScrollToTop from "./components/common/ScrollToTop";
+import About from "./components/About";
+import Services from "./components/Services";
+import Contact from "./components/Contact";
 
 
 /***
@@ -84,6 +87,10 @@ function App() {
                   <Route path="/data_deletion" element={<DataDeletionInstructions />} />
                   <Route path="/privacy_policy" element={<PrivacyPolicy />} />
                   <Route path="/payment_policy" element={<PaymentPolicy />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/contact" element={<Contact />} />
+
                 </Routes>
                 <Footer />
               </div>

@@ -220,7 +220,6 @@ h6 {
 }
 
 #header_navbar #signIn_button {
-
     background-color: #050505;
     color: #F5EDE3;
     border-radius: 10px;
@@ -347,6 +346,10 @@ h6 {
     border: solid 1px #F5EDE3;
 }
 
+#footer_navbar #logo_footer:hover {
+    border: solid 1px transparent;
+}
+
 #logo_footer {
     margin: 60px auto;
     background-image: url("/public/assets/images/Logo\ Light.png");
@@ -365,7 +368,71 @@ h6 {
     font-size: 15px;
 }
 
+/********** ABOUT PAGE */
+/********** SERVICES PAGE */
+#contact_wrapper,
+#dataDeletion_wrapper,
+#payment_policy_wrapper,
+#about_wrapper,
+#services_wrapper,
+#privacy_policy_wrapper {
+    width: 1400px;
+    min-height: fit-content;
+}
 
+#contact_container,
+#dataDeletion_container,
+#payment_policy_container,
+#about_container,
+#services_container,
+#privacy_policy_container {
+    width: 80%;
+    border: solid 1px #C19A6B;
+    border-radius: 10px;
+    padding: 40px;
+    margin: 140px auto;
+    color: #5A4633;
+}
+
+#contact_container .row {
+    margin-top: 30px;
+}
+
+#about_wrapper .li_item,
+#services_wrapper .li_item {
+    font-weight: 600;
+}
+
+#contact_wrapper h1 #dataDeletion_wrapper h1 #payment_policy_heading_heading,
+#privacy_policy_wrapper h1,
+#services_container h1,
+#about_container h1 {
+    font-size: 2rem;
+}
+
+#contact_wrapper h3,
+#contact_wrapper h5 #payment_policy_wrapper h4,
+#privacy_policy_wrapper h4,
+#about_container h4,
+#services_container h4 {
+    margin-top: 50px;
+}
+
+#contact_wrapper h1,
+#contact_wrapper h3,
+#contact_wrapper h5,
+#payment_policy_wrapper h4,
+#payment_policy_heading_heading,
+#privacy_policy_wrapper h1,
+#privacy_policy_wrapper h4,
+#about_container h1,
+#about_container h4,
+#services_container h1,
+#services_container h4 {
+    font-family: "Roboto";
+    letter-spacing: 0.8px;
+    color: #5A4633;
+}
 
 /*******************************************   (min-width: 768px) and (max-width: 992px) ********/
 @media (min-width: 768px) and (max-width: 992px) {
@@ -410,7 +477,6 @@ h6 {
         text-align: end;
     }
 
-
     /******* FOOTER   ****/
     #footer_navbar {
         position: relative;
@@ -447,21 +513,55 @@ h6 {
         /* Adjust aspect ratio as needed */
     }
 
-
     #footer_navbar #copyright {
         color: #F5EDE3;
         letter-spacing: 0.5px;
         font-size: 15px;
     }
 
+
+    /********** ABOUT PAGE */
+    /********** SERVICES PAGE */
+    /********** PRIVACY POLICY PAGE */
+    #contact_container,
+    #dataDeletion_container,
+    #payment_policy_container,
+    #privacy_policy_container,
+    #about_container,
+    #services_container {
+        width: 90%;
+        border: solid 1px #C19A6B;
+        border-radius: 10px;
+        padding: 40px;
+        margin: 140px auto;
+        color: #5A4633;
+    }
+
 }
+
+@media (min-width: 576px) and (max-width: 776px) {
+
+    /********** ABOUT PAGE */
+    #contact_container,
+    #dataDeletion_container,
+    #payment_policy_container,
+    #privacy_policy_container,
+    #about_container,
+    #services_container {
+        width: 90%;
+        border: solid 1px #C19A6B;
+        border-radius: 10px;
+        padding: 40px;
+        margin: 140px auto;
+        color: #5A4633;
+    }
+}
+
 
 @media (min-width: 350px) and (max-width: 576px) {
     #notifications_space {
         margin-top: 30px;
     }
-
-
 
     #sign_in_messsage {
         text-align: center;
@@ -479,7 +579,6 @@ h6 {
         margin-bottom: 30px;
     }
 
-
     #notification_badge_wrapper {
         position: absolute;
         bottom: 20px;
@@ -494,7 +593,6 @@ h6 {
         font-weight: 700;
     }
 
-
     /********************* HEADER */
     #logo_nav_holder {
         background-image: url("/public/assets/images/Logo.png");
@@ -505,7 +603,6 @@ h6 {
         height: 65px;
         aspect-ratio: 16/9;
         /* Adjust aspect ratio as needed */
-
     }
 
     #header_navbar .navbar-nav a {
@@ -514,11 +611,7 @@ h6 {
         margin-right: 20px;
         margin: 0 auto;
         letter-spacing: 1px;
-        /* width: 20%; */
     }
-
-
-
 
     #header_navbar #signIn_button {
         text-align: center;
@@ -531,13 +624,11 @@ h6 {
     }
 
     #header_navbar #signIn_button:hover {
-
         background-color: transparent;
         border-bottom: solid 2px #050505;
         border-radius: 0;
 
     }
-
 
     /****** HEADER LOGIN FORM */
     #login_wrapper {
@@ -546,7 +637,6 @@ h6 {
         padding-top: 40px;
         padding-bottom: 20px;
     }
-
 
     #header_navbar div[aria-labelledby="signIn_button"] {
         position: absolute;
@@ -561,7 +651,6 @@ h6 {
         width: 95%;
     }
 
-
     #login_form input {
         font-size: 15px;
         width: 70%;
@@ -574,10 +663,8 @@ h6 {
         margin-top: 20px;
     }
 
-
     #header_navbar .navbar-nav a {
         margin-right: 0px;
-
     }
 
     #header_navbar .navbar-nav #account_dropdown {
@@ -593,10 +680,8 @@ h6 {
         text-align: center
     }
 
-
     #sign_in_holder {
         width: 90%;
-
     }
 
     /******* FOOTER   ****/
@@ -618,5 +703,46 @@ h6 {
         height: 160px;
         aspect-ratio: 16/9;
         /* Adjust aspect ratio as needed */
+    }
+
+
+    /********** ABOUT PAGE */
+    /********** SERVICES PAGE */
+    #contact_wrapper,
+    #dataDeletion_wrapper,
+    #payment_policy_wrapper,
+    #privacy_policy_wrapper,
+    #about_wrapper,
+    #services_wrapper {
+        width: 95%;
+    }
+
+    #contact_container,
+    #dataDeletion_container,
+    #payment_policy_container,
+    #privacy_policy_container,
+    #about_container,
+    #services_container {
+        width: 95%;
+    }
+
+    #contact_wrapper h1 #dataDeletion_wrapper h1,
+    #payment_policy_heading_heading,
+    #privacy_policy_container h1,
+    #about_container h1,
+    #services_container h1 {
+        font-size: 1.5rem;
+    }
+
+    #contact_container h3,
+    #payment_policy_container h4,
+    #privacy_policy_container h4,
+    #about_container h4,
+    #services_container h4 {
+        font-size: 1.3rem;
+    }
+
+    #contact_container h5 {
+        font-size: 1.1rem;
     }
 }
