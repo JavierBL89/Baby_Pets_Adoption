@@ -23,7 +23,7 @@ public class WebConfiguration implements WebMvcConfigurer{
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")                 // apply CORS settings to all endpoints in app
-		    .allowedOrigins("http://localhost:3000")  // allow requests from this origin		    
+		    .allowedOrigins("http://localhost:3000", "https://javierbl89.github.io/Frontend_React_Baby_Pets_Adoption_App")  // allow requests from this origin		    
 		    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // allow these HTTP methods
 		    .allowedHeaders("*")          // allow all headers
 		    .maxAge(3600);
