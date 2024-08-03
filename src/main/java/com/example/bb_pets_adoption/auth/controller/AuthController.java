@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,6 +52,9 @@ public class AuthController {
 	// create an instance of Logger
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 	
+	 @Value("${app.frontend.base-url}")
+	 private String frontendBaseUrl;
+	 
 	@Autowired
 	 UserRepository userRepository;
 	
@@ -107,7 +111,7 @@ public class AuthController {
 			// generate jwt
 			String token = jwtUtil.generateToken(user.getEmail());
 			 //verification account url + user email + unique token
-			 String accountConfirmationUrl = "http://localhost:8080/auth/verify_account?email="+ user.getEmail() + "&token=" + token;
+			 String accountConfirmationUrl = frontendBaseUrl + "/auth/verify_account?email="+ user.getEmail() + "&token=" + token;
 			 
 			 // send email following the EmailService object's format   to - subject - body  
 	         emailService.sendEmail(user.getEmail(), "Account verification request", 
@@ -137,7 +141,7 @@ public class AuthController {
 	@PostMapping("/auth/login")
 	public ResponseEntity<?> loginUser(@RequestBody User user) {
 		//log
-		logger.info("Attempting to log in user with email: {}", user.getEmail());
+		logger.info("Attempting to log in user with email:", user.getEmail());
 		
 		
 		Optional<User> foundUser = userRepository.findByEmail(user.getEmail());
@@ -157,11 +161,11 @@ public class AuthController {
 		    response.put("registeredBy", foundUser.get().getRegisteredBy());  // send it with response message
 			response.put("userName", registereduser.getName());
 			//log
-			logger.info("Login successful for user with email: {}", user.getEmail());
+			logger.info("Login successful for user with email:", user.getEmail());
 			return ResponseEntity.status(200).body(response);
 		} else {
 			//log
-            logger.error("Login failed for user with email: {}", user.getEmail());
+            logger.error("Login failed for user with email:", user.getEmail());
             return ResponseEntity.status(401).body("Invalid email or password");
 		}
 	}
@@ -197,7 +201,7 @@ public class AuthController {
 	    
 	    
 	    // log the verification attempt
-	    logger.info("Attempting to verify account for email: {}", email);
+	    logger.info("Attempting to verify account for email:", email);
 		
 	    // identify user in database using the email
 	    Optional<User> foundUser = userRepository.findByEmail(email);
@@ -211,14 +215,14 @@ public class AuthController {
 			// log successful verification
 			logger.info("Account verified successfuly. Redirecting to login page... ");
 			// set redirect
-			redirectUrl = "http://localhost:3000/login";
+			redirectUrl = frontendBaseUrl + "/login";
 		
 		}else {
 			
 			// log error if user is not found or token is invalid
             logger.error("token not found or expired token", token);
             // set redirect
-            redirectUrl = "http://localhost:3000/404";   // user not found
+            redirectUrl = frontendBaseUrl + "/404";   // user not found
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account verification failed. Invalid token or email.");
 		}
 		
@@ -252,14 +256,14 @@ public class AuthController {
 	    Map<String, String> response = new HashMap<>(); 
 	    
 		//log
-		logger.info("Checking email provided is registered: {}", email);
+		logger.info("Checking email provided is registered:", email);
 		Optional<User> foundUser = userRepository.findByEmail(email);
 		
 		if(foundUser.isPresent()) {
 			
 			User user = foundUser.get(); // cast to a user object
 			
-			logger.info("Email provided found as registered: {}", email);
+			logger.info("Email provided found as registered:", email);
 			// generate jwt
 			String token = jwtUtil.generateToken(user.getEmail()); 
 			 // set user token and save
@@ -267,21 +271,21 @@ public class AuthController {
 			 userRepository.save(user);
 			 
 			 // reset password url + unique token
-			 String passwordResetUrl = "http://localhost:3000/auth/reset_password?token=" + token;
+			 String passwordResetUrl = frontendBaseUrl + "/auth/reset_password?token=" + token;
 			 // send email following the EmailService object's format   to - subject - body  
 	         emailService.sendEmail(user.getEmail(), "Password Reset Request", "To reset your password, click the link below:\n" + passwordResetUrl);
 
 			//log
-			logger.info("Found email. Sending password reset email to resgistered user email address: {}", user.getEmail());
+			logger.info("Found email. Sending password reset email to resgistered user email address:", user.getEmail());
 			
 			response.put("message", "We have sent you an email to reset your password. Check you inbox");
 			return ResponseEntity.status(201).body(response);
 			
 		}else {
 			//log
-            logger.error("Email not found. Please ensure correct email addres or signUp: {}", email);
+            logger.error("Email not found. Please ensure correct email addres or signUp:", email);
             
-			response.put("message", "Invalid email or email not registered");
+			response.put("message", "Invalid email or email not registered.");
             return ResponseEntity.status(401).body(response);
 		}
 	}
@@ -311,7 +315,7 @@ public class AuthController {
 		    Map<String, String> response = new HashMap<>(); 
 		    
 			//log
-			logger.info("Updating password: {}");
+			logger.info("Updating password:");
 			
 			if(foundUser.isPresent()) {
 				User user = foundUser.get();
@@ -319,7 +323,7 @@ public class AuthController {
 	            user.setToken(null);  // reset token to null
 	            userRepository.save(user);
 				//log
-				logger.info("Found email. Sending password reset email to resgistered user email address: {}", user.getEmail());
+				logger.info("Found email. Sending password reset email to resgistered user email address:", user.getEmail());
 				
 				response.put("message", "Password successfully updated");
 				return ResponseEntity.status(201).body(response);
