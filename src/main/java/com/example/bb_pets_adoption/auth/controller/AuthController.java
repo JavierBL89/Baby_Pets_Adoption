@@ -51,10 +51,7 @@ public class AuthController {
 
 	// create an instance of Logger
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-	
-	 @Value("${app.frontend.base-url}")
-	 private String frontendBaseUrl;
-	 
+
 	@Autowired
 	 UserRepository userRepository;
 	
@@ -111,7 +108,7 @@ public class AuthController {
 			// generate jwt
 			String token = jwtUtil.generateToken(user.getEmail());
 			 //verification account url + user email + unique token
-			 String accountConfirmationUrl = frontendBaseUrl + "/auth/verify_account?email="+ user.getEmail() + "&token=" + token;
+			 String accountConfirmationUrl = "http://localhost:8080/auth/verify_account?email="+ user.getEmail() + "&token=" + token;
 			 
 			 // send email following the EmailService object's format   to - subject - body  
 	         emailService.sendEmail(user.getEmail(), "Account verification request", 
@@ -123,7 +120,7 @@ public class AuthController {
 		} else {                                                         
 			// if email is found, log the error and return a message
 			//log
-            logger.error("Registration failed for user with email: {}", user.getEmail());
+            logger.error("Registration failed for user with email:", user.getEmail());
             return ResponseEntity.status(409).body("The email entered is already registered");
 
 		}
@@ -215,14 +212,14 @@ public class AuthController {
 			// log successful verification
 			logger.info("Account verified successfuly. Redirecting to login page... ");
 			// set redirect
-			redirectUrl = frontendBaseUrl + "/login";
+			redirectUrl = "https://javierbl89.github.io/Frontend_React_Baby_Pets_Adoption_App/login";
 		
 		}else {
 			
 			// log error if user is not found or token is invalid
             logger.error("token not found or expired token", token);
             // set redirect
-            redirectUrl = frontendBaseUrl + "/404";   // user not found
+            redirectUrl = "http://localhost:3000/404";   // user not found
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account verification failed. Invalid token or email.");
 		}
 		
@@ -271,7 +268,7 @@ public class AuthController {
 			 userRepository.save(user);
 			 
 			 // reset password url + unique token
-			 String passwordResetUrl = frontendBaseUrl + "/auth/reset_password?token=" + token;
+			 String passwordResetUrl = "http://localhost:3000/auth/reset_password?token=" + token;
 			 // send email following the EmailService object's format   to - subject - body  
 	         emailService.sendEmail(user.getEmail(), "Password Reset Request", "To reset your password, click the link below:\n" + passwordResetUrl);
 
@@ -315,7 +312,7 @@ public class AuthController {
 		    Map<String, String> response = new HashMap<>(); 
 		    
 			//log
-			logger.info("Updating password:");
+			logger.info("Updating password: {}");
 			
 			if(foundUser.isPresent()) {
 				User user = foundUser.get();
@@ -323,7 +320,7 @@ public class AuthController {
 	            user.setToken(null);  // reset token to null
 	            userRepository.save(user);
 				//log
-				logger.info("Found email. Sending password reset email to resgistered user email address:", user.getEmail());
+				logger.info("Found email. Sending password reset email to resgistered user email address: {}", user.getEmail());
 				
 				response.put("message", "Password successfully updated");
 				return ResponseEntity.status(201).body(response);
